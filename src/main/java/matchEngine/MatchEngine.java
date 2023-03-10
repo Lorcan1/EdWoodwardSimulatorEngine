@@ -4,56 +4,84 @@ import players.Defender;
 import players.Forward;
 import players.Goalkeeper;
 import players.Midfielder;
-
-import java.util.logging.Logger;
+import team.Team;
 
 public class MatchEngine {
-    public Goalkeeper hG1, aG1;
-    public Defender hD1, hD2, aD1, aD2;
-    public Midfielder hM1, hM2, aM1, aM2;
-    public Forward hF1, hF2, aF1, aF2;
+    public Team homeTeam;
+    public Team awayTeam;
+
+    public boolean homeTeamHasPossession = true;
 
     public int homeScore;
     public int awayScore;
 
-    public MatchEngine(Goalkeeper hG1, Goalkeeper aG1, Defender hD1, Defender hD2, Defender aD1, Defender aD2, Midfielder hM1, Midfielder hM2, Midfielder aM1, Midfielder aM2, Forward hF1, Forward hF2, Forward aF1, Forward aF2) {
-        this.hG1 = hG1;
-        this.aG1 = aG1;
-        this.hD1 = hD1;
-        this.hD2 = hD2;
-        this.aD1 = aD1;
-        this.aD2 = aD2;
-        this.hM1 = hM1;
-        this.hM2 = hM2;
-        this.aM1 = aM1;
-        this.aM2 = aM2;
-        this.hF1 = hF1;
-        this.hF2 = hF2;
-        this.aF1 = aF1;
-        this.aF2 = aF2;
+    public MatchEngine(Team homeTeam,Team awayTeam) {
+    this.homeTeam = homeTeam;
+    this.awayTeam = awayTeam;
+    this.homeScore= homeScore;
+    this.awayScore = awayScore;
+
     }
 
-    public void runMatchEngine(){
-        double passFailure = 0;
+    public void runMatchEngine() {
 
-        homeScore = possessionOutcome(hM1,hF1,aG1,homeScore);
-        awayScore = possessionOutcome(aM1,aF1,hG1,awayScore);
+        playBall(homeTeam,awayTeam);
+        playBall(awayTeam,homeTeam);
 
         System.out.println("Final Score: " + homeScore + "-" + awayScore);
-
     }
 
-    public int possessionOutcome(Midfielder aM, Forward aF, Goalkeeper dG, int score){ //attacking players and defending players
+    public void playBall(Team attackingTeam,Team defendingTeam){
+            if(isPlayOutFromBackSuccesful(attackingTeam,defendingTeam)){ //ball starts with home team defenders currently
+                String Outcome = throughBallOutcome(attackingTeam,defendingTeam);
+                if(Outcome.equals("Goal")) {
+                    updateScore(attackingTeam);
+                    // kick off
+
+                }
+                else if(Outcome.equals("Goal Kick")){
+                    //Goal Kick
+                }
+                else if(Outcome.equals("Def Poss")){ //what if they retain possession
+                    playBall(defendingTeam,attackingTeam);
+
+                }
+
+            }
+
+        }
+    public void updateScore(Team attackingTeam){
+        if(attackingTeam.teamName == homeTeam.teamName){
+            homeScore +=1;
+        }
+        else{
+            awayScore+=1;
+        }
+    }
+    public String throughBallOutcome(Team attackingTeam, Team defendingTeam){ //attacking players and defending players
         double passFailure = Math.random()*10*2;
         double shotFailure = Math.random()*10*2;
         System.out.println("Pass Failure: " + passFailure + "\n" + "Shot Failure: " + shotFailure);
-        if(aM.getPassing() > passFailure){
-            if(aF.getFinishing() > dG.getSaving() && aF.getFinishing() > shotFailure){
-                score+=1;
-
+        if(attackingTeam.m1.getPassing() > passFailure){
+            if(attackingTeam.f1.getFinishing() > defendingTeam.g.getSaving() && attackingTeam.f1.getFinishing() > shotFailure) {
+                return "Goal";
+            }
+            else{
+                return "Goal Kick";
             }
         }
-        return score;
+        return "Def Poss";
+    }
+
+    public boolean isPlayOutFromBackSuccesful(Team attackingTeam, Team defendingTeam){ //need to add midfielder tackling
+        double passFailure = Math.random()*10*2;
+        double firstTouchFailure = Math.random()*10*2;
+        System.out.println("Pass Failure: " + passFailure + "\n" + "First Touch Failure: " + firstTouchFailure);
+        if(attackingTeam.d1.getPassing() > passFailure && attackingTeam.m1.getFirstTouch() > firstTouchFailure){
+            return true;
+        }
+        return false ;
+
     }
 
 }

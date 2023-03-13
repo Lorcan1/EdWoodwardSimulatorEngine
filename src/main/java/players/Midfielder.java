@@ -1,12 +1,12 @@
 package players;
 
-public class Midfielder extends Player {
+public class Midfielder extends OutfieldPlayer {
     int passing;
     int firstTouch;
     int tackling;
 
-    public Midfielder(String firstName, String lastName, String position,int age,int passing, int firstTouch, int tackling) {
-        super(firstName,lastName,position,age);
+    public Midfielder(String firstName, String lastName, String position,int age,int passing, int firstTouch, int tackling,int dribbling) {
+        super(firstName, lastName, position, age,dribbling);
         this.passing = passing;
         this.firstTouch = firstTouch;
         this.tackling = tackling;

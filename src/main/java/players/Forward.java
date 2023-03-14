@@ -5,8 +5,8 @@ public class Forward extends Player {
     int firstTouch;
     int finishing;
 
-    public Forward(String firstName, String lastName, String position,int age,int dribbling, int firstTouch, int finishing) {
-        super(firstName,lastName,position,age);
+    public Forward(String firstName, String lastName, String position,int age, int ovr, int dribbling, int firstTouch, int finishing) {
+        super(firstName,lastName,position,age,ovr);
         this.firstTouch = firstTouch;
         this.finishing = finishing;
         this.dribbling = dribbling;

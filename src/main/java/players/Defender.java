@@ -5,8 +5,8 @@ public class Defender extends Player {
     int marking;
     int passing;
 
-    public  Defender(String firstName, String lastName, String position,int age,int tackling, int marking,int passing){
-        super(firstName,lastName,position,age);
+    public  Defender(String firstName, String lastName, String position, int age, int ovr, int tackling, int marking,int passing){
+        super(firstName,lastName,position,age,ovr);
         this.tackling = tackling;
         this.marking = marking;
         this.passing = passing;

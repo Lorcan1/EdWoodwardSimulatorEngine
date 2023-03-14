@@ -5,12 +5,14 @@ public class Player {
     private String lastName;
     private String position;
     private int age;
+    private int ovr;
 
-    public Player(String firstName, String lastName, String position, int age){
+    public Player(String firstName, String lastName, String position, int age, int ovr){
         this.firstName = firstName;
         this.lastName = lastName;
         this.position = position;
         this.age = age;
+        this.ovr = ovr;
     }
 
     public String getFirstName() {
@@ -23,6 +25,14 @@ public class Player {
 
     public String getLastName() {
         return lastName;
+    }
+
+    public int getOvr() {
+        return ovr;
+    }
+
+    public void setOvr(int ovr) {
+        this.ovr = ovr;
     }
 
     public void setLastName(String lastName) {

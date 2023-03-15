@@ -1,28 +1,28 @@
 package players;
 
 public class Goalkeeper extends Player {
-    private int saving;
-    private  int passing;
+    private double saving;
+    private  double passing;
 
-    public Goalkeeper(String firstName, String lastName, String position, int age, int ovr, int saving, int passing) {
-        super(firstName,lastName,position, age, ovr);
+    public Goalkeeper(String firstName, String lastName, String club, String nation, String position, int age, int ovr, double saving, double passing) {
+        super(firstName, lastName, club, nation, position, age, ovr);
         this.saving = saving;
         this.passing = passing;
     }
 
-    public int getSaving() {
+    public double getSaving() {
         return saving;
     }
 
-    public void setSaving(int saving) {
+    public void setSaving(double saving) {
         this.saving = saving;
     }
 
-    public int getPassing() {
+    public double getPassing() {
         return passing;
     }
 
-    public void setPassing(int passing) {
+    public void setPassing(double passing) {
         this.passing = passing;
     }
 }

@@ -1,9 +1,6 @@
 package team;
 
-import players.Defender;
-import players.Forward;
-import players.Goalkeeper;
-import players.Midfielder;
+import players.*;
 
 public class Team {
     public String teamName;
@@ -11,16 +8,18 @@ public class Team {
     public Goalkeeper g;
     public Defender d1;
     public Defender d2;
+    public DefensiveMidfielder dm;
     public Midfielder m1;
     public Midfielder m2;
     public Forward f1;
     public Forward f2;
 
-    public Team(String teamName, String nameAbrev, Goalkeeper g, Defender d1, Defender d2, Midfielder m1, Midfielder m2, Forward f1, Forward f2) {
+    public Team(String teamName, String nameAbrev, Goalkeeper g, Defender d1, Defender d2, DefensiveMidfielder dm, Midfielder m1, Midfielder m2, Forward f1, Forward f2) {
         this.teamName = teamName;
         this.g = g;
         this.d1 = d1;
         this.d2 = d2;
+        this.dm = dm;
         this.m1 = m1;
         this.m2 = m2;
         this.f1 = f1;
@@ -65,6 +64,14 @@ public class Team {
 
     public void setD2(Defender d2) {
         this.d2 = d2;
+    }
+
+    public DefensiveMidfielder getDm() {
+        return dm;
+    }
+
+    public void setDm(DefensiveMidfielder dm) {
+        this.dm = dm;
     }
 
     public Midfielder getM1() {

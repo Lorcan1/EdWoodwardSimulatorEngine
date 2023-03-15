@@ -1,10 +1,8 @@
 package matchEngine;
 
-import players.Defender;
-import players.Forward;
-import players.Midfielder;
-import players.Player;
+import players.*;
 import team.Team;
+import team.TeamSetup;
 
 import java.io.BufferedWriter;
 import java.io.FileWriter;
@@ -27,7 +25,21 @@ public class MatchEngine {
 
     }
 
+    public void getMarkers(Team attackingTeam, Team defendingTeam){
+        Midfielder[] midfielders = new Midfielder[4];
+        midfielders[0] = attackingTeam.m1;
+        midfielders[1] = attackingTeam.m2;
+        midfielders[2] = defendingTeam.m1;
+        midfielders[3] = defendingTeam.m2;
+
+        TeamSetup teamSetup = new TeamSetup();
+        teamSetup.addMarkers(midfielders);
+
+    }
+
     public void runMatchEngine() {
+
+        getMarkers(homeTeam,awayTeam);
 
         playBall(homeTeam,awayTeam);
         playBall(awayTeam,homeTeam);
@@ -53,7 +65,7 @@ public class MatchEngine {
     }
 
     public void playBall(Team attackingTeam,Team defendingTeam){
-        securePossession(attackingTeam,defendingTeam,attackingTeam.m1,defendingTeam.m2);
+        securePossession(attackingTeam,defendingTeam,attackingTeam.m1);
     }
     public void updateScore(Team attackingTeam){
         if(attackingTeam.teamName.equals(homeTeam.teamName)){
@@ -64,7 +76,7 @@ public class MatchEngine {
         }
     }
 
-    public void securePossession(Team attackingTeam, Team defendingTeam, Midfielder playerInPosession, Midfielder marker){
+    public void securePossession(Team attackingTeam, Team defendingTeam, Midfielder playerInPosession){
         //ball passed between midfielders with attacking team starting with ball,
         //if a certain check is passed then a throughball should be played,
         //otherwise the function is called with the other team in possesion
@@ -72,15 +84,17 @@ public class MatchEngine {
         double luckyBounce = Math.random()*10*2;
         double firstTouchFailure = Math.random()*10*2;
 
+        Midfielder marker = playerInPosession.getMarker();
+
         if(playerInPosession.getDribbling() < marker.getTackling() && marker.getTackling() < luckyBounce){ //and player is in same area
-            securePossession(defendingTeam,attackingTeam,marker,playerInPosession);
+            securePossession(defendingTeam,attackingTeam,marker);
         }
         else if ((firstTouchFailure > 10)){  //get vision is higher than pass.difficulty?
         throughBallOutcome(attackingTeam,defendingTeam);}     //how do we decide what attacker should get the ball, assign every player an overall and weight it off that?
         //if N can they pass to a teamate
             //secure Possesion with different player
         else if ((firstTouchFailure > 2)){
-            securePossession(attackingTeam,defendingTeam,attackingTeam.m2,defendingTeam.m2);
+            securePossession(attackingTeam,defendingTeam,attackingTeam.m2);
         }
         //if N playoutfromtheback
 
@@ -110,15 +124,17 @@ public class MatchEngine {
     public void throughBallOutcome(Team attackingTeam, Team defendingTeam){
         double passFailure = Math.random()*10*2;
         double shotFailure = Math.random()*10*2;
-        Player playerInPossession = whichAttackerReceivesTheBall(attackingTeam;
+        Player playerInPossession = whichAttackerReceivesTheBall(attackingTeam);
+        int isDMinPosition = isPlayerinPositon(defendingTeam.dm);
 
-        if(attackingTeam.m1.getPassing() > passFailure){
-            if(((Forward) playerInPossession).getFinishing() > (shotFailure + defendingTeam.g.getSaving()/2)) {
+        if(attackingTeam.m1.getPassing() > (passFailure + defendingTeam.dm.getPositioning()/isDMinPosition)){ //workrate of the defensive player should influence this
+
+            if(((Forward) playerInPossession).getFinishing() > (shotFailure + defendingTeam.g.getSaving()/3)) {
                 System.out.println("Goal Scored! Scorer:" + playerInPossession.getFirstName() + " " + playerInPossession.getLastName());
                 updateScore(attackingTeam);
             }
             else{
-                securePossession(defendingTeam,attackingTeam,defendingTeam.m1,attackingTeam.m1); //should this be attacking team or defending team retaining possesion
+                securePossession(defendingTeam,attackingTeam,defendingTeam.m1); //should this be attacking team or defending team retaining possesion
             }
 
         }
@@ -134,14 +150,31 @@ public class MatchEngine {
 
     }
 
+    public int isPlayerinPositon(DefensiveMidfielder defensiveMidfielder){ //should probably write a function that calculates the results of 1000 games to tune this properly
+//        double num = Math.random();
+//        int randInt = (int)(num*2+1);
+//        if(randInt <1){
+//
+//        } else if () {
+//
+//        }
+//        else {
+//
+//        }
+
+        return 3;
+
+
+    }
+
     public void isPlayOutFromBackSuccesful(Team attackingTeam, Team defendingTeam, Player playerInPossession){ //need to add midfielder tackling
         double passFailure = Math.random()*10*2;
         double firstTouchFailure = Math.random()*10*2;
 
         if(((Defender) playerInPossession).getPassing() > passFailure && attackingTeam.m1.getFirstTouch() > firstTouchFailure){
-            securePossession(attackingTeam,defendingTeam,attackingTeam.m1,defendingTeam.m1);
+            securePossession(attackingTeam,defendingTeam,attackingTeam.m1);
         }
-        securePossession(defendingTeam,attackingTeam,defendingTeam.m1,attackingTeam.m1); //which midfielder should be returned here
+        securePossession(defendingTeam,attackingTeam,defendingTeam.m1); //which midfielder should be returned here
 
     }
 

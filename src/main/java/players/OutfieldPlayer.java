@@ -1,18 +1,18 @@
 package players;
 
 public class OutfieldPlayer extends Player {
-    private int dribbling;
+    private double dribbling;
 
-    public OutfieldPlayer(String firstName, String lastName, String position, int age, int ovr, int dribbling) {
-        super(firstName, lastName, position, age, ovr);
+    public OutfieldPlayer(String firstName, String lastName, String club, String nation, String position, int age, int ovr, double dribbling) {
+        super(firstName, lastName, club, nation, position, age, ovr);
         this.dribbling = dribbling;
     }
 
-    public int getDribbling() {
+    public double getDribbling() {
         return dribbling;
     }
 
-    public void setDribbling(int dribbling) {
+    public void setDribbling(double dribbling) {
         this.dribbling = dribbling;
     }
 }

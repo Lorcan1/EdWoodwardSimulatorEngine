@@ -5,11 +5,10 @@ public class Defender extends Player {
     double marking;
     double passing;
 
-    public  Defender(String firstName, String lastName, String club, String nation, String position, int age, int ovr, double tackling, double marking,double passing){
-        super(firstName, lastName, club, nation,position,age,ovr);
+    public Defender(String firstName, String lastName, String club, String nation, String position, int age, int ovr, double passing, double composure, double tackling, double marking) {
+        super(firstName, lastName, club, nation, position, age, ovr, passing, composure);
         this.tackling = tackling;
         this.marking = marking;
-        this.passing = passing;
     }
 
     public double getTackling() {
@@ -26,13 +25,5 @@ public class Defender extends Player {
 
     public void setMarking(double marking) {
         this.marking = marking;
-    }
-
-    public double getPassing() {
-        return passing;
-    }
-
-    public void setPassing(double passing) {
-        this.passing = passing;
     }
 }

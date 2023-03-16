@@ -6,16 +6,13 @@ public class Midfielder extends OutfieldPlayer {
     double tackling;
     Midfielder marker;
 
-    public Midfielder(String firstName, String lastName, String club, String nation, String position, int age, int ovr, double passing, double firstTouch, double tackling, double dribbling) {
-        super(firstName, lastName, club, nation, position, age, ovr, dribbling);
+    public Midfielder(String firstName, String lastName, String club, String nation, String position, int age, int ovr, double passing, double composure, double firstTouch, double tackling, double dribbling) {
+        super(firstName, lastName, club, nation, position, age, ovr, passing, composure, dribbling);
         this.passing = passing;
         this.firstTouch = firstTouch;
         this.tackling = tackling;
     }
 
-    public double getPassing() {
-        return passing;
-    }
 
     public Midfielder getMarker() {
         return marker;
@@ -23,10 +20,6 @@ public class Midfielder extends OutfieldPlayer {
 
     public void setMarker(Midfielder marker) {
         this.marker = marker;
-    }
-
-    public void setPassing(double passing) {
-        this.passing = passing;
     }
 
     public double getFirstTouch() {

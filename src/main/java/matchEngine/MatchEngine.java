@@ -44,12 +44,12 @@ public class MatchEngine {
         playBall(homeTeam,awayTeam);
         playBall(awayTeam,homeTeam);
 
-//        try {
-//            appendScoretoFile(homeScore,awayScore);
-//
-//        } catch (IOException e) {
-//            throw new RuntimeException(e);
-//        }
+        try {
+            appendScoretoFile(homeScore,awayScore);
+
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
 
 
         System.out.println("Final Score: " + homeScore + "-" + awayScore);
@@ -59,7 +59,7 @@ public class MatchEngine {
 
             FileWriter fw = new FileWriter("Final Score", true);
             BufferedWriter bw = new BufferedWriter(fw);
-            bw.write("Final Score: " + homeScore + "-" + awayScore);
+            bw.write("Final Score: " + homeScore + "," + awayScore);
             bw.newLine();
             bw.close();
     }
@@ -86,11 +86,11 @@ public class MatchEngine {
 
         Midfielder marker = playerInPosession.getMarker();
 
-        if(playerInPosession.getDribbling() < marker.getTackling() && marker.getTackling() < luckyBounce){ //and player is in same area
+        if(playerInPosession.getDribbling() < marker.getTackling() && marker.getTackling() < luckyBounce){
             securePossession(defendingTeam,attackingTeam,marker);
         }
-        else if ((firstTouchFailure > 10)){  //get vision is higher than pass.difficulty?
-        throughBallOutcome(attackingTeam,defendingTeam);}     //how do we decide what attacker should get the ball, assign every player an overall and weight it off that?
+        else if ((firstTouchFailure > 10)){  //get vision is higher than pass.difficulty + some movement check on the attacker = off the ball which can be influenced by high pace
+        throughBallOutcome(attackingTeam,defendingTeam,playerInPosession);}
         //if N can they pass to a teamate
             //secure Possesion with different player
         else if ((firstTouchFailure > 2)){
@@ -121,33 +121,38 @@ public class MatchEngine {
             }
         }
     }
-    public void throughBallOutcome(Team attackingTeam, Team defendingTeam){
+    public void throughBallOutcome(Team attackingTeam, Team defendingTeam, Player playerInPossession){
         double passFailure = Math.random()*10*2;
         double shotFailure = Math.random()*10*2;
-        Player playerInPossession = whichAttackerReceivesTheBall(attackingTeam);
+        double composureCheck = Math.random()*10*2;
+        Forward forwardInPossession = whichAttackerReceivesTheBall(attackingTeam);
         int isDMinPosition = isPlayerinPositon(defendingTeam.dm);
 
-        if(attackingTeam.m1.getPassing() > (passFailure + defendingTeam.dm.getPositioning()/isDMinPosition)){ //workrate of the defensive player should influence this
+        if(playerInPossession.getPassing() > (passFailure + defendingTeam.dm.getPositioning()/isDMinPosition)){ //workrate of the defensive player should influence this
 
-            if(((Forward) playerInPossession).getFinishing() > (shotFailure + defendingTeam.g.getSaving()/3)) {
-                System.out.println("Goal Scored! Scorer:" + playerInPossession.getFirstName() + " " + playerInPossession.getLastName());
+            if(( forwardInPossession.getFinishing() > (shotFailure + defendingTeam.g.getSaving()/3)) && (forwardInPossession.getComposure() > composureCheck)) { // should be a defender marking check also a composure check on both keeper and striker
+                System.out.println("Goal Scored! Scorer:" + forwardInPossession.getFirstName() + " " + forwardInPossession.getLastName() + " Assist: " + playerInPossession.getFirstName() + " " + playerInPossession.getLastName());
                 updateScore(attackingTeam);
             }
+            else if (playerInPossession instanceof Midfielder) { //forward doesnt score but ball breaks to attacking team, should be a random chance it goes to defending team added
+                // calculate which forward picks up the loose ball based on positioning
+                Forward forwardNotInPossession = whoPicksUpLooseBall(attackingTeam);
+                double num = Math.random();
+                int randInt = (int) (num * 100 + 1);//random chance that the attacker gets an assist.
+                if (randInt > 50) {
+                    throughBallOutcome(attackingTeam, defendingTeam, forwardInPossession);//decides whether ball breaks to attacking team forwards or midfield, should add opponents defence/midfield too with an emphasis on defensive midfielders
+                } else {
+                    securePossession(attackingTeam, defendingTeam, (Midfielder) playerInPossession); //should this be attacking team or defending team retaining possesion, probably defending team?
+                }
+            }
             else{
-                securePossession(defendingTeam,attackingTeam,defendingTeam.m1); //should this be attacking team or defending team retaining possesion
+                isPlayOutFromBackSuccesful(defendingTeam,attackingTeam,defendingTeam.d1);
             }
 
         }
         else{
-            if(playerInPossession == attackingTeam.f1){
-                playerInPossession = defendingTeam.d1;
-            }
-            else {
-                playerInPossession = defendingTeam.d2;
-            }
-            isPlayOutFromBackSuccesful(defendingTeam,attackingTeam,playerInPossession); //same as above
+            isPlayOutFromBackSuccesful(defendingTeam,attackingTeam,defendingTeam.d1); // should be the marker with maybe a marking and tackling check
         }
-
     }
 
     public int isPlayerinPositon(DefensiveMidfielder defensiveMidfielder){ //should probably write a function that calculates the results of 1000 games to tune this properly
@@ -165,6 +170,20 @@ public class MatchEngine {
         return 3;
 
 
+    }
+
+    public Forward whoPicksUpLooseBall(Team attackingTeam){ //could probably do a loop with an array of the attacking players on both teams
+        double num = Math.random();
+        int randInt = (int)(num*100+1);
+        double positoningCheck = Math.random()*10*2;
+
+        if((randInt < 33) && ((attackingTeam.f1.getPositioning()/2) > positoningCheck)){
+            return attackingTeam.f1;
+        } else if ((randInt>33 && randInt < 66)  && ((attackingTeam.f2.getPositioning()/2) > positoningCheck)) {
+            return attackingTeam.f2;
+        }else{
+            return attackingTeam.f1; //should be third forward
+        }
     }
 
     public void isPlayOutFromBackSuccesful(Team attackingTeam, Team defendingTeam, Player playerInPossession){ //need to add midfielder tackling

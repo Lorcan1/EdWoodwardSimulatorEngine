@@ -11,8 +11,8 @@ import java.util.Random;
 
 
 public class MatchEngine {
-    public Team homeTeam;
-    public Team awayTeam;
+    public  Team homeTeam;
+    public  Team awayTeam;
 
     public boolean homeTeamHasPossession = true;
 
@@ -93,7 +93,7 @@ public class MatchEngine {
         throughBallOutcome(attackingTeam,defendingTeam,playerInPosession);}
         //if N can they pass to a teamate
             //secure Possesion with different player
-        else if ((firstTouchFailure > 2)){
+        else{
             securePossession(attackingTeam,defendingTeam,attackingTeam.m2);
         }
         //if N playoutfromtheback
@@ -123,14 +123,16 @@ public class MatchEngine {
     }
     public void throughBallOutcome(Team attackingTeam, Team defendingTeam, Player playerInPossession){
         double passFailure = Math.random()*10*2;
+        double counterAttackChance = Math.random()*10*2;
         double shotFailure = Math.random()*10*2;
         double composureCheck = Math.random()*10*2;
         Forward forwardInPossession = whichAttackerReceivesTheBall(attackingTeam);
-        int isDMinPosition = isPlayerinPositon(defendingTeam.dm);
+        double dmPositioningDebuff = positioningDebuffCalc(defendingTeam.dm);
+        double gkSavingDebuff = positioningDebuffCalc(defendingTeam.g);
 
-        if(playerInPossession.getPassing() > (passFailure + defendingTeam.dm.getPositioning()/isDMinPosition)){ //workrate of the defensive player should influence this
+        if(playerInPossession.getPassing() > (passFailure + defendingTeam.dm.getPositioning()/dmPositioningDebuff)){ //workrate of the defensive player should influence this
 
-            if(( forwardInPossession.getFinishing() > (shotFailure + defendingTeam.g.getSaving()/3)) && (forwardInPossession.getComposure() > composureCheck)) { // should be a defender marking check also a composure check on both keeper and striker
+            if(( forwardInPossession.getFinishing() > (shotFailure + defendingTeam.g.getSaving()/gkSavingDebuff)) && (forwardInPossession.getComposure() > composureCheck)) { // should be a defender marking check also a composure check on both keeper and striker
                 System.out.println("Goal Scored! Scorer:" + forwardInPossession.getFirstName() + " " + forwardInPossession.getLastName() + " Assist: " + playerInPossession.getFirstName() + " " + playerInPossession.getLastName());
                 updateScore(attackingTeam);
             }
@@ -146,16 +148,21 @@ public class MatchEngine {
                 }
             }
             else{
-                isPlayOutFromBackSuccesful(defendingTeam,attackingTeam,defendingTeam.d1);
+                if(counterAttackChance > 7){
+                    isPlayOutFromBackSuccesful(defendingTeam,attackingTeam,defendingTeam.d1);
+                }
+
             }
 
         }
         else{
-            isPlayOutFromBackSuccesful(defendingTeam,attackingTeam,defendingTeam.d1); // should be the marker with maybe a marking and tackling check
+            if(counterAttackChance> 7) {
+                isPlayOutFromBackSuccesful(defendingTeam, attackingTeam, defendingTeam.d1);
+            }// should be the marker with maybe a marking and tackling check
         }
     }
 
-    public int isPlayerinPositon(DefensiveMidfielder defensiveMidfielder){ //should probably write a function that calculates the results of 1000 games to tune this properly
+    public double positioningDebuffCalc(Player player){ //should take into account posititioning and mental stats - higher should return closer to 0, lower to three
 //        double num = Math.random();
 //        int randInt = (int)(num*2+1);
 //        if(randInt <1){
@@ -166,8 +173,25 @@ public class MatchEngine {
 //        else {
 //
 //        }
+//        return 3;
 
-        return 3;
+        int goalsConceded;
+        if(player.getClub().equals(homeTeam.nameAbrev)){
+            goalsConceded = awayScore;
+        } else{
+            goalsConceded = homeScore;
+        }
+        double positionDebuff = 3; //lower is better - 1 is best, higher is worse as its being used to divide the keepers saving
+        if(goalsConceded == 4){
+            return 2;
+        } else if (goalsConceded ==  5) {
+            return 1;
+        }
+        else if (goalsConceded > 5){
+            return 0.5;
+        }else{
+            return 3;
+        }
 
 
     }

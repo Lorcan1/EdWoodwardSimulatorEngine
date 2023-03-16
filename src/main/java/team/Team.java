@@ -16,6 +16,7 @@ public class Team {
 
     public Team(String teamName, String nameAbrev, Goalkeeper g, Defender d1, Defender d2, DefensiveMidfielder dm, Midfielder m1, Midfielder m2, Forward f1, Forward f2) {
         this.teamName = teamName;
+        this.nameAbrev = nameAbrev;
         this.g = g;
         this.d1 = d1;
         this.d2 = d2;

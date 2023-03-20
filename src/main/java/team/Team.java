@@ -8,18 +8,22 @@ public class Team {
     public Goalkeeper g;
     public Defender d1;
     public Defender d2;
+    public Fullback dl;
+    public Fullback dr;
     public DefensiveMidfielder dm;
     public Midfielder m1;
     public Midfielder m2;
     public Forward f1;
     public Forward f2;
 
-    public Team(String teamName, String nameAbrev, Goalkeeper g, Defender d1, Defender d2, DefensiveMidfielder dm, Midfielder m1, Midfielder m2, Forward f1, Forward f2) {
+    public Team(String teamName, String nameAbrev, Goalkeeper g, Defender d1, Defender d2, Fullback dl, Fullback dr, DefensiveMidfielder dm, Midfielder m1, Midfielder m2, Forward f1, Forward f2) {
         this.teamName = teamName;
         this.nameAbrev = nameAbrev;
         this.g = g;
         this.d1 = d1;
         this.d2 = d2;
+        this.dl = dl;
+        this.dr = dr;
         this.dm = dm;
         this.m1 = m1;
         this.m2 = m2;

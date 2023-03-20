@@ -1,25 +1,15 @@
 package players;
 
-public class Forward extends Player {
-    double dribbling;
+public class Forward extends OutfieldPlayer {
     double firstTouch;
     double finishing;
     double positioning;
 
-    public Forward(String firstName, String lastName, String club, String nation, String position, int age, int ovr, double passing, double composure, double positioning, double dribbling, double firstTouch, double finishing) {
-        super(firstName, lastName, club, nation, position, age, ovr, passing, composure);
+    public Forward(String firstName, String lastName, String club, String nation, String position, int age, int ovr, double passing, double composure, double crossing, double positioning, double dribbling, double firstTouch, double finishing) {
+        super(firstName, lastName, club, nation, position, age, ovr, passing, composure,dribbling,crossing);
         this.firstTouch = firstTouch;
         this.finishing = finishing;
-        this.dribbling = dribbling;
         this.positioning = positioning;
-    }
-
-    public double getDribbling() {
-        return dribbling;
-    }
-
-    public void setDribbling(double dribbling) {
-        this.dribbling = dribbling;
     }
 
     public double getFirstTouch() {

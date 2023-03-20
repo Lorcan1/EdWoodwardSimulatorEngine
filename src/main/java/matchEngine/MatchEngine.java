@@ -32,8 +32,21 @@ public class MatchEngine {
         midfielders[2] = defendingTeam.m1;
         midfielders[3] = defendingTeam.m2;
 
+        Fullback[] fullbacks = new Fullback[4];
+        fullbacks[0] = attackingTeam.dl;
+        fullbacks[1] = attackingTeam.dr;
+        fullbacks[2] = defendingTeam.dr;
+        fullbacks[3] = defendingTeam.dl;
+
+        Forward[] wingers = new Forward[4];
+        wingers[0] = attackingTeam.f2;
+        wingers[1] = defendingTeam.f2;
+
+
+
         TeamSetup teamSetup = new TeamSetup();
-        teamSetup.addMarkers(midfielders);
+        teamSetup.addMarkers(midfielders,fullbacks,wingers);
+
 
     }
 
@@ -100,7 +113,7 @@ public class MatchEngine {
 
     }
 
-    public Forward whichAttackerReceivesTheBall(Team attackingTeam){
+    public Forward whichAttackerReceivesTheBall(Team attackingTeam){ //this should be changed to reflect what runs an attacker is making
         int diffBetweenForwardsOveralls = Math.abs(attackingTeam.f1.getOvr() - attackingTeam.f2.getOvr());
         double num = Math.random();
         int randInt = (int)(num*100+1);
@@ -132,7 +145,7 @@ public class MatchEngine {
 
         if(playerInPossession.getPassing() > (passFailure + defendingTeam.dm.getPositioning()/dmPositioningDebuff)){ //workrate of the defensive player should influence this
 
-            if(( forwardInPossession.getFinishing() > (shotFailure + defendingTeam.g.getSaving()/gkSavingDebuff)) && (forwardInPossession.getComposure() > composureCheck)) { // should be a defender marking check also a composure check on both keeper and striker
+            if((forwardInPossession.getFinishing() > (shotFailure + defendingTeam.g.getSaving()/gkSavingDebuff)) && (forwardInPossession.getComposure() > composureCheck)) { // should be a defender marking check also a composure check on both keeper and striker
                 System.out.println("Goal Scored! Scorer:" + forwardInPossession.getFirstName() + " " + forwardInPossession.getLastName() + " Assist: " + playerInPossession.getFirstName() + " " + playerInPossession.getLastName());
                 updateScore(attackingTeam);
             }
@@ -161,6 +174,62 @@ public class MatchEngine {
             }// should be the marker with maybe a marking and tackling check
         }
     }
+
+
+//    public void crossOutcome(Team attackingTeam, Team defendingTeam, OutfieldPlayer playerInPossession){
+//        /*
+//        first stage is to determine if the player (fullback, winger, midfielder evades the tackle of the opposition fullback
+//        chancetoblock random + fullback positioning, if tackling is high then chance to win the ball back? counter-attack chance
+//
+//            For the cross itself
+//            Crossing and maybe a mental stat (vision?)
+//
+//                    Defender Clearance = Defender marking + positioning (headiing)
+//
+//                            Striker scoring = similar to function above
+//
+//                            Need to add -
+//                            fullbacks - check
+//                            markers to wingers and fullbacks
+//                            everyonre  attribute - positioning
+//                            outfield attribute- crossing
+//                            whichDefenderClearstheBall function
+//                            everyone attribute - heading
+//                            which attacker goes to the wide channels to allow forwards to cross
+//
+//         */
+//        Boolean goalScored = false;
+//        Player marker;
+//        double fullBackPositioningDebuff = positioningDebuffCalc(marker);
+//        double passFailure = Math.random()*10*2;
+//        double shotBlocked = Math.random()*10*2;
+//        if(shotBlocked > (5 + (marker.getPositing/fullBackPositioningDebuff))){ //higher the positioning, higher the right side of the expression, statement will fail more
+//            if(playerInPossession.getCrossing() > passFailure){
+//                Defender defender = whichDefenderClearsTheBall(defendingTeam);
+//                double clearanceFailure = Math.random()*10*2;
+//                double defenderPositioningDebuff = positioningDebuffCalc(defender);
+//                if(clearanceFailure > defender.getHeading/positioningDebuffCalc()){
+//                    Forward forwardInPossession = whichAttackerReceivesTheBall(attackingTeam);
+//                    double shotFailure = Math.random()*10*2;
+//                    double gkSavingDebuff = positioningDebuffCalc(defendingTeam.g);
+//                    double composureCheck = Math.random()*10*2;
+//                    if((forwardInPossession.getFinishing() > (shotFailure + defendingTeam.g.getSaving()/gkSavingDebuff)) && (forwardInPossession.getComposure() > composureCheck)){
+//                        System.out.println("Goal Scored! Scorer:" + forwardInPossession.getFirstName() + " " + forwardInPossession.getLastName() + " Assist: " + playerInPossession.getFirstName() + " " + playerInPossession.getLastName());
+//                        updateScore(attackingTeam);
+//                        goalScored = true;
+//                    }
+//
+//                }
+//            }
+//
+//        }
+//        if(!goalScored){
+//            /*
+//            calculate who gets posession/if there is a chance for a counter attack
+//             */
+//        }
+//
+//    }
 
     public double positioningDebuffCalc(Player player){ //should take into account posititioning and mental stats - higher should return closer to 0, lower to three
 //        double num = Math.random();

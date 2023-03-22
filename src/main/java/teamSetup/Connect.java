@@ -1,6 +1,7 @@
 package teamSetup;
 
 import players.OutfieldP;
+import team.TeamSetup;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -50,8 +51,10 @@ public class Connect {
     public static void main(String[] args) throws SQLException {
         //connect();
         CrudPersister crudPersister = new CrudPersister("jdbc:sqlite:data/EdWoodwardDb.db");
-        List<OutfieldP> players = crudPersister.addPlayerstoList("select * from players");
-        System.out.println(players.get(0).getFirstName());
+        List<OutfieldP> players = crudPersister.returnPlayersFromClub("MCFC");
+        //System.out.println(players.get(0).getFirstName());
+        TeamSetup teamSetup = new TeamSetup();
+        List<OutfieldP> x = teamSetup.assignPlayerstoPositions(players);
 
     }
 }

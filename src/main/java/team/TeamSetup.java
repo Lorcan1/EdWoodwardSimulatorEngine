@@ -2,6 +2,11 @@ package team;
 
 import players.*;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
+
 public class TeamSetup {
 
     //Manchester City
@@ -31,6 +36,25 @@ public class TeamSetup {
     private Forward thF2 = new Forward("Heung-Min", "Son", "Spurs", "South Korea","AML",28, 88, 12,17, 13, 18,15,13,18);
 
     public Team tottenhamHotspurs = new Team("Tottenham","Spurs",thG,thD1,thD2, thDl, thDr, thDM, thM1,thM2,thF1,thF2);
+
+
+    public List<OutfieldP>  assignPlayerstoPositions( List<OutfieldP> players){
+
+       // List<String> positions = new ArrayList<String>();
+        List<String> positions = Arrays.asList("DC");
+
+//        players.stream().filter(o -> o.getPosition().equals("DC")).forEach(
+//                o -> {
+//                    System.out.println("w" + o.getFirstName());
+//                }
+//
+
+        List<OutfieldP> filteredPlayers = players.stream().filter(player-> positions.stream().anyMatch(
+                position -> position.matches(player.getPosition())
+        )).collect(Collectors.toList());
+
+        return filteredPlayers;
+    }
 
     public Midfielder[] addMarkers(Midfielder midfielders[], Fullback fullbacks[],Forward wingers[]){
         midfielders[0].setMarker(midfielders[2]);

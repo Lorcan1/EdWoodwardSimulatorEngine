@@ -2,9 +2,8 @@ package team;
 
 import players.*;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 public class TeamSetup {
@@ -38,20 +37,24 @@ public class TeamSetup {
     public Team tottenhamHotspurs = new Team("Tottenham","Spurs",thG,thD1,thD2, thDl, thDr, thDM, thM1,thM2,thF1,thF2);
 
 
-    public List<OutfieldP>  assignPlayerstoPositions( List<OutfieldP> players){
+    public List<OutfieldP> sortFirstEleven(List<OutfieldP> players){
+        /*
+        will have to be changed with subs
+        will have to be changed when positions are multiple - list of strings
+         */
+        List<String> positions = Arrays.asList("DC", "DC,","DM");
 
-       // List<String> positions = new ArrayList<String>();
-        List<String> positions = Arrays.asList("DC");
+        List<OutfieldP> filteredPlayers = new ArrayList<>();
+        for(String position:positions){
+            for(OutfieldP player:players){
+                if(position.matches(player.getPosition())){
+                    filteredPlayers.add(player);
+                    players.remove(player);
+                    break;
 
-//        players.stream().filter(o -> o.getPosition().equals("DC")).forEach(
-//                o -> {
-//                    System.out.println("w" + o.getFirstName());
-//                }
-//
-
-        List<OutfieldP> filteredPlayers = players.stream().filter(player-> positions.stream().anyMatch(
-                position -> position.matches(player.getPosition())
-        )).collect(Collectors.toList());
+                }
+            }
+        }
 
         return filteredPlayers;
     }

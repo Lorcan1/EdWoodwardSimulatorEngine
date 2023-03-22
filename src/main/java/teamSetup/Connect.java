@@ -52,9 +52,8 @@ public class Connect {
         //connect();
         CrudPersister crudPersister = new CrudPersister("jdbc:sqlite:data/EdWoodwardDb.db");
         List<OutfieldP> players = crudPersister.returnPlayersFromClub("MCFC");
-        //System.out.println(players.get(0).getFirstName());
         TeamSetup teamSetup = new TeamSetup();
-        List<OutfieldP> x = teamSetup.assignPlayerstoPositions(players);
+        List<OutfieldP> filteredPlayers = teamSetup.sortFirstEleven(players);
 
     }
 }

@@ -1,6 +1,7 @@
 package players;
 
 public class Player {
+    private int id;
     private String firstName;
     private String lastName;
     private String club;
@@ -8,10 +9,11 @@ public class Player {
     private String position;
     private int age;
     private int ovr;
-    private double passing;
-    private double composure;
+//    private double passing;
+//    private double composure;
 
-    public Player(String firstName, String lastName, String club, String nation, String position, int age, int ovr, double passing, double composure) {
+    public Player(int id, String firstName, String lastName, String club, String nation, String position, int age, int ovr) {
+        this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
         this.club = club;
@@ -19,8 +21,8 @@ public class Player {
         this.position = position;
         this.age = age;
         this.ovr = ovr;
-        this.passing = passing;
-        this.composure = composure;
+//        this.passing = passing;
+//        this.composure = composure;
     }
 
     public String getFirstName() {
@@ -79,22 +81,24 @@ public class Player {
         this.ovr = ovr;
     }
 
-    public double getPassing() {
-        return passing;
-    }
-
-    public void setPassing(int passing) {
-        this.passing = passing;
-    }
-
-    public double getComposure() {
-        return composure;
-    }
-
-    public void setComposure(int composure) {
-        this.composure = composure;
-    }
 }
+
+//    public double getPassing() {
+//        return passing;
+//    }
+//
+//    public void setPassing(int passing) {
+//        this.passing = passing;
+//    }
+//
+//    public double getComposure() {
+//        return composure;
+//    }
+//
+//    public void setComposure(int composure) {
+//        this.composure = composure;
+//    }
+//}
 
 
 

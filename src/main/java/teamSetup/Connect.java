@@ -1,6 +1,6 @@
 package teamSetup;
 
-import players.OutfieldP;
+import players.Player;
 import team.TeamSetup;
 
 import java.sql.*;
@@ -51,9 +51,8 @@ public class Connect {
     public static void main(String[] args) throws SQLException {
         //connect();
         CrudPersister crudPersister = new CrudPersister("jdbc:sqlite:data/EdWoodwardDb.db");
-        List<OutfieldP> players = crudPersister.returnPlayersFromClub("MCFC");
+        List<Player> players = crudPersister.returnOutfieldPlayersFromClub("MCFC");
         TeamSetup teamSetup = new TeamSetup();
-        List<OutfieldP> filteredPlayers = teamSetup.sortFirstEleven(players);
-
+        List<Player> filteredPlayers = teamSetup.sortFirstEleven(players);
     }
 }

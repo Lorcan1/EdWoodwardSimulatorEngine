@@ -1,4 +1,4 @@
-package pitch;
+package com.example.pitch;
 
 import java.util.ArrayList;
 

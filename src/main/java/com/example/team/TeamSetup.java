@@ -1,8 +1,7 @@
-package team;
+package com.example.team;
 
-import players.*;
+//import players.*;
 
-import java.util.*;
 
 public class TeamSetup {
 
@@ -35,27 +34,27 @@ public class TeamSetup {
 //    public Team tottenhamHotspurs = new Team("Tottenham","Spurs",thG,thD1,thD2, thDl, thDr, thDM, thM1,thM2,thF1,thF2);
 
 
-    public List<Player> sortFirstEleven(List<Player> players){
-        /*
-        will have to be changed with subs
-        will have to be changed when positions are multiple - list of strings
-         */
-        List<String> positions = Arrays.asList("GK","DC","DC","DM");
+//    public List<Player> sortFirstEleven(List<Player> players){
+//        /*
+//        will have to be changed with subs
+//        will have to be changed when positions are multiple - list of strings
+//         */
+//        List<String> positions = Arrays.asList("GK","DC","DC","DM");
+//
+//        List<Player> filteredPlayers = new ArrayList<>();
+//        for(String position:positions){
+//            for(Player player:players){
+//                if(position.matches(player.getPosition())){
+//                    filteredPlayers.add(player);
+//                    players.remove(player);
+//                    break;
+//
+//                }
+//            }
+//        }
 
-        List<Player> filteredPlayers = new ArrayList<>();
-        for(String position:positions){
-            for(Player player:players){
-                if(position.matches(player.getPosition())){
-                    filteredPlayers.add(player);
-                    players.remove(player);
-                    break;
-
-                }
-            }
-        }
-
-        return filteredPlayers;
-    }
+//        return filteredPlayers;
+//    }
 
 //    public Midfielder[] addMarkers(Midfielder midfielders[], Fullback fullbacks[],Forward wingers[]){
 //        midfielders[0].setMarker(midfielders[2]);

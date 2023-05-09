@@ -45,6 +45,10 @@ public class Main {
             }
             log.info("");
 
+            players = repository.findAllPlayersClub("Man City");
+            int d = 10;
+
+
 //            // fetch an individual customer by ID
 //            Customer customer = repository.findById(1L);
 //            log.info("Customer found with findById(1L):");

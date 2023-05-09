@@ -39,19 +39,19 @@ public class Player implements Serializable {
     @Column(name="Weight")
     private int weight;
 
-    @Column(name="IntCaps")
+    @Column(name="int_caps")
     private Integer intCaps;
 
-    @Column(name="IntGoals")
+    @Column(name="int_goals")
     private Integer intGoals;
 
-    @Column(name="SellValue")
+    @Column(name="sell_value")
     private String sellValue;
 
     @Column(name="Wages")
     private String wages;
 
-    @Column(name="ContractEnd")
+    @Column(name="contract_end")
     private String contractEnd;
 
     @Column(name="Overall")

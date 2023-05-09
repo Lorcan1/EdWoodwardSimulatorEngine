@@ -1,6 +1,8 @@
 package com.example;
 
+import com.example.model.OutfieldPlayer;
 import com.example.model.Player;
+import com.example.repository.OutfieldPlayerRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,23 +32,40 @@ public class Main {
     }
 
     @Bean
-    public CommandLineRunner demo(PlayerRepository repository) {
+    public CommandLineRunner demo(OutfieldPlayerRepository repository) {
         return (args) -> {
             // save a few customers
 
 
+//            // fetch all customers
+//            log.info("Customers found with findAll():");
+//            log.info("-------------------------------");
+//            List<Player> players = new ArrayList<Player>();
+//            players = (List<Player>) repository.findAll();
+//            for (Player player : repository.findAll()) {
+//                log.info(player.toString());
+//            }
+//            log.info("");
+//
+//            players = repository.findAllPlayersClub("Man City");
+//            int d = 10;
+
             // fetch all customers
             log.info("Customers found with findAll():");
             log.info("-------------------------------");
-            List<Player> players = new ArrayList<Player>();
-            players = (List<Player>) repository.findAll();
+            List<OutfieldPlayer> players = new ArrayList<OutfieldPlayer>();
+            players = (List<OutfieldPlayer>) repository.findAll();
             for (Player player : repository.findAll()) {
                 log.info(player.toString());
             }
             log.info("");
-
+//
             players = repository.findAllPlayersClub("Man City");
             int d = 10;
+
+            for(OutfieldPlayer outfieldPlayer :  players){
+                outfieldPlayer.kick();
+            }
 
 
 //            // fetch an individual customer by ID

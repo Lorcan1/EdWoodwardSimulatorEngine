@@ -1,3 +1,23 @@
+package com.example.model;
+
+import com.example.model.Player;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Table;
+
+@Entity
+@Table(name="outfield_players")
+public class OutfieldPlayer extends Player {
+
+    @Column(name="heading")
+    private String heading;
+
+    public void kick(){
+        System.out.println("kick");
+    }
+
+}
+
 //package model;
 //
 //public class OutfieldPlayer extends Player {

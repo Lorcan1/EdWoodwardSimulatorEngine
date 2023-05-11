@@ -1,6 +1,8 @@
 package com.example.model;
 
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.io.Serializable;
 
@@ -142,6 +144,8 @@ import java.io.Serializable;
 //    private int strength;
 //}
 
+@Getter
+@Setter
 @MappedSuperclass
 public abstract class Player {
 

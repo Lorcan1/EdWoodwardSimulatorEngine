@@ -27,64 +27,66 @@ import java.util.List;
 public class Main {
 
     private static final Logger log = LoggerFactory.getLogger(Main.class);
+
     public static void main(String[] args) {
         SpringApplication.run(Main.class);
     }
+}
 
-    @Bean
-    public CommandLineRunner demo(OutfieldPlayerRepository repository) {
-        return (args) -> {
-            // save a few customers
-
-
+//    @Bean
+//    public CommandLineRunner demo(OutfieldPlayerRepository repository) {
+//        return (args) -> {
+//            // save a few customers
+//
+//
+////            // fetch all customers
+////            log.info("Customers found with findAll():");
+////            log.info("-------------------------------");
+////            List<Player> players = new ArrayList<Player>();
+////            players = (List<Player>) repository.findAll();
+////            for (Player player : repository.findAll()) {
+////                log.info(player.toString());
+////            }
+////            log.info("");
+////
+////            players = repository.findAllPlayersClub("Man City");
+////            int d = 10;
+//
 //            // fetch all customers
 //            log.info("Customers found with findAll():");
 //            log.info("-------------------------------");
-//            List<Player> players = new ArrayList<Player>();
-//            players = (List<Player>) repository.findAll();
+//            List<OutfieldPlayer> players = new ArrayList<OutfieldPlayer>();
+//            players = (List<OutfieldPlayer>) repository.findAll();
 //            for (Player player : repository.findAll()) {
 //                log.info(player.toString());
 //            }
 //            log.info("");
-//
+////
 //            players = repository.findAllPlayersClub("Man City");
 //            int d = 10;
-
-            // fetch all customers
-            log.info("Customers found with findAll():");
-            log.info("-------------------------------");
-            List<OutfieldPlayer> players = new ArrayList<OutfieldPlayer>();
-            players = (List<OutfieldPlayer>) repository.findAll();
-            for (Player player : repository.findAll()) {
-                log.info(player.toString());
-            }
-            log.info("");
 //
-            players = repository.findAllPlayersClub("Man City");
-            int d = 10;
-
-            for(OutfieldPlayer outfieldPlayer :  players){
-                outfieldPlayer.kick();
-            }
-
-
-//            // fetch an individual customer by ID
-//            Customer customer = repository.findById(1L);
-//            log.info("Customer found with findById(1L):");
-//            log.info("--------------------------------");
-//            log.info(customer.toString());
-//            log.info("");
+//            for(OutfieldPlayer outfieldPlayer :  players){
+//                outfieldPlayer.kick();
+//            }
 //
-//            // fetch customers by last name
-//            log.info("Customer found with findByLastName('Bauer'):");
-//            log.info("--------------------------------------------");
-//            repository.findByLastName("Bauer").forEach(bauer -> {
-//                log.info(bauer.toString());
-//            });
-//            // for (Customer bauer : repository.findByLastName("Bauer")) {
-//            //  log.info(bauer.toString());
-//            // }
-//            log.info("");
-        };
-    }
-}
+//
+////            // fetch an individual customer by ID
+////            Customer customer = repository.findById(1L);
+////            log.info("Customer found with findById(1L):");
+////            log.info("--------------------------------");
+////            log.info(customer.toString());
+////            log.info("");
+////
+////            // fetch customers by last name
+////            log.info("Customer found with findByLastName('Bauer'):");
+////            log.info("--------------------------------------------");
+////            repository.findByLastName("Bauer").forEach(bauer -> {
+////                log.info(bauer.toString());
+////            });
+////            // for (Customer bauer : repository.findByLastName("Bauer")) {
+////            //  log.info(bauer.toString());
+////            // }
+////            log.info("");
+//        };
+//    }
+//}

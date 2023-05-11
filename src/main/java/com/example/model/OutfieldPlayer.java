@@ -4,7 +4,11 @@ import com.example.model.Player;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
+import lombok.Getter;
+import lombok.Setter;
 
+@Getter
+@Setter
 @Entity
 @Table(name="outfield_players")
 public class OutfieldPlayer extends Player {

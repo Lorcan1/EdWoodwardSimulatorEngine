@@ -201,6 +201,9 @@ public abstract class Player {
     @Column(name="Potential")
     private int potential;
 
+    @Column(name="image_url")
+    private String imageUrl;
+
     @Column(name="first-touch")
     private int firstTouch;
 

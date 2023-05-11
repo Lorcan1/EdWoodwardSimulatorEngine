@@ -13,9 +13,32 @@ import lombok.Setter;
 @Table(name="outfield_players")
 public class OutfieldPlayer extends Player {
 
-    @Column(name="heading")
-    private String heading;
+    @Column(name="corners")
+    private int corners;
 
+    @Column(name="crossing")
+    private int crossing;
+
+    @Column(name="dribbling")
+    private int dribbling;
+
+    @Column(name="finishing")
+    private int finishing;
+
+    @Column(name="marking")
+    private int marking;
+
+    @Column(name="tackling")
+    private int tackling;
+
+    @Column(name="heading")
+    private int heading;
+
+    @Column(name="long-shots")
+    private int longShots;
+
+    @Column(name="long-throws")
+    private int longThrows;
     public void kick(){
         System.out.println("kick");
     }

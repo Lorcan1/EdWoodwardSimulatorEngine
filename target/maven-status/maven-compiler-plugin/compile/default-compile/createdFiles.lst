@@ -1,0 +1,5 @@
+com\example\Main.class
+com\example\pitch\Pitch.class
+com\example\model\Player.class
+com\example\repository\PlayerRepository.class
+com\example\team\TeamSetup.class

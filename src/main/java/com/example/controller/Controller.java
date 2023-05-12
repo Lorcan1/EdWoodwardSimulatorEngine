@@ -59,6 +59,31 @@ public class Controller {
         return "Not found";
     }
 
+    @GetMapping("/get-player-id") //http://localhost:8080/get-heading?name=Laporte
+    public String getPlayerId(@RequestParam(value = "id", defaultValue = "29179241") int id) throws JsonProcessingException {
+        List<OutfieldPlayer> outfieldPlayers =  (List<OutfieldPlayer>) outfieldPlayerRepository.findAll() ;
+        for(OutfieldPlayer player: outfieldPlayers){
+            if(player.getId() == id) {
+                ObjectMapper objectMapper = new ObjectMapper();
+                return objectMapper.writeValueAsString(player);
+            }
+        }
+        return "Not found";
+    }
+
+    @GetMapping("/get-walker") //http://localhost:8080/get-heading?name=Laporte
+    public String getPlayer() throws JsonProcessingException {
+        List<OutfieldPlayer> outfieldPlayers =  (List<OutfieldPlayer>) outfieldPlayerRepository.findAll() ;
+        Map<String, OutfieldPlayer> map = new HashMap<String, OutfieldPlayer>();
+        ObjectMapper objectMapper = new ObjectMapper();
+        for(OutfieldPlayer player: outfieldPlayers){
+            if(player.getLastName().equals("Walker")){
+                return objectMapper.writeValueAsString(player);
+            }
+        }
+        return "Not found";
+    }
+
     @GetMapping("/get-players") //http://localhost:8080/get-heading?name=Laporte
     public String getPlayers(@RequestParam(value = "club", defaultValue = "Man City") String club) throws JsonProcessingException {
         List<OutfieldPlayer> outfieldPlayers =  (List<OutfieldPlayer>) outfieldPlayerRepository.findAllPlayersClub(club);
@@ -67,7 +92,7 @@ public class Controller {
         for(OutfieldPlayer player: outfieldPlayers){
             map.put(player.getLastName(), player);
             }
-        return objectMapper.writeValueAsString(map);
+        return objectMapper.writeValueAsString(outfieldPlayers);
     }
 
     @GetMapping("/test")

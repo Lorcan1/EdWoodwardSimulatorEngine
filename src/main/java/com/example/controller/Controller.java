@@ -108,9 +108,11 @@ public class Controller {
 
     @GetMapping("/get-all-players") //http://localhost:8080/get-heading?name=Laporte
     public String getAllPlayers(@RequestParam(value = "club", defaultValue = "Manchester City") String club) throws JsonProcessingException {
+        club = returnFullClubName(club);
         List<Player> goalkeepers = goalkeeperRepository.findAllPlayersClub(club);
         List<Player> outfieldPlayers =  outfieldPlayerRepository.findAllPlayersClub(club);
         goalkeepers.addAll(outfieldPlayers);
+
         ObjectMapper objectMapper = new ObjectMapper();
         return objectMapper.writeValueAsString(goalkeepers);
     }
@@ -118,6 +120,16 @@ public class Controller {
     @GetMapping("/test")
     public String test() {
         return "Hello World";
+    }
+
+    public String returnFullClubName(String abbrev){
+            if(abbrev.equals("MCFC") ){
+                return "Manchester City";
+            }
+            else if(abbrev.equals("Spurs")){
+                return "Tottenham Hotspur";
+            }
+            return "Not found";
     }
 }
 

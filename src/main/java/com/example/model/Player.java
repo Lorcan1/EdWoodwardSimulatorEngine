@@ -162,6 +162,8 @@ public abstract class Player {
     @Column(name="Club")
     private String club;
 
+    private String clubAbbrev;
+
     @Column(name="Country")
     private String nation;
 

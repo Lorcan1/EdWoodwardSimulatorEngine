@@ -4,6 +4,7 @@ import com.example.model.Player;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
+import jakarta.persistence.Transient;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -39,6 +40,9 @@ public class OutfieldPlayer extends Player {
 
     @Column(name="long-throws")
     private int longThrows;
+
+    @Transient
+    private String playerOrGoalkeeper = "player";
     public void kick(){
         System.out.println("kick");
     }

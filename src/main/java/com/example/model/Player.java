@@ -204,6 +204,12 @@ public abstract class Player {
     @Column(name="image_url")
     private String imageUrl;
 
+    @Column(name="club_url")
+    private String clubUrl;
+
+    @Column(name="country_url")
+    private String countryUrl;
+
     @Column(name="first-touch")
     private int firstTouch;
 

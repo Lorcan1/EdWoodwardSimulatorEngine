@@ -1,7 +1,9 @@
 package com.example.controller;
 
+import com.example.model.Goalkeeper;
 import com.example.model.OutfieldPlayer;
 import com.example.model.Player;
+import com.example.repository.GoalkeeperRepository;
 import com.example.repository.OutfieldPlayerRepository;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -21,9 +23,11 @@ public class Controller {
     // standard constructors
 
     private final OutfieldPlayerRepository outfieldPlayerRepository;
+    private final GoalkeeperRepository goalkeeperRepository;
 
-    public Controller(OutfieldPlayerRepository outfieldPlayerRepository) {
+    public Controller(OutfieldPlayerRepository outfieldPlayerRepository, GoalkeeperRepository goalkeeperRepository) {
         this.outfieldPlayerRepository = outfieldPlayerRepository;
+        this.goalkeeperRepository = goalkeeperRepository;
     }
 
     @GetMapping("/players-names")
@@ -68,6 +72,13 @@ public class Controller {
                 return objectMapper.writeValueAsString(player);
             }
         }
+        List<Goalkeeper> goalkeepers = (List<Goalkeeper>) goalkeeperRepository.findAll();
+        for(Goalkeeper goalkeeper: goalkeepers){
+            if(goalkeeper.getId() == id){
+                ObjectMapper objectMapper = new ObjectMapper();
+                return  objectMapper.writeValueAsString(goalkeeper);
+            }
+        }
         return "Not found";
     }
 
@@ -84,15 +95,24 @@ public class Controller {
         return "Not found";
     }
 
-    @GetMapping("/get-players") //http://localhost:8080/get-heading?name=Laporte
-    public String getPlayers(@RequestParam(value = "club", defaultValue = "Man City") String club) throws JsonProcessingException {
-        List<OutfieldPlayer> outfieldPlayers =  (List<OutfieldPlayer>) outfieldPlayerRepository.findAllPlayersClub(club);
-        Map<String, OutfieldPlayer> map = new HashMap<String, OutfieldPlayer>();
+    @GetMapping("/get-outfield-players") //http://localhost:8080/get-heading?name=Laporte
+    public String getPlayers(@RequestParam(value = "club", defaultValue = "Manchester City") String club) throws JsonProcessingException {
+        List<OutfieldPlayer> outfieldPlayers =  (List<OutfieldPlayer>) outfieldPlayerRepository.findOutfieldPlayersClub(club);
+//        Map<String, OutfieldPlayer> map = new HashMap<String, OutfieldPlayer>();
         ObjectMapper objectMapper = new ObjectMapper();
-        for(OutfieldPlayer player: outfieldPlayers){
-            map.put(player.getLastName(), player);
-            }
+//        for(OutfieldPlayer player: outfieldPlayers){
+//            map.put(player.getLastName(), player);
+//            }
         return objectMapper.writeValueAsString(outfieldPlayers);
+    }
+
+    @GetMapping("/get-all-players") //http://localhost:8080/get-heading?name=Laporte
+    public String getAllPlayers(@RequestParam(value = "club", defaultValue = "Manchester City") String club) throws JsonProcessingException {
+        List<Player> goalkeepers = goalkeeperRepository.findAllPlayersClub(club);
+        List<Player> outfieldPlayers =  outfieldPlayerRepository.findAllPlayersClub(club);
+        goalkeepers.addAll(outfieldPlayers);
+        ObjectMapper objectMapper = new ObjectMapper();
+        return objectMapper.writeValueAsString(goalkeepers);
     }
 
     @GetMapping("/test")

@@ -1,5 +1,8 @@
 package com.example;
 
+import com.example.repository.GoalkeeperRepository;
+import com.example.team.TeamSetup;
+import com.example.matchEngine.MatchEngine;
 import com.example.model.OutfieldPlayer;
 import com.example.model.Player;
 import com.example.repository.OutfieldPlayerRepository;
@@ -14,6 +17,7 @@ import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
 import org.springframework.context.annotation.Bean;
 import com.example.repository.PlayerRepository;
+import org.springframework.data.jpa.repository.Temporal;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 import java.util.ArrayList;
@@ -34,8 +38,16 @@ public class Main {
 
 
     @Bean
-    public CommandLineRunner demo(OutfieldPlayerRepository repository) {
+    public CommandLineRunner demo(OutfieldPlayerRepository repository, GoalkeeperRepository goalkeepr) {
         return (args) -> {
+            TeamSetup TeamSetup = new TeamSetup(repository, goalkeepr);
+            MatchEngine matchEngine = new MatchEngine(TeamSetup, "Manchester City","Tottenham Hotspur");
+            List<Player> awayTeam = matchEngine.awayTeam;
+            List<Player> homeTeam = matchEngine.homeTeam;
+            for(Player player:awayTeam){
+                System.out.println(player.getPosition());
+            }
+
             // save a few customers
 
 //        }
@@ -52,15 +64,15 @@ public class Main {
 //            players = repository.findAllPlayersClub("Man City");
 //            int d = 10;
 
-            // fetch all customers
-            log.info("Customers found with findAll():");
-            log.info("-------------------------------");
-            List<OutfieldPlayer> players = new ArrayList<OutfieldPlayer>();
-            players = (List<OutfieldPlayer>) repository.findAll();
-            for (Player player : repository.findAll()) {
-                log.info(player.toString());
-            }
-            log.info("");
+//            // fetch all customers
+//            log.info("Customers found with findAll():");
+//            log.info("-------------------------------");
+//            List<OutfieldPlayer> players = new ArrayList<OutfieldPlayer>();
+//            players = (List<OutfieldPlayer>) repository.findAll();
+//            for (Player player : repository.findAll()) {
+//                log.info(player.toString());
+//            }
+//            log.info("");
 ////
 //            players = repository.findAllPlayersClub("Manchester City");
 //            int d = 10;

@@ -1,4 +1,10 @@
-//package matchEngine;
+package com.example.matchEngine;
+
+import com.example.team.TeamSetup;
+import com.example.model.Player;
+
+import java.util.List;
+
 //
 //import players.*;
 //import team.Team;
@@ -10,20 +16,27 @@
 //import java.util.Random;
 //
 //
-//public class MatchEngine {
-//    public  Team homeTeam;
-//    public  Team awayTeam;
-//
-//    public boolean homeTeamHasPossession = true;
-//
-//    public int homeScore;
-//    public int awayScore;
-//
-//    public MatchEngine(Team homeTeam,Team awayTeam) {
-//    this.homeTeam = homeTeam;
-//    this.awayTeam = awayTeam;
-//
-//    }
+public class MatchEngine {
+    private final TeamSetup teamSetup;
+    public List<Player> homeTeam;
+    public List<Player> awayTeam;
+
+    public String homeTeamName;
+    public String awayTeamName;
+
+    public boolean homeTeamHasPossession = true;
+
+    public int homeScore;
+    public int awayScore;
+
+    public MatchEngine(TeamSetup teamSetup, String homeTeamName, String awayTeamName) {
+        this.teamSetup = teamSetup;
+        this.homeTeamName = homeTeamName;
+        this.awayTeamName = awayTeamName;
+        this.homeTeam = teamSetup.returnStartingEleven(homeTeamName);
+        this.awayTeam = teamSetup.returnStartingEleven(awayTeamName);
+    }
+}
 //
 //    public void getMarkers(Team attackingTeam, Team defendingTeam){
 //        Midfielder[] midfielders = new Midfielder[4];

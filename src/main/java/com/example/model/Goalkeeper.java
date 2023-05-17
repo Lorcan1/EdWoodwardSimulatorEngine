@@ -10,7 +10,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
-@Table(name="goalkeepers")
+@Table(name="goalkeepers_current")
 public class Goalkeeper extends Player {
 
     @Column(name="aerial-reach")

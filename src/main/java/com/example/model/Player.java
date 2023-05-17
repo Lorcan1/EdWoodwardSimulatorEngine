@@ -3,8 +3,11 @@ package com.example.model;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import org.json.JSONArray;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 //@Entity
 //@Table(name="outfield_players")
@@ -147,7 +150,7 @@ import java.io.Serializable;
 @Getter
 @Setter
 @MappedSuperclass
-public abstract class Player {
+public abstract class Player extends JsonArray {
 
     @Id
     @Column(name="UniqueID")
@@ -170,8 +173,15 @@ public abstract class Player {
     @Column(name="Age")
     private int age;
 
-    @Column(name="Position")
+    @Column(name="position_natural")
     private String position;
+
+
+//    @ElementCollection(targetClass = )
+//    @Convert(converter = JSONArrayConverter.class)
+    @Column(name="position_accomplished")
+//    @ElementCollection
+    public String otherPositions;
 
     @Column(name="Foot")
     private String foot;

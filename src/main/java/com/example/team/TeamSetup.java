@@ -1,8 +1,11 @@
 package com.example.team;
 
+import com.example.model.JsonArray;
 import com.example.model.Player;
 import com.example.repository.GoalkeeperRepository;
 import com.example.repository.OutfieldPlayerRepository;
+import org.json.JSONArray;
+import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.ArrayList;
@@ -32,6 +35,7 @@ public class TeamSetup {
         List<Player> allPlayers = new ArrayList<Player>();
         allPlayers.add(goalkeeper);
         allPlayers.addAll(outfieldPlayers);
+        returnPositionsAsJsonArray(allPlayers);
         return allPlayers;
     }
 
@@ -45,6 +49,17 @@ public class TeamSetup {
             }
         }
         return currentNumber1;
+
+    }
+
+    public void returnPositionsAsJsonArray(List<Player> players){
+        for(Player player: players){
+            JSONArray naturalPos = new JSONArray(player.getPosition());
+            player.setPositionsNaturalArray(naturalPos);
+
+            JSONArray accPos = new JSONArray(player.otherPositions);
+            player.setPositionsAccArray(accPos);
+        }
 
     }
 }

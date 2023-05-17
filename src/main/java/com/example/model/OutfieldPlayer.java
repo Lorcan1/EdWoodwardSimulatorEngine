@@ -11,7 +11,8 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
-@Table(name="outfield_players")
+@Table(name="outfield_players_current")
+//@Table(name="outfield_two_quotes")
 public class OutfieldPlayer extends Player {
 
     @Column(name="corners")

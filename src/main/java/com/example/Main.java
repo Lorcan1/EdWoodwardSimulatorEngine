@@ -44,8 +44,9 @@ public class Main {
             MatchEngine matchEngine = new MatchEngine(TeamSetup, "Manchester City","Tottenham Hotspur");
             List<Player> awayTeam = matchEngine.awayTeam;
             List<Player> homeTeam = matchEngine.homeTeam;
-            for(Player player:awayTeam){
-                System.out.println(player.getPosition());
+            for(Player player:homeTeam){
+                System.out.println(player.getPositionsNaturalArray().get(0));
+                System.out.println(player.getPositionsAccArray());
             }
 
             // save a few customers

@@ -8,8 +8,7 @@ import org.json.JSONArray;
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 public class TeamSetup {
     //10 outfield players and a goalkeeper
@@ -27,12 +26,12 @@ public class TeamSetup {
 
 
     public List<Player> returnStartingEleven(String club){
-        List<Player> outfieldPlayers = new ArrayList<Player>();
-        List<Player> goalkeepers = new ArrayList<Player>();
+        List<Player> outfieldPlayers = new ArrayList<>();
+        List<Player> goalkeepers = new ArrayList<>();
         outfieldPlayers = outfieldPlayerRepository.findAllPlayersClub(club);
         goalkeepers = goalkeeperRepository.findAllPlayersClub(club);
         Player goalkeeper = returnStartingKeeper(goalkeepers);
-        List<Player> allPlayers = new ArrayList<Player>();
+        List<Player> allPlayers = new ArrayList<>();
         allPlayers.add(goalkeeper);
         allPlayers.addAll(outfieldPlayers);
         returnPositionsAsJsonArray(allPlayers);
@@ -61,6 +60,71 @@ public class TeamSetup {
             player.setPositionsAccArray(accPos);
         }
 
+    }
+
+    public Map<String,Player> assignPlayerToPosition(Map<String,Player> positions, List<Player> team){
+        for (String position : positions.keySet()) {
+            for (Player player : team) {
+                List<Object> natPositions = player.getPositionsNaturalArray().toList();
+                List<Object> accPositions = player.getPositionsAccArray().toList();
+                if (natPositions.contains(position)) {
+                    positions.put(position, player);
+                    team.remove(player);
+                    break;
+                }else if(natPositions.contains("DC") && position.equals("DCL") && positions.get(position) == null){
+                    positions.put(position, player);
+                    team.remove(player);
+                    break;
+                }else if(natPositions.contains("DC") &&position.equals("DCR") && positions.get(position) == null){
+                    positions.put(position, player);
+                    team.remove(player);
+                    break;
+                }else if(natPositions.contains("MC") &&position.equals("MCR") && positions.get(position) == null){
+                    positions.put(position, player);
+                    team.remove(player);
+                    break;
+                }else if(natPositions.contains("MC") &&position.equals("MCL") && positions.get(position) == null){
+                    positions.put(position, player);
+                    team.remove(player);
+                    break;
+                }
+            }
+        }
+            for (String position : positions.keySet()){
+                for(Player player: team){
+                    List<Object> natPositions = player.getPositionsNaturalArray().toList();
+                    List<Object> accPositions = player.getPositionsAccArray().toList();
+                    String positionR = position + 'R';
+                    String positionL = position + 'L';
+                    if (accPositions.contains(position) && positions.get(position) == null)  {
+                        positions.put(position, player);
+                        team.remove(player);
+                        break;
+                    }else if(accPositions.contains("DC") &&position.equals("DCL") && positions.get(position) == null){
+                        positions.put(position, player);
+                        team.remove(player);
+                        break;
+                    }else if(accPositions.contains("DC") &&position.equals("DCR") && positions.get(position) == null){
+                        positions.put(position, player);
+                        team.remove(player);
+                        break;
+                    }else if(accPositions.contains("MC") &&position.equals("MCR") && positions.get(position) == null){
+                        positions.put(position, player);
+                        team.remove(player);
+                        break;
+                    }else if(accPositions.contains("MC") &&position.equals("MCL") && positions.get(position) == null){
+                        positions.put(position, player);
+                        team.remove(player);
+                        break;
+                    }
+                }
+//                team.remove(player);
+//                break;
+
+
+
+        }
+        return positions;
     }
 }
 

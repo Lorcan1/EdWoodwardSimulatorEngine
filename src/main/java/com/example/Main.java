@@ -20,8 +20,7 @@ import com.example.repository.PlayerRepository;
 import org.springframework.data.jpa.repository.Temporal;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 //@SpringBootApplication(exclude={DataSourceAutoConfiguration.class})
 //@EntityScan(basePackages = {"com.example.model"})
@@ -38,16 +37,48 @@ public class Main {
 
 
     @Bean
-    public CommandLineRunner demo(OutfieldPlayerRepository repository, GoalkeeperRepository goalkeepr) {
+    public CommandLineRunner demo(OutfieldPlayerRepository repository, GoalkeeperRepository goalkeeper) {
         return (args) -> {
-            TeamSetup TeamSetup = new TeamSetup(repository, goalkeepr);
-            MatchEngine matchEngine = new MatchEngine(TeamSetup, "Manchester City","Tottenham Hotspur");
+            TeamSetup teamSetup = new TeamSetup(repository, goalkeeper);
+            MatchEngine matchEngine = new MatchEngine(teamSetup, "Manchester City","Tottenham Hotspur");
             List<Player> awayTeam = matchEngine.awayTeam;
             List<Player> homeTeam = matchEngine.homeTeam;
             for(Player player:homeTeam){
-                System.out.println(player.getPositionsNaturalArray().get(0));
+                System.out.println(player.getPositionsNaturalArray());
                 System.out.println(player.getPositionsAccArray());
             }
+
+            ArrayList<String> positions = new ArrayList<>(Arrays.asList("GK","DL","DC","DC","DR","DM","MC","MC","MR","ML","ST"));
+            Map<String, Player> positionsMapHome= new HashMap<>();
+            positionsMapHome.put("GK",null);
+            positionsMapHome.put("DL",null);
+            positionsMapHome.put("DCR",null);
+            positionsMapHome.put("DCL",null);
+            positionsMapHome.put("DR",null);
+            positionsMapHome.put("DM",null);
+            positionsMapHome.put("MCR",null);
+            positionsMapHome.put("MCL",null);
+            positionsMapHome.put("MR",null);
+            positionsMapHome.put("ML",null);
+            positionsMapHome.put("ST",null);
+            Map<String, Player> positionsMapAway= new HashMap<>();
+            positionsMapAway.put("GK",null);
+            positionsMapAway.put("DL",null);
+            positionsMapAway.put("DCR",null);
+            positionsMapAway.put("DCL",null);
+            positionsMapAway.put("DR",null);
+            positionsMapAway.put("DM",null);
+            positionsMapAway.put("MCR",null);
+            positionsMapAway.put("MCL",null);
+            positionsMapAway.put("MR",null);
+            positionsMapAway.put("ML",null);
+            positionsMapAway.put("ST",null);
+            positionsMapHome = teamSetup.assignPlayerToPosition(positionsMapHome,homeTeam);
+            positionsMapAway = teamSetup.assignPlayerToPosition(positionsMapAway,awayTeam);
+
+            int x= 3;
+
+
 
             // save a few customers
 

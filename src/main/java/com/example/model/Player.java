@@ -183,6 +183,8 @@ public abstract class Player extends JsonArray {
 //    @ElementCollection
     public String otherPositions;
 
+    public String startingPosition;
+
     @Column(name="Foot")
     private String foot;
 

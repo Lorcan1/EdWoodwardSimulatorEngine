@@ -47,36 +47,16 @@ public class Main {
                 System.out.println(player.getPositionsNaturalArray());
                 System.out.println(player.getPositionsAccArray());
             }
+            Map<String, Player> positionsMapAway= matchEngine.getPositionsMapAway();
+            Map<String, Player> positionsMapHome= matchEngine.getPositionsMapHome();
 
-            ArrayList<String> positions = new ArrayList<>(Arrays.asList("GK","DL","DC","DC","DR","DM","MC","MC","MR","ML","ST"));
-            Map<String, Player> positionsMapHome= new HashMap<>();
-            positionsMapHome.put("GK",null);
-            positionsMapHome.put("DL",null);
-            positionsMapHome.put("DCR",null);
-            positionsMapHome.put("DCL",null);
-            positionsMapHome.put("DR",null);
-            positionsMapHome.put("DM",null);
-            positionsMapHome.put("MCR",null);
-            positionsMapHome.put("MCL",null);
-            positionsMapHome.put("MR",null);
-            positionsMapHome.put("ML",null);
-            positionsMapHome.put("ST",null);
-            Map<String, Player> positionsMapAway= new HashMap<>();
-            positionsMapAway.put("GK",null);
-            positionsMapAway.put("DL",null);
-            positionsMapAway.put("DCR",null);
-            positionsMapAway.put("DCL",null);
-            positionsMapAway.put("DR",null);
-            positionsMapAway.put("DM",null);
-            positionsMapAway.put("MCR",null);
-            positionsMapAway.put("MCL",null);
-            positionsMapAway.put("MR",null);
-            positionsMapAway.put("ML",null);
-            positionsMapAway.put("ST",null);
-            positionsMapHome = teamSetup.assignPlayerToPosition(positionsMapHome,homeTeam);
-            positionsMapAway = teamSetup.assignPlayerToPosition(positionsMapAway,awayTeam);
+            positionsMapAway.put("ST",awayTeam.get(awayTeam.size()-1));
+            positionsMapAway.put("ML",awayTeam.get(awayTeam.size()-2));
 
-            int x= 3;
+            int x = 5;
+
+
+
 
 
 

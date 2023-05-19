@@ -9,6 +9,7 @@ import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.*;
+import java.util.stream.Stream;
 
 public class TeamSetup {
     //10 outfield players and a goalkeeper
@@ -62,7 +63,9 @@ public class TeamSetup {
 
     }
 
-    public Map<String,Player> assignPlayerToPosition(Map<String,Player> positions, List<Player> team){
+    public Map<String,Player> assignPlayerToPosition(Map<String,Player> positions, String teamName){
+        List<Player> team = returnStartingEleven(teamName);
+
         for (String position : positions.keySet()) {
             for (Player player : team) {
                 List<Object> natPositions = player.getPositionsNaturalArray().toList();
@@ -125,6 +128,22 @@ public class TeamSetup {
 
         }
         return positions;
+    }
+    public void assignPlayerToPosition(Map<String,Player> positions, String teamName, String dummy){
+        List<Player> team = returnStartingEleven(teamName);
+        for (String position : positions.keySet()){
+            //get a list of all players that can play in the position
+            List<Player> canPlay = new ArrayList<>();
+            for(Player player: team){
+                List<Object> natPositions = player.getPositionsNaturalArray().toList();
+                List<Object> accPositions = player.getPositionsAccArray().toList();
+                List<Object> allPositions = Stream.concat(natPositions.stream(), accPositions.stream()).toList();
+                if(allPositions.contains(position)){
+                    canPlay.add(player);
+                }
+            }
+        }
+
     }
 }
 

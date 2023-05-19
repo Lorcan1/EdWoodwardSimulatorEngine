@@ -2,8 +2,10 @@ package com.example.matchEngine;
 
 import com.example.team.TeamSetup;
 import com.example.model.Player;
+import lombok.Getter;
+import lombok.Setter;
 
-import java.util.List;
+import java.util.*;
 
 //
 //import players.*;
@@ -16,6 +18,8 @@ import java.util.List;
 //import java.util.Random;
 //
 //
+@Getter
+@Setter
 public class MatchEngine {
     private final TeamSetup teamSetup;
     public List<Player> homeTeam;
@@ -23,6 +27,9 @@ public class MatchEngine {
 
     public String homeTeamName;
     public String awayTeamName;
+
+    private Map<String, Player> positionsMapAway;
+    private Map<String, Player> positionsMapHome;
 
     public boolean homeTeamHasPossession = true;
 
@@ -35,6 +42,33 @@ public class MatchEngine {
         this.awayTeamName = awayTeamName;
         this.homeTeam = teamSetup.returnStartingEleven(homeTeamName);
         this.awayTeam = teamSetup.returnStartingEleven(awayTeamName);
+//        ArrayList<String> positions = new ArrayList<>(Arrays.asList("GK","DL","DC","DC","DR","DM","MC","MC","MR","ML","ST"));
+        Map<String, Player> positionsMapHome= new HashMap<>();
+        positionsMapHome.put("GK",null);
+        positionsMapHome.put("DL",null);
+        positionsMapHome.put("DCR",null);  //all this needs to be cleaned up
+        positionsMapHome.put("DCL",null);
+        positionsMapHome.put("DR",null);
+        positionsMapHome.put("DM",null);
+        positionsMapHome.put("MCR",null);
+        positionsMapHome.put("MCL",null);
+        positionsMapHome.put("MR",null);
+        positionsMapHome.put("ML",null);
+        positionsMapHome.put("ST",null);
+        Map<String, Player> positionsMapAway= new HashMap<>();
+        positionsMapAway.put("GK",null);
+        positionsMapAway.put("DL",null);
+        positionsMapAway.put("DCR",null);
+        positionsMapAway.put("DCL",null);
+        positionsMapAway.put("DR",null);
+        positionsMapAway.put("DM",null);
+        positionsMapAway.put("MCR",null);
+        positionsMapAway.put("MCL",null);
+        positionsMapAway.put("MR",null);
+        positionsMapAway.put("ML",null);
+        positionsMapAway.put("ST",null);
+        this.positionsMapHome = teamSetup.assignPlayerToPosition(positionsMapHome,homeTeamName);
+        this.positionsMapAway = teamSetup.assignPlayerToPosition(positionsMapAway,awayTeamName);
     }
 }
 //

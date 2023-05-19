@@ -1,5 +1,6 @@
 package com.example.controller;
 
+import com.example.matchEngine.MatchEngine;
 import com.example.model.Goalkeeper;
 import com.example.model.OutfieldPlayer;
 import com.example.model.Player;
@@ -116,6 +117,15 @@ public class Controller {
         ObjectMapper objectMapper = new ObjectMapper();
         return objectMapper.writeValueAsString(goalkeepers);
     }
+
+//    @GetMapping("/get-positions") //http://localhost:8080/get-heading?name=Laporte
+//    public String getPositions(@RequestParam(value = "club", defaultValue = "Manchester City") String club) throws JsonProcessingException {
+//        club = returnFullClubName(club);
+//        MatchEngine matchEngine = new MatchEngine();
+//
+//        ObjectMapper objectMapper = new ObjectMapper();
+//        return objectMapper.writeValueAsString(goalkeepers);
+//    }
 
     @GetMapping("/test")
     public String test() {

@@ -67,8 +67,8 @@ public class MatchEngine {
         positionsMapAway.put("MR",null);
         positionsMapAway.put("ML",null);
         positionsMapAway.put("ST",null);
-        this.positionsMapHome = teamSetup.assignPlayerToPosition(positionsMapHome,homeTeamName);
-        this.positionsMapAway = teamSetup.assignPlayerToPosition(positionsMapAway,awayTeamName);
+//        this.positionsMapHome = teamSetup.assignPlayerToPosition(positionsMapHome,homeTeamName);
+//        this.positionsMapAway = teamSetup.assignPlayerToPosition(positionsMapAway,awayTeamName);
     }
 }
 //

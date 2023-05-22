@@ -7,16 +7,18 @@ import com.example.repository.OutfieldPlayerRepository;
 import org.json.JSONArray;
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
+import org.springframework.stereotype.Component;
 
 import java.util.*;
 import java.util.stream.Stream;
 
+@Component
 public class TeamSetup {
     //10 outfield players and a goalkeeper
     //once there are more than 10 players in a team, a #first eleven starter will have to be
     private OutfieldPlayerRepository outfieldPlayerRepository;
     private GoalkeeperRepository goalkeeperRepository;
-
 
     public TeamSetup(OutfieldPlayerRepository outfieldPlayerRepository, GoalkeeperRepository goalkeeperRepository) {
         this.outfieldPlayerRepository = outfieldPlayerRepository;
@@ -63,8 +65,41 @@ public class TeamSetup {
 
     }
 
-    public Map<String,Player> assignPlayerToPosition(Map<String,Player> positions, String teamName){
+    public void assignPlayerToPosition(Map<String,Player> positions, String teamName){
+        positions.put("GK",null);
+        positions.put("DL",null);
+        positions.put("DCR",null);
+        positions.put("DCL",null);
+        positions.put("DR",null);
+        positions.put("DM",null);
+        positions.put("MCR",null);
+        positions.put("MCL",null);
+        positions.put("MR",null);
+        positions.put("ML",null);
+        positions.put("ST",null);
         List<Player> team = returnStartingEleven(teamName);
+
+        for(Player player: team){
+            List<Object> nat = player.getPositionsNaturalArray().toList();
+            List<Object> acc = player.getPositionsAccArray().toList();
+            List<Object> newNat = new ArrayList<>();
+            List<Object> newAcc = new ArrayList<>();
+            for(Object obj: nat){
+                String str = obj.toString().replace("A", "");
+                newNat.add(str);
+            }
+            for(Object obj: acc){
+                String str = obj.toString().replace("A", "");
+                newAcc.add(str);
+            }
+
+            JSONArray newNatJson = new JSONArray(newNat);
+            JSONArray newAccJson = new JSONArray(newAcc);
+
+            player.setPositionsNaturalArray(newNatJson);
+            player.setPositionsAccArray(newAccJson);
+
+        }
 
         for (String position : positions.keySet()) {
             for (Player player : team) {
@@ -127,7 +162,13 @@ public class TeamSetup {
 
 
         }
-        return positions;
+            if(teamName.equals("Tottenham Hotspur")){
+                Player player = positions.get("ST"); // hardcode needs to br removed
+                positions.put("ST",team.get(team.size()-1));
+                positions.put("ML",player);
+                player.setStartingPosition("ML");
+            }
+            assignStartingPosition(positions);
     }
     public void assignPlayerToPosition(Map<String,Player> positions, String teamName, String dummy){
         List<Player> team = returnStartingEleven(teamName);
@@ -144,6 +185,14 @@ public class TeamSetup {
             }
         }
 
+    }
+
+    public void assignStartingPosition(Map<String,Player> positions){
+        for(String key: positions.keySet()){
+            Player player = positions.get(key);
+            player.setStartingPosition(key);
+
+        }
     }
 }
 

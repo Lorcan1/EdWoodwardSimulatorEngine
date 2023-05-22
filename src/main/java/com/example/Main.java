@@ -47,13 +47,13 @@ public class Main {
                 System.out.println(player.getPositionsNaturalArray());
                 System.out.println(player.getPositionsAccArray());
             }
-            Map<String, Player> positionsMapAway= matchEngine.getPositionsMapAway();
-            Map<String, Player> positionsMapHome= matchEngine.getPositionsMapHome();
-
-            positionsMapAway.put("ST",awayTeam.get(awayTeam.size()-1));
-            positionsMapAway.put("ML",awayTeam.get(awayTeam.size()-2));
-
-            int x = 5;
+//            Map<String, Player> positionsMapAway= matchEngine.getPositionsMapAway();
+//            Map<String, Player> positionsMapHome= matchEngine.getPositionsMapHome();
+//
+//            positionsMapAway.put("ST",awayTeam.get(awayTeam.size()-1));
+//            positionsMapAway.put("ML",awayTeam.get(awayTeam.size()-2));
+//
+//            int x = 5;
 
 
 

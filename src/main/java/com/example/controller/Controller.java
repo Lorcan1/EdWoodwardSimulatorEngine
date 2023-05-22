@@ -6,8 +6,10 @@ import com.example.model.OutfieldPlayer;
 import com.example.model.Player;
 import com.example.repository.GoalkeeperRepository;
 import com.example.repository.OutfieldPlayerRepository;
+import com.example.team.TeamSetup;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.json.simple.JSONValue;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -25,10 +27,15 @@ public class Controller {
 
     private final OutfieldPlayerRepository outfieldPlayerRepository;
     private final GoalkeeperRepository goalkeeperRepository;
+    private final TeamSetup teamSetup;
+    Map<String, Player> positions= new HashMap<>();
 
-    public Controller(OutfieldPlayerRepository outfieldPlayerRepository, GoalkeeperRepository goalkeeperRepository) {
+    
+
+    public Controller(OutfieldPlayerRepository outfieldPlayerRepository, GoalkeeperRepository goalkeeperRepository, TeamSetup teamSetup) {
         this.outfieldPlayerRepository = outfieldPlayerRepository;
         this.goalkeeperRepository = goalkeeperRepository;
+        this.teamSetup = teamSetup;
     }
 
     @GetMapping("/players-names")
@@ -118,14 +125,15 @@ public class Controller {
         return objectMapper.writeValueAsString(goalkeepers);
     }
 
-//    @GetMapping("/get-positions") //http://localhost:8080/get-heading?name=Laporte
-//    public String getPositions(@RequestParam(value = "club", defaultValue = "Manchester City") String club) throws JsonProcessingException {
-//        club = returnFullClubName(club);
-//        MatchEngine matchEngine = new MatchEngine();
-//
-//        ObjectMapper objectMapper = new ObjectMapper();
-//        return objectMapper.writeValueAsString(goalkeepers);
-//    }
+    @GetMapping("/get-positions") //http://localhost:8080/get-heading?name=Laporte
+    public String getPositions(@RequestParam(value = "club", defaultValue = "Manchester City") String club) throws JsonProcessingException {
+        club = returnFullClubName(club);
+        teamSetup.assignPlayerToPosition(positions, club);
+        List<Player> team = teamSetup.returnStartingEleven(club);
+        ObjectMapper objectMapper = new ObjectMapper();
+        return objectMapper.writeValueAsString(team);
+//        return new ObjectMapper().writeValueAsString(team);
+    }
 
     @GetMapping("/test")
     public String test() {

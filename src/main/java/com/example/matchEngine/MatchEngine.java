@@ -1,5 +1,6 @@
 package com.example.matchEngine;
 
+import com.example.team.Team;
 import com.example.team.TeamSetup;
 import com.example.model.Player;
 import lombok.Getter;
@@ -22,8 +23,8 @@ import java.util.*;
 @Setter
 public class MatchEngine {
     private final TeamSetup teamSetup;
-    public List<Player> homeTeam;
-    public List<Player> awayTeam;
+    private Team homeTeam;
+    private Team awayTeam;
 
     public String homeTeamName;
     public String awayTeamName;
@@ -40,35 +41,8 @@ public class MatchEngine {
         this.teamSetup = teamSetup;
         this.homeTeamName = homeTeamName;
         this.awayTeamName = awayTeamName;
-        this.homeTeam = teamSetup.returnStartingEleven(homeTeamName);
-        this.awayTeam = teamSetup.returnStartingEleven(awayTeamName);
-//        ArrayList<String> positions = new ArrayList<>(Arrays.asList("GK","DL","DC","DC","DR","DM","MC","MC","MR","ML","ST"));
-        Map<String, Player> positionsMapHome= new HashMap<>();
-        positionsMapHome.put("GK",null);
-        positionsMapHome.put("DL",null);
-        positionsMapHome.put("DCR",null);  //all this needs to be cleaned up
-        positionsMapHome.put("DCL",null);
-        positionsMapHome.put("DR",null);
-        positionsMapHome.put("DM",null);
-        positionsMapHome.put("MCR",null);
-        positionsMapHome.put("MCL",null);
-        positionsMapHome.put("MR",null);
-        positionsMapHome.put("ML",null);
-        positionsMapHome.put("ST",null);
-        Map<String, Player> positionsMapAway= new HashMap<>();
-        positionsMapAway.put("GK",null);
-        positionsMapAway.put("DL",null);
-        positionsMapAway.put("DCR",null);
-        positionsMapAway.put("DCL",null);
-        positionsMapAway.put("DR",null);
-        positionsMapAway.put("DM",null);
-        positionsMapAway.put("MCR",null);
-        positionsMapAway.put("MCL",null);
-        positionsMapAway.put("MR",null);
-        positionsMapAway.put("ML",null);
-        positionsMapAway.put("ST",null);
-//        this.positionsMapHome = teamSetup.assignPlayerToPosition(positionsMapHome,homeTeamName);
-//        this.positionsMapAway = teamSetup.assignPlayerToPosition(positionsMapAway,awayTeamName);
+        this.homeTeam = new Team(homeTeamName,teamSetup);
+        this.awayTeam = new Team(awayTeamName,teamSetup);
     }
 }
 //
@@ -96,7 +70,7 @@ public class MatchEngine {
 //
 //
 //    }
-//
+
 //    public void runMatchEngine() {
 //
 //        getMarkers(homeTeam,awayTeam);
@@ -124,8 +98,8 @@ public class MatchEngine {
 //            bw.close();
 //    }
 //
-//    public void playBall(Team attackingTeam,Team defendingTeam){
-//        securePossession(attackingTeam,defendingTeam,attackingTeam.m1);
+//    public void playBall(List<Player> attackingTeam,List<Player> defendingTeam){
+//        securePossession(attackingTeam,defendingTeam);
 //    }
 //    public void updateScore(Team attackingTeam){
 //        if(attackingTeam.teamName.equals(homeTeam.teamName)){

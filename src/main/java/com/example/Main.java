@@ -1,6 +1,7 @@
 package com.example;
 
 import com.example.repository.GoalkeeperRepository;
+import com.example.team.Team;
 import com.example.team.TeamSetup;
 import com.example.matchEngine.MatchEngine;
 import com.example.model.OutfieldPlayer;
@@ -41,9 +42,9 @@ public class Main {
         return (args) -> {
             TeamSetup teamSetup = new TeamSetup(repository, goalkeeper);
             MatchEngine matchEngine = new MatchEngine(teamSetup, "Manchester City","Tottenham Hotspur");
-            List<Player> awayTeam = matchEngine.awayTeam;
-            List<Player> homeTeam = matchEngine.homeTeam;
-            for(Player player:homeTeam){
+            Team awayTeam = matchEngine.getAwayTeam();
+            Team homeTeam = matchEngine.getHomeTeam();
+            for(Player player: homeTeam.getPlayers()){
                 System.out.println(player.getPositionsNaturalArray());
                 System.out.println(player.getPositionsAccArray());
             }
@@ -52,8 +53,11 @@ public class Main {
 //
 //            positionsMapAway.put("ST",awayTeam.get(awayTeam.size()-1));
 //            positionsMapAway.put("ML",awayTeam.get(awayTeam.size()-2));
-//
-//            int x = 5;
+
+            Team team= new Team("Manchester City",teamSetup);
+
+
+            int x = 5;
 
 
 

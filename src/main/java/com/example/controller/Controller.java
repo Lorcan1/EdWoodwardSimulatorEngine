@@ -128,7 +128,15 @@ public class Controller {
     @GetMapping("/get-positions") //http://localhost:8080/get-heading?name=Laporte
     public String getPositions(@RequestParam(value = "club", defaultValue = "Manchester City") String club) throws JsonProcessingException {
         club = returnFullClubName(club);
-        teamSetup.assignPlayerToPosition(positions, club);
+        List<Player> team = teamSetup.returnStartingEleven(club);
+        ObjectMapper objectMapper = new ObjectMapper();
+        return objectMapper.writeValueAsString(team);
+//        return new ObjectMapper().writeValueAsString(team);
+    }
+
+    @GetMapping("/return-result") //http://localhost:8080/get-heading?name=Laporte
+    public String returnResult(@RequestParam(value = "club", defaultValue = "Manchester City") String club) throws JsonProcessingException {
+        club = returnFullClubName(club);
         List<Player> team = teamSetup.returnStartingEleven(club);
         ObjectMapper objectMapper = new ObjectMapper();
         return objectMapper.writeValueAsString(team);

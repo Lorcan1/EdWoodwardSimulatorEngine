@@ -29,15 +29,15 @@ public class TeamSetup {
 
 
     public List<Player> returnStartingEleven(String club){
-        List<Player> outfieldPlayers = new ArrayList<>();
-        List<Player> goalkeepers = new ArrayList<>();
-        outfieldPlayers = outfieldPlayerRepository.findAllPlayersClub(club);
-        goalkeepers = goalkeeperRepository.findAllPlayersClub(club);
+        List<Player> outfieldPlayers = outfieldPlayerRepository.findAllPlayersClub(club);
+        List<Player> goalkeepers = goalkeeperRepository.findAllPlayersClub(club);
         Player goalkeeper = returnStartingKeeper(goalkeepers);
         List<Player> allPlayers = new ArrayList<>();
         allPlayers.add(goalkeeper);
         allPlayers.addAll(outfieldPlayers);
         returnPositionsAsJsonArray(allPlayers);
+        Map<String, Player> positions= new HashMap<>();
+        allPlayers = assignPlayerToPosition(positions, club, allPlayers);
         return allPlayers;
     }
 
@@ -65,7 +65,7 @@ public class TeamSetup {
 
     }
 
-    public void assignPlayerToPosition(Map<String,Player> positions, String teamName){
+    public List<Player> assignPlayerToPosition(Map<String,Player> positions, String teamName, List<Player> team){
         positions.put("GK",null);
         positions.put("DL",null);
         positions.put("DCR",null);
@@ -77,7 +77,6 @@ public class TeamSetup {
         positions.put("MR",null);
         positions.put("ML",null);
         positions.put("ST",null);
-        List<Player> team = returnStartingEleven(teamName);
 
         for(Player player: team){
             List<Object> nat = player.getPositionsNaturalArray().toList();
@@ -168,7 +167,8 @@ public class TeamSetup {
                 positions.put("ML",player);
                 player.setStartingPosition("ML");
             }
-            assignStartingPosition(positions);
+            team = assignStartingPosition(positions);
+            return team;
     }
     public void assignPlayerToPosition(Map<String,Player> positions, String teamName, String dummy){
         List<Player> team = returnStartingEleven(teamName);
@@ -187,12 +187,15 @@ public class TeamSetup {
 
     }
 
-    public void assignStartingPosition(Map<String,Player> positions){
+    public List<Player> assignStartingPosition(Map<String,Player> positions){
+        List<Player> players = new ArrayList<>();
         for(String key: positions.keySet()){
             Player player = positions.get(key);
             player.setStartingPosition(key);
+            players.add(player);
 
         }
+        return players;
     }
 }
 

@@ -1,5 +1,7 @@
 package com.example.matchEngine;
 
+import com.example.model.Goalkeeper;
+import com.example.model.OutfieldPlayer;
 import com.example.team.Team;
 import com.example.team.TeamSetup;
 import com.example.model.Player;
@@ -21,7 +23,7 @@ import java.util.*;
 //
 @Getter
 @Setter
-public class MatchEngine {
+public class MatchEngine { //need to change the design so that an endpoint can be hit and every time its hit the gamestate moves on a chunk of time until the game is over
     private final TeamSetup teamSetup;
     private Team homeTeam;
     private Team awayTeam;
@@ -37,46 +39,31 @@ public class MatchEngine {
     public int homeScore;
     public int awayScore;
 
+    HashMap<Player, Player> markers;
+
+
     public MatchEngine(TeamSetup teamSetup, String homeTeamName, String awayTeamName) {
         this.teamSetup = teamSetup;
         this.homeTeamName = homeTeamName;
         this.awayTeamName = awayTeamName;
         this.homeTeam = new Team(homeTeamName,teamSetup);
         this.awayTeam = new Team(awayTeamName,teamSetup);
-    }
-}
-//
-//    public void getMarkers(Team attackingTeam, Team defendingTeam){
-//        Midfielder[] midfielders = new Midfielder[4];
-//        midfielders[0] = attackingTeam.m1;
-//        midfielders[1] = attackingTeam.m2;
-//        midfielders[2] = defendingTeam.m1;
-//        midfielders[3] = defendingTeam.m2;
-//
-//        Fullback[] fullbacks = new Fullback[4];
-//        fullbacks[0] = attackingTeam.dl;
-//        fullbacks[1] = attackingTeam.dr;
-//        fullbacks[2] = defendingTeam.dr;
-//        fullbacks[3] = defendingTeam.dl;
-//
-//        Forward[] wingers = new Forward[4];
-//        wingers[0] = attackingTeam.f2;
-//        wingers[1] = defendingTeam.f2;
-//
-//
-//
-//        TeamSetup teamSetup = new TeamSetup();
-//        teamSetup.addMarkers(midfielders,fullbacks,wingers);
-//
-//
-//    }
+        this.markers = new HashMap<>();
+        markers.put(homeTeam.getMcl() ,awayTeam.getMcr());
+        markers.put(homeTeam.getMcr() ,awayTeam.getMcl());
+        markers.put(awayTeam.getMcr() ,homeTeam.getMcl());
+        markers.put(awayTeam.getMcr() ,homeTeam.getMcl());
 
-//    public void runMatchEngine() {
+
+    }
+
 //
-//        getMarkers(homeTeam,awayTeam);
-//
-//        playBall(homeTeam,awayTeam);
-//        playBall(awayTeam,homeTeam);
+
+
+    public void runMatchEngine() {
+
+        playBall(homeTeam,awayTeam);
+        playBall(awayTeam,homeTeam);
 //
 //        try {
 //            appendScoretoFile(homeScore,awayScore);
@@ -86,8 +73,8 @@ public class MatchEngine {
 //        }
 //
 //
-//        System.out.println("Final Score: " + homeScore + "-" + awayScore);
-//    }
+        System.out.println("Final Score: " + homeScore + "-" + awayScore);
+    }
 //
 //    public void appendScoretoFile(int homeScore,int awayScore) throws IOException {
 //
@@ -98,78 +85,80 @@ public class MatchEngine {
 //            bw.close();
 //    }
 //
-//    public void playBall(List<Player> attackingTeam,List<Player> defendingTeam){
-//        securePossession(attackingTeam,defendingTeam);
-//    }
-//    public void updateScore(Team attackingTeam){
-//        if(attackingTeam.teamName.equals(homeTeam.teamName)){
-//            homeScore +=1;
-//        }
-//        else{
-//            awayScore+=1;
-//        }
-//    }
-//
-//    public void securePossession(Team attackingTeam, Team defendingTeam, Midfielder playerInPosession){
-//        //ball passed between midfielders with attacking team starting with ball,
-//        //if a certain check is passed then a throughball should be played,
-//        //otherwise the function is called with the other team in possesion
-//        //or the ball is played back to the defence and isPlayOutFromBackSuccesful called
-//        double luckyBounce = Math.random()*10*2;
-//        double firstTouchFailure = Math.random()*10*2;
-//
-//        Midfielder marker = playerInPosession.getMarker();
-//
-//        if(playerInPosession.getDribbling() < marker.getTackling() && marker.getTackling() < luckyBounce){
-//            securePossession(defendingTeam,attackingTeam,marker);
-//        }
-//        else if ((firstTouchFailure > 10)){  //get vision is higher than pass.difficulty + some movement check on the attacker = off the ball which can be influenced by high pace
-//        throughBallOutcome(attackingTeam,defendingTeam,playerInPosession);}
+    public void playBall(Team attackingTeam, Team defendingTeam){
+        securePossession(attackingTeam,defendingTeam);
+    }
+    public void updateScore(Team attackingTeam){
+        if(attackingTeam.getTeamName().equals(homeTeam.getTeamName())){
+            homeScore +=1;
+        }
+        else{
+            awayScore+=1;
+        }
+    }
+
+    public void securePossession(Team attackingTeam, Team defendingTeam){
+        //ball passed between midfielders with attacking team starting with ball,
+        //if a certain check is passed then a throughball should be played,
+        //otherwise the function is called with the other team in possesion
+        //or the ball is played back to the defence and isPlayOutFromBackSuccesful called
+        double luckyBounce = Math.random()*10*2;
+        double firstTouchFailure = Math.random()*10*2;
+
+
+        OutfieldPlayer playerInPosession = (OutfieldPlayer) attackingTeam.getMcr();
+        OutfieldPlayer marker = (OutfieldPlayer) markers.get(playerInPosession);
+
+        if(playerInPosession.getDribbling() < marker.getTackling() && marker.getTackling() < luckyBounce){
+            securePossession(defendingTeam,attackingTeam);
+        }
+        else if ((firstTouchFailure > 10)){  //get vision is higher than pass.difficulty + some movement check on the attacker = off the ball which can be influenced by high pace
+        throughBallOutcome(attackingTeam,defendingTeam,playerInPosession);}
 //        //if N can they pass to a teamate
 //            //secure Possesion with different player
 //        else{
 //            securePossession(attackingTeam,defendingTeam,attackingTeam.m2);
 //        }
-//        //if N playoutfromtheback
+        //if N playoutfromtheback
+
+    }
 //
-//    }
+    public OutfieldPlayer whichAttackerReceivesTheBall(Team attackingTeam){ //this should be changed to reflect what runs an attacker is making
+        int diffBetweenForwardsOveralls = Math.abs(attackingTeam.getSt().getOverall()- attackingTeam.getMl().getOverall());
+        double num = Math.random();
+        int randInt = (int)(num*100+1);
+        if((50 + diffBetweenForwardsOveralls) > randInt){
+            if(attackingTeam.getSt().getOverall() > attackingTeam.getMl().getOverall()){
+                return (OutfieldPlayer) attackingTeam.getSt();
+            }
+            else{
+                return (OutfieldPlayer) attackingTeam.getMl();
+            }
+        }
+        else{
+            if(attackingTeam.getSt().getOverall() < attackingTeam.getMl().getOverall()){
+                return (OutfieldPlayer) attackingTeam.getSt();
+            }
+            else{
+                return (OutfieldPlayer) attackingTeam.getMl();
+            }
+        }
+    }
+    public void throughBallOutcome(Team attackingTeam, Team defendingTeam, Player playerInPossession){
+        double passFailure = Math.random()*10*2;
+        double counterAttackChance = Math.random()*10*2;
+        double shotFailure = Math.random()*10*2;
+        double composureCheck = Math.random()*10*2;
+        OutfieldPlayer forwardInPossession = whichAttackerReceivesTheBall(attackingTeam);
+        double dmPositioningDebuff = positioningDebuffCalc(defendingTeam.getDm());
+        double gkSavingDebuff = positioningDebuffCalc(defendingTeam.getGk());
 //
-//    public Forward whichAttackerReceivesTheBall(Team attackingTeam){ //this should be changed to reflect what runs an attacker is making
-//        int diffBetweenForwardsOveralls = Math.abs(attackingTeam.f1.getOvr() - attackingTeam.f2.getOvr());
-//        double num = Math.random();
-//        int randInt = (int)(num*100+1);
-//        if((50 + diffBetweenForwardsOveralls) > randInt){
-//            if(attackingTeam.f1.getOvr() > attackingTeam.f2.getOvr()){
-//                return attackingTeam.f1;
-//            }
-//            else{
-//                return attackingTeam.f2;
-//            }
-//        }
-//        else{
-//            if(attackingTeam.f1.getOvr() < attackingTeam.f2.getOvr()){
-//                return attackingTeam.f1;
-//            }
-//            else{
-//                return attackingTeam.f2;
-//            }
-//        }
-//    }
-//    public void throughBallOutcome(Team attackingTeam, Team defendingTeam, Player playerInPossession){
-//        double passFailure = Math.random()*10*2;
-//        double counterAttackChance = Math.random()*10*2;
-//        double shotFailure = Math.random()*10*2;
-//        double composureCheck = Math.random()*10*2;
-//        Forward forwardInPossession = whichAttackerReceivesTheBall(attackingTeam);
-//        double dmPositioningDebuff = positioningDebuffCalc(defendingTeam.dm);
-//        double gkSavingDebuff = positioningDebuffCalc(defendingTeam.g);
-//
-//        if(playerInPossession.getPassing() > (passFailure + defendingTeam.dm.getPositioning()/dmPositioningDebuff)){ //workrate of the defensive player should influence this
-//
-//            if((forwardInPossession.getFinishing() > (shotFailure + defendingTeam.g.getSaving()/gkSavingDebuff)) && (forwardInPossession.getComposure() > composureCheck)) { // should be a defender marking check also a composure check on both keeper and striker
-//                System.out.println("Goal Scored! Scorer:" + forwardInPossession.getFirstName() + " " + forwardInPossession.getLastName() + " Assist: " + playerInPossession.getFirstName() + " " + playerInPossession.getLastName());
-//                updateScore(attackingTeam);
-//            }
+        if(playerInPossession.getPassing() > (passFailure + defendingTeam.getDm().getPositioning()/dmPositioningDebuff)){ //workrate of the defensive player should influence this
+            Goalkeeper goalkeeper = (Goalkeeper) defendingTeam.getGk();
+            if((forwardInPossession.getFinishing() > (shotFailure + goalkeeper.getReflexes()/gkSavingDebuff)) && (forwardInPossession.getComposure() > composureCheck)) { // should be a defender marking check also a composure check on both keeper and striker
+                System.out.println("Goal Scored! Scorer:" + forwardInPossession.getFirstName() + " " + forwardInPossession.getLastName() + " Assist: " + playerInPossession.getFirstName() + " " + playerInPossession.getLastName());
+                updateScore(attackingTeam);
+            }
 //            else if (playerInPossession instanceof Midfielder) { //forward doesnt score but ball breaks to attacking team, should be a random chance it goes to defending team added
 //                // calculate which forward picks up the loose ball based on positioning
 //                Forward forwardNotInPossession = whoPicksUpLooseBall(attackingTeam);
@@ -181,20 +170,20 @@ public class MatchEngine {
 //                    securePossession(attackingTeam, defendingTeam, (Midfielder) playerInPossession); //should this be attacking team or defending team retaining possesion, probably defending team?
 //                }
 //            }
-//            else{
-//                if(counterAttackChance > 7){
-//                    isPlayOutFromBackSuccesful(defendingTeam,attackingTeam,defendingTeam.d1);
-//                }
+            else{
+                if(counterAttackChance > 7){
+                    isPlayOutFromBackSuccesful(defendingTeam,attackingTeam,defendingTeam.getDcl());
+                }
 //
-//            }
+            }
 //
-//        }
-//        else{
-//            if(counterAttackChance> 7) {
-//                isPlayOutFromBackSuccesful(defendingTeam, attackingTeam, defendingTeam.d1);
-//            }// should be the marker with maybe a marking and tackling check
-//        }
-//    }
+        }
+        else{
+            if(counterAttackChance> 7) {
+                isPlayOutFromBackSuccesful(defendingTeam, attackingTeam, defendingTeam.getDcl());
+            }// should be the marker with maybe a marking and tackling check
+        }
+    }
 //
 //
 ////    public void crossOutcome(Team attackingTeam, Team defendingTeam, OutfieldPlayer playerInPossession){
@@ -250,41 +239,40 @@ public class MatchEngine {
 ////             */
 ////        }
 ////
-////    }
-//
-//    public double positioningDebuffCalc(Player player){ //should take into account posititioning and mental stats - higher should return closer to 0, lower to three
-////        double num = Math.random();
-////        int randInt = (int)(num*2+1);
-////        if(randInt <1){
-////
-////        } else if () {
-////
-////        }
-////        else {
-////
-////        }
-////        return 3;
-//
-//        int goalsConceded;
-//        if(player.getClub().equals(homeTeam.nameAbrev)){
-//            goalsConceded = awayScore;
-//        } else{
-//            goalsConceded = homeScore;
-//        }
-//        double positionDebuff = 3; //lower is better - 1 is best, higher is worse as its being used to divide the keepers saving
-//        if(goalsConceded == 4){
-//            return 2;
-//        } else if (goalsConceded ==  5) {
-//            return 1;
-//        }
-//        else if (goalsConceded > 5){
-//            return 0.5;
-//        }else{
-//            return 3;
-//        }
-//
-//
 //    }
+    public double positioningDebuffCalc(Player player){ //should take into account posititioning and mental stats - higher should return closer to 0, lower to three
+//        double num = Math.random();
+//        int randInt = (int)(num*2+1);
+//        if(randInt <1){
+//
+//        } else if () {
+//
+//        }
+//        else {
+//
+//        }
+//        return 3;
+
+        int goalsConceded;
+        if(player.getClub().equals(homeTeam.getTeamName())){
+            goalsConceded = awayScore;
+        } else{
+            goalsConceded = homeScore;
+        }
+        double positionDebuff = 3; //lower is better - 1 is best, higher is worse as its being used to divide the keepers saving
+        if(goalsConceded == 4){
+            return 2;
+        } else if (goalsConceded ==  5) {
+            return 1;
+        }
+        else if (goalsConceded > 5){
+            return 0.5;
+        }else{
+            return 3;
+        }
+
+
+    }
 //
 //    public Forward whoPicksUpLooseBall(Team attackingTeam){ //could probably do a loop with an array of the attacking players on both teams
 //        double num = Math.random();
@@ -300,15 +288,15 @@ public class MatchEngine {
 //        }
 //    }
 //
-//    public void isPlayOutFromBackSuccesful(Team attackingTeam, Team defendingTeam, Player playerInPossession){ //need to add midfielder tackling
-//        double passFailure = Math.random()*10*2;
-//        double firstTouchFailure = Math.random()*10*2;
+    public void isPlayOutFromBackSuccesful(Team attackingTeam, Team defendingTeam, Player playerInPossession){ //need to add midfielder tackling
+        double passFailure = Math.random()*10*2;
+        double firstTouchFailure = Math.random()*10*2;
+
+        if(playerInPossession.getPassing() > passFailure && attackingTeam.getMcr().getFirstTouch() > firstTouchFailure){ //should be a random midfielder/ a similar algo to the forward/ based on off the ball and stuff
+            securePossession(attackingTeam,defendingTeam);
+        }
+        securePossession(defendingTeam,attackingTeam); //which midfielder should be returned here
+
+    }
 //
-//        if(((Defender) playerInPossession).getPassing() > passFailure && attackingTeam.m1.getFirstTouch() > firstTouchFailure){
-//            securePossession(attackingTeam,defendingTeam,attackingTeam.m1);
-//        }
-//        securePossession(defendingTeam,attackingTeam,defendingTeam.m1); //which midfielder should be returned here
-//
-//    }
-//
-//}
+}

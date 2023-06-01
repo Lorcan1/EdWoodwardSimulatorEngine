@@ -1,6 +1,5 @@
-package com.example.model;
+package com.example.model.player;
 
-import com.example.model.Player;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;

@@ -1,13 +1,9 @@
 package com.example.team;
 
-import com.example.model.JsonArray;
-import com.example.model.Player;
+import com.example.model.player.Player;
 import com.example.repository.GoalkeeperRepository;
 import com.example.repository.OutfieldPlayerRepository;
 import org.json.JSONArray;
-import org.json.simple.JSONObject;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
 
 import java.util.*;

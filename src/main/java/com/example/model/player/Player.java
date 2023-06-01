@@ -1,5 +1,6 @@
-package com.example.model;
+package com.example.model.player;
 
+import com.example.model.JsonArray;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;

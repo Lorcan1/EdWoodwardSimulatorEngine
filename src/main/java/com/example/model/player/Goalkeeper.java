@@ -1,4 +1,4 @@
-package com.example.model;
+package com.example.model.player;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

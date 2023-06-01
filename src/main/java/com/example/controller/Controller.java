@@ -1,15 +1,15 @@
 package com.example.controller;
 
 import com.example.matchEngine.MatchEngine;
-import com.example.model.Goalkeeper;
-import com.example.model.OutfieldPlayer;
-import com.example.model.Player;
+import com.example.model.player.Goalkeeper;
+import com.example.model.player.OutfieldPlayer;
+import com.example.model.player.Player;
 import com.example.repository.GoalkeeperRepository;
 import com.example.repository.OutfieldPlayerRepository;
 import com.example.team.TeamSetup;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.json.simple.JSONValue;
+import org.json.simple.JSONObject;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -135,7 +135,7 @@ public class Controller {
     }
 
     @GetMapping("/return-result") //http://localhost:8080/get-heading?name=Laporte
-    public String returnResult(@RequestParam(value = "home-club", defaultValue = "MCFC") String homeClub, @RequestParam(value = "away-club",defaultValue = "Spurs") String awayClub) throws JsonProcessingException {
+    public JSONObject returnResult(@RequestParam(value = "home-club", defaultValue = "MCFC") String homeClub, @RequestParam(value = "away-club",defaultValue = "Spurs") String awayClub) throws JsonProcessingException {
         String homeClubNameFull = returnFullClubName(homeClub);
         String awayClubNameFull = returnFullClubName(awayClub);
         MatchEngine matchEngine = new MatchEngine(teamSetup, homeClubNameFull, awayClubNameFull);

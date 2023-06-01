@@ -1,13 +1,15 @@
 package com.example.matchEngine;
 
-import com.example.model.Goalkeeper;
-import com.example.model.OutfieldPlayer;
+import com.example.model.Match;
+import com.example.model.player.Goalkeeper;
+import com.example.model.player.OutfieldPlayer;
 import com.example.team.Team;
 import com.example.team.TeamSetup;
-import com.example.model.Player;
+import com.example.model.player.Player;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
+import org.json.simple.JSONObject;
 
 import java.util.*;
 
@@ -41,6 +43,11 @@ public class MatchEngine { //need to change the design so that an endpoint can b
     public int homeScore;
     public int awayScore;
 
+    private List<String> homeScorers = new ArrayList<>();
+    private List<String> awayScorers= new ArrayList<>();
+    private List<String> homeAssisters= new ArrayList<>();
+    private List<String> awayAssisters= new ArrayList<>();
+
     HashMap<Player, Player> markers;
 
 
@@ -62,7 +69,7 @@ public class MatchEngine { //need to change the design so that an endpoint can b
 //
 
 
-    public String runMatchEngine() {
+    public JSONObject runMatchEngine() {
 
         playBall(homeTeam,awayTeam);
         playBall(awayTeam,homeTeam);
@@ -74,8 +81,14 @@ public class MatchEngine { //need to change the design so that an endpoint can b
 //            throw new RuntimeException(e);
 //        }
 //
-        log.info("Final Score: " + homeScore + "-" + awayScore);
-        return "Final Score: " + homeScore + "-" + awayScore;
+        addMatchParameters();
+        log.info("Final Score: " + homeScore + "-" + awayScore + homeScorers.toString() + awayScorers.toString());
+        JSONObject obj = new JSONObject();
+        obj.put("score",homeScore + "-" + awayScore);
+        obj.put("homeScorers", homeScorers.toString());
+        obj.put("awayScorers",awayScorers.toString());
+
+        return obj ;
     }
 //
 //    public void appendScoretoFile(int homeScore,int awayScore) throws IOException {
@@ -90,12 +103,17 @@ public class MatchEngine { //need to change the design so that an endpoint can b
     public void playBall(Team attackingTeam, Team defendingTeam){
         securePossession(attackingTeam,defendingTeam);
     }
-    public void updateScore(Team attackingTeam){
+    public void updateScore(Team attackingTeam, Player scorer, Player assister){
         if(attackingTeam.getTeamName().equals(homeTeam.getTeamName())){
             homeScore +=1;
+            homeScorers.add(scorer.getLastName());
+            homeAssisters.add(assister.getLastName());
         }
         else{
             awayScore+=1;
+            awayScorers.add(scorer.getLastName());
+            awayAssisters.add(assister.getLastName());
+
         }
     }
 
@@ -159,7 +177,7 @@ public class MatchEngine { //need to change the design so that an endpoint can b
             Goalkeeper goalkeeper = (Goalkeeper) defendingTeam.getGk();
             if((forwardInPossession.getFinishing() > (shotFailure + goalkeeper.getReflexes()/gkSavingDebuff)) && (forwardInPossession.getComposure() > composureCheck)) { // should be a defender marking check also a composure check on both keeper and striker
                 log.info("Goal Scored! Scorer:" + forwardInPossession.getFirstName() + " " + forwardInPossession.getLastName() + " Assist: " + playerInPossession.getFirstName() + " " + playerInPossession.getLastName());
-                updateScore(attackingTeam);
+                updateScore(attackingTeam, forwardInPossession, playerInPossession);
             }
 //            else if (playerInPossession instanceof Midfielder) { //forward doesnt score but ball breaks to attacking team, should be a random chance it goes to defending team added
 //                // calculate which forward picks up the loose ball based on positioning
@@ -298,6 +316,19 @@ public class MatchEngine { //need to change the design so that an endpoint can b
             securePossession(attackingTeam,defendingTeam);
         }
         securePossession(defendingTeam,attackingTeam); //which midfielder should be returned here
+
+    }
+
+    public void addMatchParameters(){
+        Match match = new Match();
+        match.setHomeTeam(homeTeamName);
+        match.setAwayTeam(awayTeamName);
+        match.setHomeScore(homeScore);
+        match.setAwayScore(awayScore);
+        match.setHomeScorers(homeScorers);
+        match.setAwayScorers(awayScorers);
+        match.setHomeAssisters(homeAssisters);
+        match.setAwayAssisters(awayAssisters);
 
     }
 //

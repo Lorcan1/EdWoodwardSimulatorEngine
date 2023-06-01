@@ -4,24 +4,16 @@ import com.example.repository.GoalkeeperRepository;
 import com.example.team.Team;
 import com.example.team.TeamSetup;
 import com.example.matchEngine.MatchEngine;
-import com.example.model.OutfieldPlayer;
-import com.example.model.Player;
+import com.example.model.player.Player;
 import com.example.repository.OutfieldPlayerRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.autoconfigure.domain.EntityScan;
-import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
 import org.springframework.context.annotation.Bean;
-import com.example.repository.PlayerRepository;
-import org.springframework.data.jpa.repository.Temporal;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
-
-import java.util.*;
 
 //@SpringBootApplication(exclude={DataSourceAutoConfiguration.class})
 //@EntityScan(basePackages = {"com.example.model"})

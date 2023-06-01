@@ -1,7 +1,7 @@
 package com.example.repository;
 
-import com.example.model.OutfieldPlayer;
-import com.example.model.Player;
+import com.example.model.player.OutfieldPlayer;
+import com.example.model.player.Player;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;

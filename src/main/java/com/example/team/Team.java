@@ -1,14 +1,12 @@
 package com.example.team;
 
-import com.example.model.Goalkeeper;
-import com.example.model.Player;
+import com.example.model.player.Player;
 import lombok.Getter;
 import lombok.Setter;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
+
 @Getter
 @Setter
 public class Team {

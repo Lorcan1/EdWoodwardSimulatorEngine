@@ -135,12 +135,11 @@ public class Controller {
     }
 
     @GetMapping("/return-result") //http://localhost:8080/get-heading?name=Laporte
-    public String returnResult(@RequestParam(value = "club", defaultValue = "Manchester City") String club) throws JsonProcessingException {
-        club = returnFullClubName(club);
-        List<Player> team = teamSetup.returnStartingEleven(club);
-        ObjectMapper objectMapper = new ObjectMapper();
-        return objectMapper.writeValueAsString(team);
-//        return new ObjectMapper().writeValueAsString(team);
+    public String returnResult(@RequestParam(value = "home-club", defaultValue = "MCFC") String homeClub, @RequestParam(value = "away-club",defaultValue = "Spurs") String awayClub) throws JsonProcessingException {
+        String homeClubNameFull = returnFullClubName(homeClub);
+        String awayClubNameFull = returnFullClubName(awayClub);
+        MatchEngine matchEngine = new MatchEngine(teamSetup, homeClubNameFull, awayClubNameFull);
+        return matchEngine.runMatchEngine();
     }
 
     @GetMapping("/test")

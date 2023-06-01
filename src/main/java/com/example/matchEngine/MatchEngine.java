@@ -7,6 +7,7 @@ import com.example.team.TeamSetup;
 import com.example.model.Player;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.extern.slf4j.Slf4j;
 
 import java.util.*;
 
@@ -23,6 +24,7 @@ import java.util.*;
 //
 @Getter
 @Setter
+@Slf4j
 public class MatchEngine { //need to change the design so that an endpoint can be hit and every time its hit the gamestate moves on a chunk of time until the game is over
     private final TeamSetup teamSetup;
     private Team homeTeam;
@@ -60,7 +62,7 @@ public class MatchEngine { //need to change the design so that an endpoint can b
 //
 
 
-    public void runMatchEngine() {
+    public String runMatchEngine() {
 
         playBall(homeTeam,awayTeam);
         playBall(awayTeam,homeTeam);
@@ -72,8 +74,8 @@ public class MatchEngine { //need to change the design so that an endpoint can b
 //            throw new RuntimeException(e);
 //        }
 //
-//
-        System.out.println("Final Score: " + homeScore + "-" + awayScore);
+        log.info("Final Score: " + homeScore + "-" + awayScore);
+        return "Final Score: " + homeScore + "-" + awayScore;
     }
 //
 //    public void appendScoretoFile(int homeScore,int awayScore) throws IOException {
@@ -156,7 +158,7 @@ public class MatchEngine { //need to change the design so that an endpoint can b
         if(playerInPossession.getPassing() > (passFailure + defendingTeam.getDm().getPositioning()/dmPositioningDebuff)){ //workrate of the defensive player should influence this
             Goalkeeper goalkeeper = (Goalkeeper) defendingTeam.getGk();
             if((forwardInPossession.getFinishing() > (shotFailure + goalkeeper.getReflexes()/gkSavingDebuff)) && (forwardInPossession.getComposure() > composureCheck)) { // should be a defender marking check also a composure check on both keeper and striker
-                System.out.println("Goal Scored! Scorer:" + forwardInPossession.getFirstName() + " " + forwardInPossession.getLastName() + " Assist: " + playerInPossession.getFirstName() + " " + playerInPossession.getLastName());
+                log.info("Goal Scored! Scorer:" + forwardInPossession.getFirstName() + " " + forwardInPossession.getLastName() + " Assist: " + playerInPossession.getFirstName() + " " + playerInPossession.getLastName());
                 updateScore(attackingTeam);
             }
 //            else if (playerInPossession instanceof Midfielder) { //forward doesnt score but ball breaks to attacking team, should be a random chance it goes to defending team added

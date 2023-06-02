@@ -27,7 +27,12 @@ import java.util.*;
 @Getter
 @Setter
 @Slf4j
-public class MatchEngine { //need to change the design so that an endpoint can be hit and every time its hit the gamestate moves on a chunk of time until the game is over
+public class MatchEngine implements Subject{
+
+
+
+
+    //need to change the design so that an endpoint can be hit and every time its hit the gamestate moves on a chunk of time until the game is over
     private final TeamSetup teamSetup;
     private Team homeTeam;
     private Team awayTeam;
@@ -48,7 +53,11 @@ public class MatchEngine { //need to change the design so that an endpoint can b
     private List<String> homeAssisters= new ArrayList<>();
     private List<String> awayAssisters= new ArrayList<>();
 
+    private List<Observer> observers;
+
     HashMap<Player, Player> markers;
+
+    private Match match;
 
 
     public MatchEngine(TeamSetup teamSetup, String homeTeamName, String awayTeamName) {
@@ -62,9 +71,31 @@ public class MatchEngine { //need to change the design so that an endpoint can b
         markers.put(homeTeam.getMcr() ,awayTeam.getMcl());
         markers.put(awayTeam.getMcr() ,homeTeam.getMcl());
         markers.put(awayTeam.getMcr() ,homeTeam.getMcl());
+        this.observers = new ArrayList<>();
+        this.match = new Match();
 
 
     }
+
+    @Override
+    public void registerObserver(Observer o){
+        observers.add(o);
+    }
+
+    @Override
+    public void removeObserver(Observer o){
+        int observerIndex = observers.indexOf(o);
+        if(observerIndex >= 0){
+            observers.remove(observerIndex);
+        }
+    }
+
+    @Override
+    public void notifyObservers(){
+        observers.forEach(o->o.update(match));
+    }
+
+
 
 //
 
@@ -85,9 +116,9 @@ public class MatchEngine { //need to change the design so that an endpoint can b
         log.info("Final Score: " + homeScore + "-" + awayScore + homeScorers.toString() + awayScorers.toString());
         JSONObject obj = new JSONObject();
         obj.put("score",homeScore + "-" + awayScore);
-        obj.put("homeScorers", homeScorers.toString());
-        obj.put("awayScorers",awayScorers.toString());
-
+        obj.put("homeScorers", homeScorers.toString().replace("[", "").replace("]", ""));
+        obj.put("awayScorers",awayScorers.toString().replace("[", "").replace("]", ""));
+        notifyObservers();
         return obj ;
     }
 //
@@ -304,7 +335,7 @@ public class MatchEngine { //need to change the design so that an endpoint can b
 //        } else if ((randInt>33 && randInt < 66)  && ((attackingTeam.f2.getPositioning()/2) > positoningCheck)) {
 //            return attackingTeam.f2;
 //        }else{
-//            return attackingTeam.f1; //should be third forward
+//            return attackingTeam.f1; //should be third forwardd
 //        }
 //    }
 //
@@ -320,7 +351,6 @@ public class MatchEngine { //need to change the design so that an endpoint can b
     }
 
     public void addMatchParameters(){
-        Match match = new Match();
         match.setHomeTeam(homeTeamName);
         match.setAwayTeam(awayTeamName);
         match.setHomeScore(homeScore);

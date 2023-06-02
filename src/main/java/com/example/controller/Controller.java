@@ -1,6 +1,7 @@
 package com.example.controller;
 
 import com.example.matchEngine.MatchEngine;
+import com.example.matchEngine.MatchResult;
 import com.example.model.player.Goalkeeper;
 import com.example.model.player.OutfieldPlayer;
 import com.example.model.player.Player;
@@ -139,6 +140,16 @@ public class Controller {
         String homeClubNameFull = returnFullClubName(homeClub);
         String awayClubNameFull = returnFullClubName(awayClub);
         MatchEngine matchEngine = new MatchEngine(teamSetup, homeClubNameFull, awayClubNameFull);
+        return matchEngine.runMatchEngine();
+    }
+
+    @GetMapping("/return-result-observer-pattern") //http://localhost:8080/get-heading?name=Laporte
+    public JSONObject returnResultObserver(@RequestParam(value = "home-club", defaultValue = "MCFC") String homeClub, @RequestParam(value = "away-club",defaultValue = "Spurs") String awayClub) throws JsonProcessingException {
+        String homeClubNameFull = returnFullClubName(homeClub);
+        String awayClubNameFull = returnFullClubName(awayClub);
+        MatchEngine matchEngine = new MatchEngine(teamSetup, homeClubNameFull, awayClubNameFull); //Subject
+        MatchResult matchResult = new MatchResult(matchEngine);
+
         return matchEngine.runMatchEngine();
     }
 

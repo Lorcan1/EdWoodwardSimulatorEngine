@@ -10,6 +10,7 @@ import com.example.repository.OutfieldPlayerRepository;
 import com.example.team.TeamSetup;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.springframework.web.bind.annotation.*;
 
@@ -136,15 +137,27 @@ public class Controller {
     }
 
     @GetMapping("/return-result") //http://localhost:8080/get-heading?name=Laporte
-    public JSONObject returnResult(@RequestParam(value = "home-club", defaultValue = "MCFC") String homeClub, @RequestParam(value = "away-club",defaultValue = "Spurs") String awayClub) throws JsonProcessingException {
+    public JSONArray returnResult(@RequestParam(value = "home-club", defaultValue = "MCFC") String homeClub, @RequestParam(value = "away-club",defaultValue = "Spurs") String awayClub) throws JsonProcessingException {
         String homeClubNameFull = returnFullClubName(homeClub);
         String awayClubNameFull = returnFullClubName(awayClub);
         MatchEngine matchEngine = new MatchEngine(teamSetup, homeClubNameFull, awayClubNameFull);
-        return matchEngine.runMatchEngine();
+        JSONArray array = matchEngine.runMatchEngine();
+        return array;
+//        JSONObject example = new JSONObject();
+//        ArrayList<String> homeScorers = new ArrayList<>();
+//        ArrayList<String> awayScorers = new ArrayList<>();
+//        homeScorers.add("Haaland");
+//        homeScorers.add("Grealish");
+//        awayScorers.add("Son");
+//        awayScorers.add("Son");
+//        example.put("score", "2-0");
+//        example.put("homeScorers", homeScorers);
+//        example.put("awayScorers", awayScorers);
+//        return example;
     }
 
     @GetMapping("/return-result-observer-pattern") //http://localhost:8080/get-heading?name=Laporte
-    public JSONObject returnResultObserver(@RequestParam(value = "home-club", defaultValue = "MCFC") String homeClub, @RequestParam(value = "away-club",defaultValue = "Spurs") String awayClub) throws JsonProcessingException {
+    public JSONArray returnResultObserver(@RequestParam(value = "home-club", defaultValue = "MCFC") String homeClub, @RequestParam(value = "away-club",defaultValue = "Spurs") String awayClub) throws JsonProcessingException {
         String homeClubNameFull = returnFullClubName(homeClub);
         String awayClubNameFull = returnFullClubName(awayClub);
         MatchEngine matchEngine = new MatchEngine(teamSetup, homeClubNameFull, awayClubNameFull); //Subject

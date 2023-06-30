@@ -9,6 +9,7 @@ import com.example.model.player.Player;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
+import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
 import java.util.*;
@@ -100,7 +101,7 @@ public class MatchEngine implements Subject{
 //
 
 
-    public JSONObject runMatchEngine() {
+    public JSONArray runMatchEngine() {
 
         playBall(homeTeam,awayTeam);
         playBall(awayTeam,homeTeam);
@@ -114,12 +115,37 @@ public class MatchEngine implements Subject{
 //
         addMatchParameters();
         log.info("Final Score: " + homeScore + "-" + awayScore + homeScorers.toString() + awayScorers.toString());
-        JSONObject obj = new JSONObject();
-        obj.put("score",homeScore + "-" + awayScore);
-        obj.put("homeScorers", homeScorers.toString().replace("[", "").replace("]", ""));
-        obj.put("awayScorers",awayScorers.toString().replace("[", "").replace("]", ""));
+        JSONArray array = new JSONArray();
+        JSONObject scorer1 = new JSONObject();
+        scorer1.put("name","Son");
+        scorer1.put("team","home");
+        JSONArray goals1 = new JSONArray();
+        goals1.add("15'");
+        goals1.add("30'");
+        scorer1.put("goals",goals1);
+
+        JSONObject scorer2 = new JSONObject();
+        scorer2.put("name","Kane");
+        scorer2.put("team","home");
+        JSONArray goals2 = new JSONArray();
+        goals2.add("40'");
+        scorer2.put("goals",goals2);
+
+        JSONObject scorer3 = new JSONObject();
+        scorer3.put("name","Haaland");
+        scorer3.put("team","away");
+        JSONArray goals3 = new JSONArray();
+        goals3.add("40'");
+        scorer3.put("goals",goals3);
+//        obj.put("homeScorers", homeScorers.toString().replace("[", "").replace("]", ""));
+//        obj.put("awayScorers",awayScorers.toString().replace("[", "").replace("]", ""));
+//        obj.put("homeScorers",homeScorers);
+//        obj.put("awayScorers",awayScorers);
+        array.add(scorer1);
+        array.add(scorer2);
+        array.add(scorer3);
         notifyObservers();
-        return obj ;
+        return array ;
     }
 //
 //    public void appendScoretoFile(int homeScore,int awayScore) throws IOException {

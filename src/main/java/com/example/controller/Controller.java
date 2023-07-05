@@ -5,12 +5,14 @@ import com.example.matchEngine.MatchResult;
 import com.example.model.player.Goalkeeper;
 import com.example.model.player.OutfieldPlayer;
 import com.example.model.player.Player;
+import com.example.model.player.PlayerMatchStats;
 import com.example.repository.GoalkeeperRepository;
 import com.example.repository.OutfieldPlayerRepository;
+import com.example.team.Team;
+import com.example.team.PlayersMatchStats;
 import com.example.team.TeamSetup;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.springframework.web.bind.annotation.*;
 
@@ -137,12 +139,12 @@ public class Controller {
     }
 
     @GetMapping("/return-result") //http://localhost:8080/get-heading?name=Laporte
-    public JSONArray returnResult(@RequestParam(value = "home-club", defaultValue = "MCFC") String homeClub, @RequestParam(value = "away-club",defaultValue = "Spurs") String awayClub) throws JsonProcessingException {
+    public JSONObject returnResult(@RequestParam(value = "home-club", defaultValue = "MCFC") String homeClub, @RequestParam(value = "away-club",defaultValue = "Spurs") String awayClub) throws JsonProcessingException {
         String homeClubNameFull = returnFullClubName(homeClub);
         String awayClubNameFull = returnFullClubName(awayClub);
         MatchEngine matchEngine = new MatchEngine(teamSetup, homeClubNameFull, awayClubNameFull);
-        JSONArray array = matchEngine.runMatchEngine();
-        return array;
+        JSONObject object = matchEngine.runMatchEngine();
+        return object;
 //        JSONObject example = new JSONObject();
 //        ArrayList<String> homeScorers = new ArrayList<>();
 //        ArrayList<String> awayScorers = new ArrayList<>();
@@ -157,7 +159,7 @@ public class Controller {
     }
 
     @GetMapping("/return-result-observer-pattern") //http://localhost:8080/get-heading?name=Laporte
-    public JSONArray returnResultObserver(@RequestParam(value = "home-club", defaultValue = "MCFC") String homeClub, @RequestParam(value = "away-club",defaultValue = "Spurs") String awayClub) throws JsonProcessingException {
+    public JSONObject returnResultObserver(@RequestParam(value = "home-club", defaultValue = "MCFC") String homeClub, @RequestParam(value = "away-club",defaultValue = "Spurs") String awayClub) throws JsonProcessingException {
         String homeClubNameFull = returnFullClubName(homeClub);
         String awayClubNameFull = returnFullClubName(awayClub);
         MatchEngine matchEngine = new MatchEngine(teamSetup, homeClubNameFull, awayClubNameFull); //Subject
@@ -165,6 +167,29 @@ public class Controller {
 
         return matchEngine.runMatchEngine();
     }
+
+    @GetMapping("/processMatch") //http://localhost:8080/get-heading?name=Laporte
+    public String processMatch(@RequestParam(value = "home-club", defaultValue = "MCFC") String homeClub, @RequestParam(value = "away-club",defaultValue = "Spurs") String awayClub) throws JsonProcessingException {
+        String homeClubNameFull = returnFullClubName(homeClub);
+        String awayClubNameFull = returnFullClubName(awayClub);
+        MatchEngine matchEngine = new MatchEngine(teamSetup, homeClubNameFull, awayClubNameFull); //Subject
+//        Team team = matchEngine.getHomeTeam();
+//        OutfieldPlayer player  = (OutfieldPlayer) team.getSt();
+//        PlayerMatchStats PlayerMatchStats = new PlayerMatchStats();
+//        PlayerMatchStats.setName(player.getLastName());
+//        OutfieldPlayer player2  = (OutfieldPlayer) team.getMl();
+//        PlayerMatchStats PlayerMatchStats2 = new PlayerMatchStats();
+//        PlayerMatchStats2.setName(player2.getLastName());
+//        PlayersMatchStats playersMatchStats = new PlayersMatchStats(PlayerMatchStats,PlayerMatchStats2);
+//        teamInGame.setPlayerMatchStats1(PlayerMatchStats);
+//        teamInGame.setPlayerMatchStats2(PlayerMatchStats2);
+
+        ObjectMapper objectMapper = new ObjectMapper();
+//        objectMapper.writeValueAsString(matchEngine.getHomePlayersMatchStats().getPlayerMatchStatsArray());
+        return objectMapper.writeValueAsString(matchEngine.getHomePlayersMatchStats().getPlayerMatchStatsArray());
+    }
+
+
 
     @GetMapping("/test")
     public String test() {

@@ -3,6 +3,8 @@ package com.example.matchEngine;
 import com.example.model.Match;
 import com.example.model.player.Goalkeeper;
 import com.example.model.player.OutfieldPlayer;
+import com.example.model.player.PlayerMatchStats;
+import com.example.team.PlayersMatchStats;
 import com.example.team.Team;
 import com.example.team.TeamSetup;
 import com.example.model.player.Player;
@@ -12,6 +14,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
+import java.lang.reflect.Array;
 import java.util.*;
 
 //
@@ -60,6 +63,8 @@ public class MatchEngine implements Subject{
 
     private Match match;
 
+    private PlayersMatchStats homePlayersMatchStats;
+
 
     public MatchEngine(TeamSetup teamSetup, String homeTeamName, String awayTeamName) {
         this.teamSetup = teamSetup;
@@ -74,8 +79,26 @@ public class MatchEngine implements Subject{
         markers.put(awayTeam.getMcr() ,homeTeam.getMcl());
         this.observers = new ArrayList<>();
         this.match = new Match();
+        this.homePlayersMatchStats= assignPlayersToMatch(this.homeTeam);
 
 
+    }
+
+    public PlayersMatchStats assignPlayersToMatch(Team team){
+        ArrayList<Player> players = (ArrayList<Player>) team.getPlayers();
+        PlayersMatchStats playersMatchStats = new PlayersMatchStats();
+        ArrayList<PlayerMatchStats> playerMatchStatsArray = new ArrayList();
+        playersMatchStats.setPlayerMatchStatsArray(playerMatchStatsArray);
+        for(Player player: players){
+            PlayerMatchStats playerMatchStats = new PlayerMatchStats();
+            playerMatchStats.setName(player.getLastName());
+            playerMatchStats.setPos(player.getStartingPosition());
+            playerMatchStats.setPlayerID(player.getId());
+            playerMatchStats.setClub(player.getClubAbbrev());
+            playersMatchStats.getPlayerMatchStatsArray().add(playerMatchStats);
+        }
+
+        return playersMatchStats;
     }
 
     @Override
@@ -101,7 +124,7 @@ public class MatchEngine implements Subject{
 //
 
 
-    public JSONArray runMatchEngine() {
+    public JSONObject runMatchEngine() {
 
         playBall(homeTeam,awayTeam);
         playBall(awayTeam,homeTeam);
@@ -115,7 +138,7 @@ public class MatchEngine implements Subject{
 //
         addMatchParameters();
         log.info("Final Score: " + homeScore + "-" + awayScore + homeScorers.toString() + awayScorers.toString());
-        JSONArray array = new JSONArray();
+        JSONArray scorers = new JSONArray();
         JSONObject scorer1 = new JSONObject();
         scorer1.put("name","Son");
         scorer1.put("team","home");
@@ -141,11 +164,18 @@ public class MatchEngine implements Subject{
 //        obj.put("awayScorers",awayScorers.toString().replace("[", "").replace("]", ""));
 //        obj.put("homeScorers",homeScorers);
 //        obj.put("awayScorers",awayScorers);
-        array.add(scorer1);
-        array.add(scorer2);
-        array.add(scorer3);
+        scorers.add(scorer1);
+        scorers.add(scorer2);
+        scorers.add(scorer3);
+
+        JSONObject obj = new JSONObject();
+        obj.put("homeTeam","Tottenham Hotspur");
+        obj.put("awayTeam","Manchester City");
+        obj.put("awayTeamScore","1");
+        obj.put("homeTeamScore","3");
+        obj.put("Scorer",scorers);
         notifyObservers();
-        return array ;
+        return obj ;
     }
 //
 //    public void appendScoretoFile(int homeScore,int awayScore) throws IOException {

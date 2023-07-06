@@ -16,10 +16,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.json.simple.JSONObject;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.stream.Stream;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:4200")
@@ -34,7 +32,7 @@ public class Controller {
     private final TeamSetup teamSetup;
     Map<String, Player> positions= new HashMap<>();
 
-    
+
 
     public Controller(OutfieldPlayerRepository outfieldPlayerRepository, GoalkeeperRepository goalkeeperRepository, TeamSetup teamSetup) {
         this.outfieldPlayerRepository = outfieldPlayerRepository;
@@ -186,7 +184,15 @@ public class Controller {
 
         ObjectMapper objectMapper = new ObjectMapper();
 //        objectMapper.writeValueAsString(matchEngine.getHomePlayersMatchStats().getPlayerMatchStatsArray());
+        matchEngine.getHomePlayersMatchStats().getPlayerMatchStatsArray().addAll(matchEngine.getAwayPlayersMatchStats().getPlayerMatchStatsArray());
         return objectMapper.writeValueAsString(matchEngine.getHomePlayersMatchStats().getPlayerMatchStatsArray());
+    }
+
+    @GetMapping("/test-pbp")
+    public JSONObject testPBP(){
+        JSONObject test = new JSONObject();
+        test.put("key","11:44 - BOS - Robert Williams elevates for a shot at the rim");
+        return test;
     }
 
 

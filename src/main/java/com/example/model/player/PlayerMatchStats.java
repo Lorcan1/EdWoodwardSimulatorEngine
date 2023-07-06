@@ -9,6 +9,7 @@ public class PlayerMatchStats {
     String pos;
     String name;
     String club;
+    Boolean home;
     int shots;
     int onTarget;
     int keyChanesCreated;

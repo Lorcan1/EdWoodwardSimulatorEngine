@@ -16,6 +16,7 @@ import org.json.simple.JSONObject;
 
 import java.lang.reflect.Array;
 import java.util.*;
+import java.util.stream.Collectors;
 
 //
 //import players.*;
@@ -64,6 +65,7 @@ public class MatchEngine implements Subject{
     private Match match;
 
     private PlayersMatchStats homePlayersMatchStats;
+    private PlayersMatchStats awayPlayersMatchStats;
 
 
     public MatchEngine(TeamSetup teamSetup, String homeTeamName, String awayTeamName) {
@@ -79,23 +81,31 @@ public class MatchEngine implements Subject{
         markers.put(awayTeam.getMcr() ,homeTeam.getMcl());
         this.observers = new ArrayList<>();
         this.match = new Match();
-        this.homePlayersMatchStats= assignPlayersToMatch(this.homeTeam);
+        this.homePlayersMatchStats= assignPlayersToMatch(this.homeTeam,true);
+        this.awayPlayersMatchStats= assignPlayersToMatch(this.awayTeam,false);
 
 
     }
 
-    public PlayersMatchStats assignPlayersToMatch(Team team){
+    public PlayersMatchStats assignPlayersToMatch(Team team, Boolean home){
         ArrayList<Player> players = (ArrayList<Player>) team.getPlayers();
+        List<String> orderedList = Arrays.asList("GK", "DL", "DCL", "DCR","DR","DM","MR","MCR","MCL","ML","ST");
+
+        List<Player> sortedPlayers = players.stream()
+                .sorted(Comparator.comparingInt(o -> orderedList.indexOf(o.getStartingPosition())))
+                .collect(Collectors.toList());
+
         PlayersMatchStats playersMatchStats = new PlayersMatchStats();
         ArrayList<PlayerMatchStats> playerMatchStatsArray = new ArrayList();
         playersMatchStats.setPlayerMatchStatsArray(playerMatchStatsArray);
-        for(Player player: players){
+        for(Player player: sortedPlayers){
             PlayerMatchStats playerMatchStats = new PlayerMatchStats();
             playerMatchStats.setName(player.getLastName());
             playerMatchStats.setPos(player.getStartingPosition());
             playerMatchStats.setPlayerID(player.getId());
             playerMatchStats.setClub(player.getClubAbbrev());
             playersMatchStats.getPlayerMatchStatsArray().add(playerMatchStats);
+            playerMatchStats.setHome(home);
         }
 
         return playersMatchStats;

@@ -1,9 +1,10 @@
 package com.example.matchEngine;
 
+import com.example.model.InGameMatchStats;
 import com.example.model.Match;
 import com.example.model.player.Goalkeeper;
 import com.example.model.player.OutfieldPlayer;
-import com.example.model.player.PlayerMatchStats;
+import com.example.model.player.InGamePlayerStats;
 import com.example.team.PlayersMatchStats;
 import com.example.team.Team;
 import com.example.team.TeamSetup;
@@ -14,7 +15,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
-import java.lang.reflect.Array;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -67,6 +67,8 @@ public class MatchEngine implements Subject{
     private PlayersMatchStats homePlayersMatchStats;
     private PlayersMatchStats awayPlayersMatchStats;
 
+    private InGameMatchStats inGameMatchStats;
+
 
     public MatchEngine(TeamSetup teamSetup, String homeTeamName, String awayTeamName) {
         this.teamSetup = teamSetup;
@@ -83,6 +85,7 @@ public class MatchEngine implements Subject{
         this.match = new Match();
         this.homePlayersMatchStats= assignPlayersToMatch(this.homeTeam,true);
         this.awayPlayersMatchStats= assignPlayersToMatch(this.awayTeam,false);
+        this.inGameMatchStats = new InGameMatchStats();
 
 
     }
@@ -96,20 +99,30 @@ public class MatchEngine implements Subject{
                 .collect(Collectors.toList());
 
         PlayersMatchStats playersMatchStats = new PlayersMatchStats();
-        ArrayList<PlayerMatchStats> playerMatchStatsArray = new ArrayList();
-        playersMatchStats.setPlayerMatchStatsArray(playerMatchStatsArray);
+        ArrayList<InGamePlayerStats> inGamePlayerStatsArray = new ArrayList();
+        playersMatchStats.setInGamePlayerStatsArray(inGamePlayerStatsArray);
         for(Player player: sortedPlayers){
-            PlayerMatchStats playerMatchStats = new PlayerMatchStats();
-            playerMatchStats.setName(player.getLastName());
-            playerMatchStats.setPos(player.getStartingPosition());
-            playerMatchStats.setPlayerID(player.getId());
-            playerMatchStats.setClub(player.getClubAbbrev());
-            playersMatchStats.getPlayerMatchStatsArray().add(playerMatchStats);
-            playerMatchStats.setHome(home);
+            InGamePlayerStats inGamePlayerStats = new InGamePlayerStats();
+            inGamePlayerStats.setName(player.getLastName());
+            inGamePlayerStats.setPos(player.getStartingPosition());
+            inGamePlayerStats.setPlayerID(player.getId());
+            inGamePlayerStats.setClub(player.getClubAbbrev());
+            inGamePlayerStats.setAssists(1);
+            playersMatchStats.getInGamePlayerStatsArray().add(inGamePlayerStats);
+
+            inGamePlayerStats.setHome(home);
         }
 
         return playersMatchStats;
     }
+
+
+    public InGameMatchStats updateInGameMatchStats(){
+        this.inGameMatchStats.setHomePoss(51);
+        this.inGameMatchStats.setAwayPoss(49);
+        return this.inGameMatchStats;
+    }
+
 
     @Override
     public void registerObserver(Observer o){

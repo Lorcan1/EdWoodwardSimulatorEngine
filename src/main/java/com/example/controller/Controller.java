@@ -5,11 +5,8 @@ import com.example.matchEngine.MatchResult;
 import com.example.model.player.Goalkeeper;
 import com.example.model.player.OutfieldPlayer;
 import com.example.model.player.Player;
-import com.example.model.player.PlayerMatchStats;
 import com.example.repository.GoalkeeperRepository;
 import com.example.repository.OutfieldPlayerRepository;
-import com.example.team.Team;
-import com.example.team.PlayersMatchStats;
 import com.example.team.TeamSetup;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -17,7 +14,6 @@ import org.json.simple.JSONObject;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
-import java.util.stream.Stream;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:4200")
@@ -167,7 +163,7 @@ public class Controller {
     }
 
     @GetMapping("/processMatch") //http://localhost:8080/get-heading?name=Laporte
-    public String processMatch(@RequestParam(value = "home-club", defaultValue = "MCFC") String homeClub, @RequestParam(value = "away-club",defaultValue = "Spurs") String awayClub) throws JsonProcessingException {
+    public JSONObject processMatch(@RequestParam(value = "home-club", defaultValue = "MCFC") String homeClub, @RequestParam(value = "away-club",defaultValue = "Spurs") String awayClub) throws JsonProcessingException {
         String homeClubNameFull = returnFullClubName(homeClub);
         String awayClubNameFull = returnFullClubName(awayClub);
         MatchEngine matchEngine = new MatchEngine(teamSetup, homeClubNameFull, awayClubNameFull); //Subject
@@ -184,8 +180,12 @@ public class Controller {
 
         ObjectMapper objectMapper = new ObjectMapper();
 //        objectMapper.writeValueAsString(matchEngine.getHomePlayersMatchStats().getPlayerMatchStatsArray());
-        matchEngine.getHomePlayersMatchStats().getPlayerMatchStatsArray().addAll(matchEngine.getAwayPlayersMatchStats().getPlayerMatchStatsArray());
-        return objectMapper.writeValueAsString(matchEngine.getHomePlayersMatchStats().getPlayerMatchStatsArray());
+        matchEngine.getHomePlayersMatchStats().getInGamePlayerStatsArray().addAll(matchEngine.getAwayPlayersMatchStats().getInGamePlayerStatsArray());
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("players", matchEngine.getHomePlayersMatchStats().getInGamePlayerStatsArray());
+        jsonObject.put("match",matchEngine.updateInGameMatchStats());
+//        return objectMapper.writeValueAsString(matchEngine.getHomePlayersMatchStats().getInGamePlayerStatsArray());
+        return jsonObject;
     }
 
     @GetMapping("/test-pbp")

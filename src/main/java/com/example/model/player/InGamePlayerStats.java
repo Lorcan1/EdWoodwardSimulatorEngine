@@ -5,14 +5,14 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class PlayerMatchStats {
+public class InGamePlayerStats {
     String pos;
     String name;
     String club;
     Boolean home;
     int shots;
     int onTarget;
-    int keyChanesCreated;
+    int keyChancesCreated;
     int goals;
     float expGoals;
     int assists;

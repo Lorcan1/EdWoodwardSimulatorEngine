@@ -61,8 +61,8 @@ public class MatchEngine implements Subject{
 
     private Match match;
 
-    private PlayersMatchStats homePlayersMatchStats;
-    private PlayersMatchStats awayPlayersMatchStats;
+    private Map<String,InGamePlayerStats> homePlayersMatchStatsMap;
+    private Map<String,InGamePlayerStats> awayPlayersMatchStatsMap;
 
     private InGameMatchStats inGameMatchStats;
 
@@ -75,6 +75,8 @@ public class MatchEngine implements Subject{
 
     private boolean startOfGame;
 
+    PlayersMatchStats playersMatchStats = new PlayersMatchStats();
+
 
     public MatchEngine(TeamSetup teamSetup, String homeTeamName, String awayTeamName) {
         this.teamSetup = teamSetup;
@@ -82,15 +84,15 @@ public class MatchEngine implements Subject{
         this.awayTeamName = awayTeamName;
         this.homeTeam = new Team(homeTeamName,teamSetup);
         this.awayTeam = new Team(awayTeamName,teamSetup);
-        this.markers = new HashMap<>();
+        this.markers = new HashMap<>();   // this needs to be put in its own function
         markers.put(homeTeam.getMcl() ,awayTeam.getMcr());
         markers.put(homeTeam.getMcr() ,awayTeam.getMcl());
         markers.put(awayTeam.getMcr() ,homeTeam.getMcl());
         markers.put(awayTeam.getMcr() ,homeTeam.getMcl());
         this.observers = new ArrayList<>();
         this.match = new Match();
-        this.homePlayersMatchStats= assignPlayersToMatch(this.homeTeam,true);
-        this.awayPlayersMatchStats= assignPlayersToMatch(this.awayTeam,false);
+        this.homePlayersMatchStatsMap = playersMatchStats.createMapfromArray(assignPlayersToMatch(this.homeTeam,true).getInGamePlayerStatsArray());
+        this.awayPlayersMatchStatsMap= playersMatchStats.createMapfromArray(assignPlayersToMatch(this.awayTeam,false).getInGamePlayerStatsArray());
         this.inGameMatchStats = new InGameMatchStats();
         this.startOfGame = true;
     }
@@ -103,7 +105,7 @@ public class MatchEngine implements Subject{
                 .sorted(Comparator.comparingInt(o -> orderedList.indexOf(o.getStartingPosition())))
                 .collect(Collectors.toList());
 
-        PlayersMatchStats playersMatchStats = new PlayersMatchStats();
+
         ArrayList<InGamePlayerStats> inGamePlayerStatsArray = new ArrayList();
         playersMatchStats.setInGamePlayerStatsArray(inGamePlayerStatsArray);
         for(Player player: sortedPlayers){
@@ -119,6 +121,16 @@ public class MatchEngine implements Subject{
         }
 
         return playersMatchStats;
+    }
+
+    public List<InGamePlayerStats> sortPlayers(ArrayList<InGamePlayerStats> unsortedArray){
+        List<String> orderedList = Arrays.asList("GK", "DL", "DCL", "DCR","DR","DM","MR","MCR","MCL","ML","ST");
+
+        List<InGamePlayerStats> sortedPlayers = unsortedArray.stream()
+                .sorted(Comparator.comparingInt(o -> orderedList.indexOf(o.getPos())))
+                .collect(Collectors.toList());
+
+        return sortedPlayers;
     }
 
 

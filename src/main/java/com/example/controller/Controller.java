@@ -3,6 +3,7 @@ package com.example.controller;
 import com.example.matchEngine.MatchEngine;
 import com.example.matchEngine.MatchResult;
 import com.example.model.player.Goalkeeper;
+import com.example.model.player.InGamePlayerStats;
 import com.example.model.player.OutfieldPlayer;
 import com.example.model.player.Player;
 import com.example.repository.GoalkeeperRepository;
@@ -168,9 +169,13 @@ public class Controller {
         String awayClubNameFull = returnFullClubName(awayClub);
         MatchEngine matchEngine = new MatchEngine(teamSetup, homeClubNameFull, awayClubNameFull); //Subject
         ObjectMapper objectMapper = new ObjectMapper();
-        matchEngine.getHomePlayersMatchStats().getInGamePlayerStatsArray().addAll(matchEngine.getAwayPlayersMatchStats().getInGamePlayerStatsArray());
+        List<InGamePlayerStats> homePlayerMatchStats = new ArrayList<>(matchEngine.getHomePlayersMatchStatsMap().values());
+        homePlayerMatchStats = matchEngine.sortPlayers((ArrayList<InGamePlayerStats>) homePlayerMatchStats);
+        List<InGamePlayerStats> awayPlayerMatchStats = new ArrayList<>(matchEngine.getAwayPlayersMatchStatsMap().values());
+        awayPlayerMatchStats = matchEngine.sortPlayers((ArrayList<InGamePlayerStats>) awayPlayerMatchStats);
+        homePlayerMatchStats.addAll(awayPlayerMatchStats);
         JSONObject jsonObject = new JSONObject();
-        jsonObject.put("players", matchEngine.getHomePlayersMatchStats().getInGamePlayerStatsArray());
+        jsonObject.put("players", homePlayerMatchStats);
         jsonObject.put("match",matchEngine.updateInGameMatchStats());
         jsonObject.put("pbp","11:44 - BOS - Robert Williams elevates for a shot at the rim");
         return jsonObject;

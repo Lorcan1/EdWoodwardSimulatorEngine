@@ -167,24 +167,12 @@ public class Controller {
         String homeClubNameFull = returnFullClubName(homeClub);
         String awayClubNameFull = returnFullClubName(awayClub);
         MatchEngine matchEngine = new MatchEngine(teamSetup, homeClubNameFull, awayClubNameFull); //Subject
-//        Team team = matchEngine.getHomeTeam();
-//        OutfieldPlayer player  = (OutfieldPlayer) team.getSt();
-//        PlayerMatchStats PlayerMatchStats = new PlayerMatchStats();
-//        PlayerMatchStats.setName(player.getLastName());
-//        OutfieldPlayer player2  = (OutfieldPlayer) team.getMl();
-//        PlayerMatchStats PlayerMatchStats2 = new PlayerMatchStats();
-//        PlayerMatchStats2.setName(player2.getLastName());
-//        PlayersMatchStats playersMatchStats = new PlayersMatchStats(PlayerMatchStats,PlayerMatchStats2);
-//        teamInGame.setPlayerMatchStats1(PlayerMatchStats);
-//        teamInGame.setPlayerMatchStats2(PlayerMatchStats2);
-
         ObjectMapper objectMapper = new ObjectMapper();
-//        objectMapper.writeValueAsString(matchEngine.getHomePlayersMatchStats().getPlayerMatchStatsArray());
         matchEngine.getHomePlayersMatchStats().getInGamePlayerStatsArray().addAll(matchEngine.getAwayPlayersMatchStats().getInGamePlayerStatsArray());
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("players", matchEngine.getHomePlayersMatchStats().getInGamePlayerStatsArray());
         jsonObject.put("match",matchEngine.updateInGameMatchStats());
-//        return objectMapper.writeValueAsString(matchEngine.getHomePlayersMatchStats().getInGamePlayerStatsArray());
+        jsonObject.put("pbp","11:44 - BOS - Robert Williams elevates for a shot at the rim");
         return jsonObject;
     }
 

@@ -34,9 +34,6 @@ import java.util.stream.Collectors;
 @Slf4j
 public class MatchEngine implements Subject{
 
-
-
-
     //need to change the design so that an endpoint can be hit and every time its hit the gamestate moves on a chunk of time until the game is over
     private final TeamSetup teamSetup;
     private Team homeTeam;
@@ -69,6 +66,15 @@ public class MatchEngine implements Subject{
 
     private InGameMatchStats inGameMatchStats;
 
+    private float time;
+    private float addedTime;
+    private boolean gameFinished;
+
+    private Team attackingTeam;
+    private Team defendingTeam;
+
+    private boolean startOfGame;
+
 
     public MatchEngine(TeamSetup teamSetup, String homeTeamName, String awayTeamName) {
         this.teamSetup = teamSetup;
@@ -86,8 +92,7 @@ public class MatchEngine implements Subject{
         this.homePlayersMatchStats= assignPlayersToMatch(this.homeTeam,true);
         this.awayPlayersMatchStats= assignPlayersToMatch(this.awayTeam,false);
         this.inGameMatchStats = new InGameMatchStats();
-
-
+        this.startOfGame = true;
     }
 
     public PlayersMatchStats assignPlayersToMatch(Team team, Boolean home){
@@ -145,7 +150,77 @@ public class MatchEngine implements Subject{
 
 
 //
+    public void newRunMatchEngine(){
+        playGame("kickOff");
+    }
 
+    public void playGame(String action){ //how do we deal with teamInPossesion/ attacking team? - keep it as an instance variable?
+        if(time > (90 + addedTime)){
+            gameFinished = true;
+        }
+        while(gameFinished != true){
+            switch (action){
+                case "kickOff":
+                    action = kickOff();
+                    break;
+                case "homeDefencePoss":
+                    action = securePossession2();
+                    break;
+                case "loosBallMidfield":
+                    action = looseBallMidfield(); //need to code this
+                    break;
+                case "attackPos": //not all attackers recieve perfect through balls, some have to create own chances with ball to feet/dribbling/pace
+//                    action = throughBallOutcome2();
+            }
+
+
+        }
+
+    }
+
+    public String kickOff(){
+        if(startOfGame == true){
+            coinflip();
+        }
+        return "defencePoss";
+    }
+
+    public void coinflip(){ // add the logic here
+        attackingTeam = homeTeam;
+    }
+
+    public String securePossession2(){
+        //ball passed between midfielders with attacking team starting with ball,
+        //if a certain check is passed then a throughball should be played,
+        //otherwise the function is called with the other team in possesion
+        //or the ball is played back to the defence and isPlayOutFromBackSuccesful called
+        double luckyBounce = Math.random()*10*2;
+        double firstTouchFailure = Math.random()*10*2;
+
+
+        OutfieldPlayer playerInPosession = (OutfieldPlayer) attackingTeam.getMcr(); //shouldn't always be mcr
+        OutfieldPlayer marker = (OutfieldPlayer) markers.get(playerInPosession);
+
+        if(playerInPosession.getDribbling() < marker.getTackling() && marker.getTackling() < luckyBounce){
+            return "looseballMidfield";
+        }
+        else if ((firstTouchFailure > 10)){  //get vision is higher than pass.difficulty + some movement check on the attacker = off the ball which can be influenced by high pace
+            return "attackPos";
+        }
+//        //if N can they pass to a teamate
+//            //secure Possesion with different player
+//        else{
+//            securePossession(attackingTeam,defendingTeam,attackingTeam.m2);
+//        }
+        //if N playoutfromtheback
+
+        return "homeDefencePoss";
+
+    }
+
+    public String looseBallMidfield(){ //build logic
+        return "Placeholder";
+    }
 
     public JSONObject runMatchEngine() {
 

@@ -6,6 +6,8 @@ import lombok.Setter;
 @Getter
 @Setter
 public class InGamePlayerStats {
+    long playerStatsID;
+    long matchId;
     String pos;
     String name;
     String club;

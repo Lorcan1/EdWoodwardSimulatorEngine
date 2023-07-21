@@ -34,6 +34,10 @@ import java.util.stream.Collectors;
 @Slf4j
 public class MatchEngine implements Subject{
 
+
+    private UpdateInGameMatchStats updateInGameMatchStats;
+    private UpdateInGamePlayerStats updateInGamePlayerStats;
+
     //need to change the design so that an endpoint can be hit and every time its hit the gamestate moves on a chunk of time until the game is over
     private final TeamSetup teamSetup;
     private Team homeTeam;
@@ -90,14 +94,16 @@ public class MatchEngine implements Subject{
         markers.put(awayTeam.getMcr() ,homeTeam.getMcl());
         markers.put(awayTeam.getMcr() ,homeTeam.getMcl());
         this.observers = new ArrayList<>();
-        this.match = new Match();
+        this.match = new Match(); //need to set an Id and give it to the player stats
         this.homePlayersMatchStatsMap = playersMatchStats.createMapfromArray(assignPlayersToMatch(this.homeTeam,true).getInGamePlayerStatsArray());
         this.awayPlayersMatchStatsMap= playersMatchStats.createMapfromArray(assignPlayersToMatch(this.awayTeam,false).getInGamePlayerStatsArray());
         this.inGameMatchStats = new InGameMatchStats();
         this.startOfGame = true;
+        this.updateInGameMatchStats = new UpdateInGameMatchStats(this.match);
+        this.updateInGamePlayerStats = new UpdateInGamePlayerStats(this.homePlayersMatchStatsMap,this.awayPlayersMatchStatsMap);
     }
 
-    public PlayersMatchStats assignPlayersToMatch(Team team, Boolean home){
+    public PlayersMatchStats assignPlayersToMatch(Team team, Boolean home){ // make a match setup class
         ArrayList<Player> players = (ArrayList<Player>) team.getPlayers();
         List<String> orderedList = Arrays.asList("GK", "DL", "DCL", "DCR","DR","DM","MR","MCR","MCL","ML","ST");
 
@@ -109,6 +115,7 @@ public class MatchEngine implements Subject{
         ArrayList<InGamePlayerStats> inGamePlayerStatsArray = new ArrayList();
         playersMatchStats.setInGamePlayerStatsArray(inGamePlayerStatsArray);
         for(Player player: sortedPlayers){
+            //set matchID here
             InGamePlayerStats inGamePlayerStats = new InGamePlayerStats();
             inGamePlayerStats.setName(player.getLastName());
             inGamePlayerStats.setPos(player.getStartingPosition());
@@ -134,7 +141,7 @@ public class MatchEngine implements Subject{
     }
 
 
-    public InGameMatchStats updateInGameMatchStats(){
+    public InGameMatchStats updateInGameMatchStatsTemp(){
         this.inGameMatchStats.setHomePoss(51);
         this.inGameMatchStats.setAwayPoss(49);
         return this.inGameMatchStats;
@@ -155,7 +162,7 @@ public class MatchEngine implements Subject{
     }
 
     @Override
-    public void notifyObservers(){
+    public void notifyObservers(){ //look at this for updating match at the end before pushing to db, what about UpdateMatchStats in this equation
         observers.forEach(o->o.update(match));
     }
 
@@ -167,24 +174,36 @@ public class MatchEngine implements Subject{
     }
 
     public void playGame(String action){ //how do we deal with teamInPossesion/ attacking team? - keep it as an instance variable?
-        if(time > (90 + addedTime)){
-            gameFinished = true;
-        }
+
         while(gameFinished != true){
+            updateInGamePlayerStats.updatePlayerStats(action);
+            updateInGameMatchStats.updateMatchStats(action);
             switch (action){
                 case "kickOff":
                     action = kickOff();
                     break;
                 case "homeDefencePoss":
-                    action = securePossession2();
+                    action = isPlayOutFromBackSuccesful2();
                     break;
+                case "midfieldPoss":
+                    action = securePossession2();
                 case "loosBallMidfield":
                     action = looseBallMidfield(); //need to code this
                     break;
-                case "attackPos": //not all attackers recieve perfect through balls, some have to create own chances with ball to feet/dribbling/pace
+                case "attackerRecievesBall": //  it's not a throughBall
+//                    action = attakerRecievesBall
+                    break;
+                case "throughBall": //not all attackers recieve perfect through balls, some have to create own chances with ball to feet/dribbling/pace
 //                    action = throughBallOutcome2();
+                    break;
             }
-
+            if(time > (90 + addedTime)){
+                gameFinished = true;
+                //add the final stats to matchStats and playerStats
+                //there are two different types of matchStats - the ingame ones that move ie possesion, goals, xG
+                //  and the ones that will be available after the game
+                // I think actually these are the same 
+            }
 
         }
 
@@ -217,7 +236,7 @@ public class MatchEngine implements Subject{
             return "looseballMidfield";
         }
         else if ((firstTouchFailure > 10)){  //get vision is higher than pass.difficulty + some movement check on the attacker = off the ball which can be influenced by high pace
-            return "attackPos";
+            return "throughBall";
         }
 //        //if N can they pass to a teamate
 //            //secure Possesion with different player
@@ -232,6 +251,20 @@ public class MatchEngine implements Subject{
 
     public String looseBallMidfield(){ //build logic
         return "Placeholder";
+    }
+
+    public String isPlayOutFromBackSuccesful2() { //need to add midfielder tackling
+        double passFailure = Math.random() * 10 * 2;
+        double firstTouchFailure = Math.random() * 10 * 2;
+
+        OutfieldPlayer playerInPossession = (OutfieldPlayer) attackingTeam.getDcl(); //how to represent this, probably should get an average of all defenders or something, what happens if one defender has 10 less passing than another
+
+        if (playerInPossession.getPassing() > passFailure && attackingTeam.getMcr().getFirstTouch() > firstTouchFailure) { //should be a random midfielder/ a similar algo to the forward/ based on off the ball and stuff
+            return "midfieldPoss";
+
+        }
+        return "looseBallMidfield"; //which midfielder should be returned here
+
     }
 
     public JSONObject runMatchEngine() {
@@ -287,16 +320,6 @@ public class MatchEngine implements Subject{
         notifyObservers();
         return obj ;
     }
-//
-//    public void appendScoretoFile(int homeScore,int awayScore) throws IOException {
-//
-//            FileWriter fw = new FileWriter("Final Score", true);
-//            BufferedWriter bw = new BufferedWriter(fw);
-//            bw.write("Final Score: " + homeScore + "," + awayScore);
-//            bw.newLine();
-//            bw.close();
-//    }
-//
     public void playBall(Team attackingTeam, Team defendingTeam){
         securePossession(attackingTeam,defendingTeam);
     }

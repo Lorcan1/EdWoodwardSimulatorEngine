@@ -48,6 +48,7 @@ public class Main {
 
             Team team= new Team("Manchester City",teamSetup);
             matchEngine.runMatchEngine();
+            matchEngine.newRunMatchEngine();
 
 
             int x = 5;

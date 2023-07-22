@@ -8,25 +8,23 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.util.Random;
-
 @Getter
 @Setter
-public class DefenderDecisions extends PlayerDecisions {
+public class MidfielderDecisions extends PlayerDecisions {
     private UpdateInGamePlayerStats updateInGamePlayerStats;
     private MatchEngine matchEngine;
     private Random random = new Random();
 
 
-    public DefenderDecisions(UpdateInGamePlayerStats updateInGamePlayerStats, MatchEngine matchEngine) {
+    public MidfielderDecisions(UpdateInGamePlayerStats updateInGamePlayerStats, MatchEngine matchEngine) {
         this.updateInGamePlayerStats = updateInGamePlayerStats;
         this.matchEngine = matchEngine;
     }
 
     // *** this should be superclassed
-
-    public String defenderMakeDecision(int pitchPos, boolean homeTeamPoss, Player playerInPosses, Team attackingTeam,
+    public String midfielderMakeDecision(int pitchPos, boolean homeTeamPoss, Player playerInPosses, Team attackingTeam,
                                        Team defendingTeam) {
-        //possible decisions, pass to goalkeeper, pass to other defender, pass to midfielder, get tackles, carry the ball forward
+        //possible decisions, pass to goalkeeper, pass to  defender, pass to other midfielder, get tackles, carry the ball forward
         //but the decision depends on what area of the pitch the player is in
 
         //how do we pick which player has recieved the ball?
@@ -36,7 +34,7 @@ public class DefenderDecisions extends PlayerDecisions {
         // lets try three tiers for now, good pass, loose pass, wayward pass
         //lets try two for now
         // there needs to be information passed between functions about the passers stats and the pass recievers stats
-            //lets just assign them random chance for now
+        //lets just assign them random chance for now
         int randomChance = random.nextInt(100) + 1; // 1-100 -fluenced by pitch strata,a as in there shouldnt be any chance of shooting unless the defender is in midfield or attack.
         if(randomChance <= 20) { //pass to goalkeeper
             matchEngine.setPitchPos(homeTeamPoss ? 0 : 4);
@@ -68,11 +66,11 @@ public class DefenderDecisions extends PlayerDecisions {
         int randomChance = 0;
         switch (possibleRisk) { // use other factor to make the random chance is interesting
             case "Very Low": //pass to other defender/fullback - how do they pick another defender - fullbacks shouldn't pass to the other full back that much
-            //players attributes should have a say here
-               randomChance = random.nextInt(200) + 1; //increasing the bound increases the chance of this happening
+                //players attributes should have a say here
+                randomChance = random.nextInt(200) + 1; //increasing the bound increases the chance of this happening
                 break;
-                // if the stat is two low then they miss the pass
-                // the players skill stats should affect it here
+            // if the stat is two low then they miss the pass
+            // the players skill stats should affect it here
             case "Low":
                 randomChance = random.nextInt(150) + 1;
                 break;
@@ -80,7 +78,7 @@ public class DefenderDecisions extends PlayerDecisions {
                 randomChance = random.nextInt(100) + 1;
                 break;
             case "High":
-                randomChance = random.nextInt((3)) + 1;
+                randomChance = random.nextInt((6)) + 1;
                 break;
 
         }

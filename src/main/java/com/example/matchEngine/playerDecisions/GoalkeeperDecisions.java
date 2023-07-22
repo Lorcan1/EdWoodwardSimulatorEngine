@@ -9,7 +9,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class GoalkeeperDecisions {
+public class GoalkeeperDecisions extends PlayerDecisions {
 
 
 

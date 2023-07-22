@@ -168,7 +168,8 @@ public class MatchEngine implements Subject {
                 case "ballInDefenceOutWide":
 //                    action = fullbackMakeDecisiom();
                 case "ballInMidfield":
-//                    action = securePossession2();
+                    action = "Midfield pending";
+                    break;
                 case "looseBallMidfield":
 //                    action = looseBallMidfield(); //need to code this
                     break;
@@ -308,6 +309,13 @@ public class MatchEngine implements Subject {
             awayAssisters.add(assister.getLastName());
 
         }
+    }
+
+    public void changePossession(){
+        Team temp = this.attackingTeam;
+        this.attackingTeam = this.defendingTeam;
+        this.defendingTeam = temp;
+        homeTeamPoss = !homeTeamPoss;
     }
 
 

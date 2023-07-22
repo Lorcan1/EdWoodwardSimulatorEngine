@@ -1,8 +1,10 @@
-package com.example.matchEngine;
+package com.example.matchEngine.result;
 
+import com.example.matchEngine.observerPattern.Observer;
+import com.example.matchEngine.observerPattern.Subject;
 import com.example.model.Match;
 
-public class MatchResult implements Observer{
+public class MatchResult implements Observer {
 
     private Match match;
     public MatchResult(Subject matchEngine){

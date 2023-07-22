@@ -3,7 +3,7 @@ package com.example;
 import com.example.repository.GoalkeeperRepository;
 import com.example.team.Team;
 import com.example.team.TeamSetup;
-import com.example.matchEngine.MatchEngine;
+import com.example.matchEngine.engine.MatchEngine;
 import com.example.model.player.Player;
 import com.example.repository.OutfieldPlayerRepository;
 import org.slf4j.Logger;

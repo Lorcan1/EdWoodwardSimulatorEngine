@@ -1,4 +1,4 @@
-package com.example.matchEngine;
+package com.example.matchEngine.observerPattern;
 import com.example.model.Match;
 
 public interface Observer {

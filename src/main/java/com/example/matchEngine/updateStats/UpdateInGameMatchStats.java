@@ -1,4 +1,4 @@
-package com.example.matchEngine;
+package com.example.matchEngine.updateStats;
 
 import com.example.model.Match;
 

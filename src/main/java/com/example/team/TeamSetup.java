@@ -53,10 +53,10 @@ public class TeamSetup {
     public void returnPositionsAsJsonArray(List<Player> players){
         for(Player player: players){
             JSONArray naturalPos = new JSONArray(player.getPosition());
-            player.setPositionsNaturalArray(naturalPos);
+            player.setPositionsNatural(naturalPos);
 
             JSONArray accPos = new JSONArray(player.otherPositions);
-            player.setPositionsAccArray(accPos);
+            player.setPositionsAcc(accPos);
         }
 
     }
@@ -75,8 +75,8 @@ public class TeamSetup {
         positions.put("ST",null);
 
         for(Player player: team){
-            List<Object> nat = player.getPositionsNaturalArray().toList();
-            List<Object> acc = player.getPositionsAccArray().toList();
+            List<Object> nat = player.getPositionsNatural().toList();
+            List<Object> acc = player.getPositionsAcc().toList();
             List<Object> newNat = new ArrayList<>();
             List<Object> newAcc = new ArrayList<>();
             for(Object obj: nat){
@@ -91,15 +91,15 @@ public class TeamSetup {
             JSONArray newNatJson = new JSONArray(newNat);
             JSONArray newAccJson = new JSONArray(newAcc);
 
-            player.setPositionsNaturalArray(newNatJson);
-            player.setPositionsAccArray(newAccJson);
+            player.setPositionsNatural(newNatJson);
+            player.setPositionsAcc(newAccJson);
 
         }
 
         for (String position : positions.keySet()) {
             for (Player player : team) {
-                List<Object> natPositions = player.getPositionsNaturalArray().toList();
-                List<Object> accPositions = player.getPositionsAccArray().toList();
+                List<Object> natPositions = player.getPositionsNatural().toList();
+                List<Object> accPositions = player.getPositionsAcc().toList();
                 if (natPositions.contains(position)) {
                     positions.put(position, player);
                     team.remove(player);
@@ -125,8 +125,8 @@ public class TeamSetup {
         }
             for (String position : positions.keySet()){
                 for(Player player: team){
-                    List<Object> natPositions = player.getPositionsNaturalArray().toList();
-                    List<Object> accPositions = player.getPositionsAccArray().toList();
+                    List<Object> natPositions = player.getPositionsNatural().toList();
+                    List<Object> accPositions = player.getPositionsAcc().toList();
                     String positionR = position + 'R';
                     String positionL = position + 'L';
                     if (accPositions.contains(position) && positions.get(position) == null)  {
@@ -172,8 +172,8 @@ public class TeamSetup {
             //get a list of all players that can play in the position
             List<Player> canPlay = new ArrayList<>();
             for(Player player: team){
-                List<Object> natPositions = player.getPositionsNaturalArray().toList();
-                List<Object> accPositions = player.getPositionsAccArray().toList();
+                List<Object> natPositions = player.getPositionsNatural().toList();
+                List<Object> accPositions = player.getPositionsAcc().toList();
                 List<Object> allPositions = Stream.concat(natPositions.stream(), accPositions.stream()).toList();
                 if(allPositions.contains(position)){
                     canPlay.add(player);

@@ -1,6 +1,7 @@
 package com.example.matchEngine.playerDecisions;
 
 import com.example.matchEngine.engine.MatchEngine;
+import com.example.matchEngine.passCalculations.PassCalculations;
 import com.example.matchEngine.updateStats.UpdateInGamePlayerStats;
 import com.example.model.player.Player;
 import com.example.team.Team;
@@ -15,11 +16,13 @@ public class DefenderDecisions extends PlayerDecisions {
     private UpdateInGamePlayerStats updateInGamePlayerStats;
     private MatchEngine matchEngine;
     private Random random = new Random();
+    private PassCalculations passCalculations;
 
 
     public DefenderDecisions(UpdateInGamePlayerStats updateInGamePlayerStats, MatchEngine matchEngine) {
         this.updateInGamePlayerStats = updateInGamePlayerStats;
         this.matchEngine = matchEngine;
+        this.passCalculations = new PassCalculations();
     }
 
     // *** this should be superclassed
@@ -43,15 +46,15 @@ public class DefenderDecisions extends PlayerDecisions {
             return calcPassSuccess(playerInPosses, attackingTeam.getGk(), defendingTeam.getSt(), "Very Low") ? "ballOnTheLine" : "oneOnOne";
         } else if(randomChance <= 40) {//pass to other defender/fullback - how do they pick another defender - fullbacks shouldn't pass to the other full back that much
             matchEngine.setPitchPos(homeTeamPoss ? 1 : 3);
-            Player passReceiverDef = calcPassReceiver(attackingTeam);
+            Player passReceiverDef = calcPassReceiver(playerInPosses,attackingTeam,"defender");
             return calcPassSuccess(playerInPosses, passReceiverDef, defendingTeam.getSt(), "Low") ? "defenderPoss" : "ballInAttack";
         } else if(randomChance <= 60 ) {  //pass to midfielder
             matchEngine.setPitchPos(2);
-            Player passReceiverMid = calcPassReceiver(attackingTeam);
+            Player passReceiverMid = calcPassReceiver(playerInPosses,attackingTeam,"midfielder");
             return calcPassSuccess(playerInPosses, passReceiverMid, defendingTeam.getSt(), "Medium") ? "ballInMidfield" : "ballInMidfield";
         } else if(randomChance <= 80 ) {  //pass to attacker
             matchEngine.setPitchPos(homeTeamPoss ? 3 : 1);//this doesnt need to be sent to the next function, ball will still be in that zone it's just a matter of whos in possess
-            Player passReceiverAtt = calcPassReceiver(attackingTeam);
+            Player passReceiverAtt = calcPassReceiver(playerInPosses,attackingTeam,"attacker");
             return calcPassSuccess(playerInPosses, passReceiverAtt, defendingTeam.getSt(), "High") ? "ballInAttack" : "ballInDefence";
         } else if(randomChance <= 95) { //attempts a carry
             return calcCarrySuccess(playerInPosses, defendingTeam.getSt()) ? "defenderPos" : "counterAttack"; //only counter if looses the ball between certain strata?
@@ -99,8 +102,10 @@ public class DefenderDecisions extends PlayerDecisions {
     //these should be put in a super class. Also a good chance to work on changing logic from a parent class
     //in a child class
 
-    public Player calcPassReceiver(Team attackingTeam){
-        return attackingTeam.getGk();
+    public Player calcPassReceiver(Player playerInPoss, Team attackingTeam, String position) {
+        //how should playerInPoss affect it?
+        // I assume DRs rarely (if ever) pass to dcls more than dcrs
+        return passCalculations.whichPlayerReceivesTheBall(attackingTeam, position);
     }
 
     public boolean calcCarrySuccess(Player playerInPoss, Player marker){

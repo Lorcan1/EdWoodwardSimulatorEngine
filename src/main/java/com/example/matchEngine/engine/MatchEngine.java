@@ -161,7 +161,8 @@ public class MatchEngine implements Subject {
                     startOfGame = false;
                     break;
                 case "ballOnTheLine":
-                    action = "defenderPoss";
+                    action = "defenderPoss"; //needs to be coded
+                    break;
                 case "ballInDefence":
                     action = defenderDecisions.defenderMakeDecision(pitchPos,homeTeamPoss,playerInPosses,attackingTeam,defendingTeam);
                     break;

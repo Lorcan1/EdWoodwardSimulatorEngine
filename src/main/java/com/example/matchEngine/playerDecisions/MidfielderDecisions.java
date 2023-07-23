@@ -1,7 +1,9 @@
 package com.example.matchEngine.playerDecisions;
 
 import com.example.matchEngine.engine.MatchEngine;
+import com.example.matchEngine.passCalculations.PassCalculations;
 import com.example.matchEngine.updateStats.UpdateInGamePlayerStats;
+import com.example.model.player.OutfieldPlayer;
 import com.example.model.player.Player;
 import com.example.team.Team;
 import lombok.Getter;
@@ -14,11 +16,13 @@ public class MidfielderDecisions extends PlayerDecisions {
     private UpdateInGamePlayerStats updateInGamePlayerStats;
     private MatchEngine matchEngine;
     private Random random = new Random();
+    private PassCalculations passCalculations;
 
 
     public MidfielderDecisions(UpdateInGamePlayerStats updateInGamePlayerStats, MatchEngine matchEngine) {
         this.updateInGamePlayerStats = updateInGamePlayerStats;
         this.matchEngine = matchEngine;
+        this.passCalculations = new PassCalculations();
     }
 
     // *** this should be superclassed
@@ -39,17 +43,17 @@ public class MidfielderDecisions extends PlayerDecisions {
         if(randomChance <= 20) { //pass to goalkeeper
             matchEngine.setPitchPos(homeTeamPoss ? 0 : 4);
             return calcPassSuccess(playerInPosses, attackingTeam.getGk(), defendingTeam.getSt(), "Very Low") ? "ballOnTheLine" : "oneOnOne";
-        } else if(randomChance <= 40) {//pass to other defender/fullback - how do they pick another defender - fullbacks shouldn't pass to the other full back that much
-            matchEngine.setPitchPos(homeTeamPoss ? 1 : 3);
-            Player passReceiverDef = calcPassReceiver(attackingTeam);
+        } else if(randomChance <= 40) {//pass to defender/fullback - how do they pick another defender - fullbacks shouldn't pass to the other full back that much
+            matchEngine.setPitchPos(homeTeamPoss ? 1 : 3); //could put all pass else ifs together
+            Player passReceiverDef = calcPassReceiver(playerInPosses,attackingTeam, "defender");
             return calcPassSuccess(playerInPosses, passReceiverDef, defendingTeam.getSt(), "Low") ? "defenderPoss" : "ballInAttack";
-        } else if(randomChance <= 60 ) {  //pass to midfielder
+        } else if(randomChance <= 60 ) {  //pass to other midfielder
             matchEngine.setPitchPos(2);
-            Player passReceiverMid = calcPassReceiver(attackingTeam);
+            Player passReceiverMid = calcPassReceiver(playerInPosses,attackingTeam, "midfielder");
             return calcPassSuccess(playerInPosses, passReceiverMid, defendingTeam.getSt(), "Medium") ? "ballInMidfield" : "ballInMidfield";
         } else if(randomChance <= 80 ) {  //pass to attacker
             matchEngine.setPitchPos(homeTeamPoss ? 3 : 1);//this doesnt need to be sent to the next function, ball will still be in that zone it's just a matter of whos in possess
-            Player passReceiverAtt = calcPassReceiver(attackingTeam);
+            Player passReceiverAtt = calcPassReceiver(playerInPosses,attackingTeam, "attacker");
             return calcPassSuccess(playerInPosses, passReceiverAtt, defendingTeam.getSt(), "High") ? "ballInAttack" : "ballInDefence";
         } else if(randomChance <= 95) { //attempts a carry
             return calcCarrySuccess(playerInPosses, defendingTeam.getSt()) ? "defenderPos" : "counterAttack"; //only counter if looses the ball between certain strata?
@@ -65,7 +69,7 @@ public class MidfielderDecisions extends PlayerDecisions {
         //if it fails then change the attacking team
         int randomChance = 0;
         switch (possibleRisk) { // use other factor to make the random chance is interesting
-            case "Very Low": //pass to other defender/fullback - how do they pick another defender - fullbacks shouldn't pass to the other full back that much
+            case "Very Low": //pass to other defender/fullback - how do they pick another defender - fullbacks shouldn't pass to the other full back that much other player is picked in the pass receiver functiom
                 //players attributes should have a say here
                 randomChance = random.nextInt(200) + 1; //increasing the bound increases the chance of this happening
                 break;
@@ -97,9 +101,13 @@ public class MidfielderDecisions extends PlayerDecisions {
     //these should be put in a super class. Also a good chance to work on changing logic from a parent class
     //in a child class
 
-    public Player calcPassReceiver(Team attackingTeam){
-        return attackingTeam.getGk();
-    }
+    public Player calcPassReceiver(Player playerInPoss, Team attackingTeam, String position){
+        //how should playerInPoss affect it?
+        // I assume DRs rarely (if ever) pass to dcls more than dcrs
+                return passCalculations.whichPlayerReceivesTheBall(attackingTeam, position);
+        }
+
+
 
     public boolean calcCarrySuccess(Player playerInPoss, Player marker){
         //should tackles only be possible here? According to tackle definition the ball can go to either team

@@ -4,6 +4,7 @@ import com.example.model.JsonArray;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.Type;
 import org.json.JSONArray;
 
 import java.io.Serializable;
@@ -151,7 +152,7 @@ import java.util.List;
 @Getter
 @Setter
 @MappedSuperclass
-public abstract class Player extends JsonArray {
+public abstract class Player implements Comparable<Player> {
 
     @Id
     @Column(name="UniqueID")
@@ -177,8 +178,14 @@ public abstract class Player extends JsonArray {
     @Column(name="position_natural")
     private String position;
 
+    @Transient
+    private JSONArray positionsNatural;
 
-//    @ElementCollection(targetClass = )
+    @Transient
+    private JSONArray positionsAcc;
+
+
+    //    @ElementCollection(targetClass = )
 //    @Convert(converter = JSONArrayConverter.class)
     @Column(name="position_accomplished")
 //    @ElementCollection
@@ -305,4 +312,9 @@ public abstract class Player extends JsonArray {
 
     @Column(name="strength")
     private int strength;
+
+    public int compareTo(Player other) {
+        return Integer.compare(this.overall, other.overall);
+    }
+
 }

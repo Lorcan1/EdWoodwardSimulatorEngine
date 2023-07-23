@@ -37,8 +37,8 @@ public class Main {
             Team awayTeam = matchEngine.getAwayTeam();
             Team homeTeam = matchEngine.getHomeTeam();
             for(Player player: homeTeam.getPlayers()){
-                System.out.println(player.getPositionsNaturalArray());
-                System.out.println(player.getPositionsAccArray());
+                System.out.println(player.getPositionsNatural());
+                System.out.println(player.getPositionsAcc());
             }
 //            Map<String, Player> positionsMapAway= matchEngine.getPositionsMapAway();
 //            Map<String, Player> positionsMapHome= matchEngine.getPositionsMapHome();

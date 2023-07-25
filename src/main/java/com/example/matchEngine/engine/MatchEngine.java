@@ -4,6 +4,7 @@ import com.example.matchEngine.matchSetup.MatchSetup;
 import com.example.matchEngine.observerPattern.Observer;
 import com.example.matchEngine.observerPattern.Subject;
 import com.example.matchEngine.playerDecisions.DefenderDecisions;
+import com.example.matchEngine.playerDecisions.MidfielderDecisions;
 import com.example.matchEngine.updateStats.UpdateInGameMatchStats;
 import com.example.matchEngine.updateStats.UpdateInGamePlayerStats;
 import com.example.model.InGameMatchStats;
@@ -95,6 +96,7 @@ public class MatchEngine implements Subject {
     Player playerInPosses;
 
     private DefenderDecisions defenderDecisions;
+    private MidfielderDecisions midfielderDecisions;
     private MatchSetup matchSetup;
 
 
@@ -117,8 +119,9 @@ public class MatchEngine implements Subject {
         this.inGameMatchStats = new InGameMatchStats();
         this.startOfGame = true;
         this.updateInGameMatchStats = new UpdateInGameMatchStats(this.match);
-        this.updateInGamePlayerStats = new UpdateInGamePlayerStats(this.homePlayersMatchStatsMap,this.awayPlayersMatchStatsMap);
+        this.updateInGamePlayerStats = new UpdateInGamePlayerStats(this);
         this.defenderDecisions = new DefenderDecisions(this.updateInGamePlayerStats, this);
+        this.midfielderDecisions = new MidfielderDecisions(this.updateInGamePlayerStats, this);
     }
 
     @Override
@@ -161,7 +164,7 @@ public class MatchEngine implements Subject {
                     startOfGame = false;
                     break;
                 case "ballOnTheLine":
-                    action = "defenderPoss"; //needs to be coded
+                    action = "ballInDefence"; //needs to be coded
                     break;
                 case "ballInDefence":
                     action = defenderDecisions.defenderMakeDecision(pitchPos,homeTeamPoss,playerInPosses,attackingTeam,defendingTeam);
@@ -169,29 +172,34 @@ public class MatchEngine implements Subject {
                 case "ballInDefenceOutWide":
 //                    action = fullbackMakeDecisiom();
                 case "ballInMidfield":
-                    action = "Midfield pending";
+                    action = midfielderDecisions.midfielderMakeDecision(pitchPos,homeTeamPoss,playerInPosses,attackingTeam,defendingTeam);
                     break;
                 case "looseBallMidfield":
 //                    action = looseBallMidfield(); //need to code this
                     break;
                 case "ballInAttack": //  it's not a throughBall
-//                    action = attakerRecievesBall
+                    action = midfielderDecisions.midfielderMakeDecision(pitchPos,homeTeamPoss,playerInPosses,attackingTeam,defendingTeam);
                     break;
                 case "oneOnOne": //not all attackers recieve perfect through balls, some have to create own chances with ball to feet/dribbling/pace
 //                    action = throughBallOutcome2();
+                    action = kickOff();
                     break;
                 case "counterAttack":
+                    break;
+                case "shot": //isnt one on one just a nice shot - no blocks i guess
+                    action = kickOff();
                     break;
             }
             //increment time somehow - should probably depend on the action and there should be an element of randomness
             if(time > (90 + addedTime)){
                 gameFinished = true;
+                log.info(action);
                 //add the final stats to matchStats and playerStats
                 //there are two different types of matchStats - the ingame ones that move ie possesion, goals, xG
                 //  and the ones that will be available after the game
                 // I think actually these are the same
             }
-            time = time + 50;
+            time = (float) (time + 0.1);
 //            updateInGamePlayerStats.updatePlayerStats(action);
 //            updateInGameMatchStats.updateMatchStats(action);
 
@@ -204,6 +212,7 @@ public class MatchEngine implements Subject {
             coinflip();
         }
         Player playerInPosses = choosePlayerInPosses();
+        //prob should turn posses over
         return "ballInDefence";
     }
 
@@ -312,11 +321,20 @@ public class MatchEngine implements Subject {
         }
     }
 
-    public void changePossession(){
-        Team temp = this.attackingTeam;
-        this.attackingTeam = this.defendingTeam;
+    public void changePossession(String howBallWasLost){
+        Team temp = this.attackingTeam; //temp = man
+        this.attackingTeam = this.defendingTeam; //attacking team = tot
         this.defendingTeam = temp;
         homeTeamPoss = !homeTeamPoss;
+
+    }
+
+    public void whoHasPossesion(String howBallWasLost){
+        if(howBallWasLost == "tackle"){
+            //pitch pos stays same
+            playerInPosses = markers.get(playerInPosses);
+        } else //must be pass for now
+        playerInPosses = markers.get(playerInPosses); //same for now
     }
 
 

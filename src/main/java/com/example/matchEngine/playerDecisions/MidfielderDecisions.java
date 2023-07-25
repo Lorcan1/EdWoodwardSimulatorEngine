@@ -40,24 +40,26 @@ public class MidfielderDecisions extends PlayerDecisions {
         // there needs to be information passed between functions about the passers stats and the pass recievers stats
         //lets just assign them random chance for now
         int randomChance = random.nextInt(100) + 1; // 1-100 -fluenced by pitch strata,a as in there shouldnt be any chance of shooting unless the defender is in midfield or attack.
-        if(randomChance <= 20) { //pass to goalkeeper
+        if(randomChance <= 18) { //pass to goalkeeper
             matchEngine.setPitchPos(homeTeamPoss ? 0 : 4);
             return calcPassSuccess(playerInPosses, attackingTeam.getGk(), defendingTeam.getSt(), "Very Low") ? "ballOnTheLine" : "oneOnOne";
-        } else if(randomChance <= 40) {//pass to defender/fullback - how do they pick another defender - fullbacks shouldn't pass to the other full back that much
-            matchEngine.setPitchPos(homeTeamPoss ? 1 : 3); //could put all pass else ifs together
-            Player passReceiverDef = calcPassReceiver(playerInPosses,attackingTeam, "defender");
-            return calcPassSuccess(playerInPosses, passReceiverDef, defendingTeam.getSt(), "Low") ? "defenderPoss" : "ballInAttack";
-        } else if(randomChance <= 60 ) {  //pass to other midfielder
+        } else if(randomChance <= 36) {//pass to defender/fullback - how do they pick another defender - fullbacks shouldn't pass to the other full back that much
+            matchEngine.setPitchPos(homeTeamPoss ? 1 : 3);
+            Player passReceiverDef = calcPassReceiver(playerInPosses,attackingTeam,"defender");
+            return calcPassSuccess(playerInPosses, passReceiverDef, defendingTeam.getSt(), "Low") ? "ballInDefence" : "ballInAttack";
+        } else if(randomChance <= 54 ) {  //pass to other midfielder
             matchEngine.setPitchPos(2);
             Player passReceiverMid = calcPassReceiver(playerInPosses,attackingTeam, "midfielder");
             return calcPassSuccess(playerInPosses, passReceiverMid, defendingTeam.getSt(), "Medium") ? "ballInMidfield" : "ballInMidfield";
-        } else if(randomChance <= 80 ) {  //pass to attacker
+        } else if(randomChance <= 72 ) {  //pass to attacker
             matchEngine.setPitchPos(homeTeamPoss ? 3 : 1);//this doesnt need to be sent to the next function, ball will still be in that zone it's just a matter of whos in possess
             Player passReceiverAtt = calcPassReceiver(playerInPosses,attackingTeam, "attacker");
             return calcPassSuccess(playerInPosses, passReceiverAtt, defendingTeam.getSt(), "High") ? "ballInAttack" : "ballInDefence";
-        } else if(randomChance <= 95) { //attempts a carry
-            return calcCarrySuccess(playerInPosses, defendingTeam.getSt()) ? "defenderPos" : "counterAttack"; //only counter if looses the ball between certain strata?
-        }else{
+        } else if(randomChance <= 90) { //attempts a carry
+            return calcCarrySuccess(playerInPosses, defendingTeam.getSt()) ? "ballInAttack" : "counterAttack"; //only counter if looses the ball between certain strata?
+        } else if (randomChance <= 95) //should be a bad touch check too/ incoporated
+            return calcTackleResult(pitchPos,playerInPosses);
+        else{
             //has a shot - the randomChance should have this at 0 if it isnt in the midfield
             return "shot";
         }
@@ -79,10 +81,10 @@ public class MidfielderDecisions extends PlayerDecisions {
                 randomChance = random.nextInt(150) + 1;
                 break;
             case "Medium":
-                randomChance = random.nextInt(100) + 1;
+                randomChance = random.nextInt(50) + 1;
                 break;
             case "High":
-                randomChance = random.nextInt((6)) + 1;
+                randomChance = random.nextInt((3)) + 1;
                 break;
 
         }
@@ -93,7 +95,7 @@ public class MidfielderDecisions extends PlayerDecisions {
             updateInGamePlayerStats.updateTouchStat(passReceiver.getLastName());
             return true;
         } else{
-            matchEngine.changePossession();
+            matchEngine.changePossession("pass");
             return false;
         }
     }
@@ -107,8 +109,6 @@ public class MidfielderDecisions extends PlayerDecisions {
                 return passCalculations.whichPlayerReceivesTheBall(attackingTeam, position);
         }
 
-
-
     public boolean calcCarrySuccess(Player playerInPoss, Player marker){
         //should tackles only be possible here? According to tackle definition the ball can go to either team
         //but must be removed from the player currently in posession
@@ -116,6 +116,18 @@ public class MidfielderDecisions extends PlayerDecisions {
         //change strata to midfield
         return true;
     }
+
+    public String calcTackleResult(int pitchPos, Player playerInPosses){
+        if(true)
+        return "ballInDefence"; //tackled but recovered ball
+        else {
+            matchEngine.changePossession("tackled");
+            return "ballInAttack";
+        }
+
+
+    }
+
 
 
 }

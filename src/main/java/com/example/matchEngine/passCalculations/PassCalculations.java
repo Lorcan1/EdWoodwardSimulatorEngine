@@ -6,6 +6,9 @@ import com.example.team.Team;
 import java.util.*;
 
 public class PassCalculations {
+    private Random random = new Random();
+
+
 
 
     public Player whichPlayerReceivesTheBall(Team attackingTeam, String position) { //this should be changed to reflect what runs an attacker is making
@@ -16,17 +19,18 @@ public class PassCalculations {
             case "defender":
                 player1 = attackingTeam.getDcr();
                 player2 = attackingTeam.getDcl();
+                break;
             case "midfielder":
                 player1 = attackingTeam.getDm();
                 player2 = attackingTeam.getMcl();
                 player3 = attackingTeam.getMcr();
+                break;
             case "attacker":
                 player1 = attackingTeam.getMl();
                 player2 = attackingTeam.getMr();
                 player3 = attackingTeam.getSt();
-
+                break;
         }
-
         Player player = calcMostProbablePassReciever(player1, player2, player3, position);
         return player;
     }
@@ -57,23 +61,21 @@ public class PassCalculations {
             List<Player> myList = new ArrayList<>();
             myList.add(player1);
             myList.add(player2);
-            myList.add(player3);
+            myList.add(player3); //this player has the greatest overall right
 
             Collections.sort(myList);
-            String s = "hi";
+            int diffHighestOthers = player3.getOverall() -((player2.getOverall() + player1.getOverall())/2);
+            int diffMiddleLowest = player2.getOverall() - player1.getOverall();
 
+            int randomChance = random.nextInt(100) + 1;
 
-
-
-
-
-
-
+            if(randomChance - diffHighestOthers < 33){
+                return player3;
+            } else if(randomChance - diffMiddleLowest < 66){
+                return player2;
+            } else{
+                return player1;
+            }
         }
-    return player1;
-}
-
-
-
-
+    }
 }

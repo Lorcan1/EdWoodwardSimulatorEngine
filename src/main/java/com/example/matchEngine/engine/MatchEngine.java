@@ -5,6 +5,7 @@ import com.example.matchEngine.observerPattern.Observer;
 import com.example.matchEngine.observerPattern.Subject;
 import com.example.matchEngine.playerDecisions.DefenderDecisions;
 import com.example.matchEngine.playerDecisions.MidfielderDecisions;
+import com.example.matchEngine.shotCalculations.ShotCalculations;
 import com.example.matchEngine.updateStats.UpdateInGameMatchStats;
 import com.example.matchEngine.updateStats.UpdateInGamePlayerStats;
 import com.example.model.InGameMatchStats;
@@ -86,6 +87,8 @@ public class MatchEngine implements Subject {
     private String attackingTeamName;
     private String defendingTeamName;
 
+    private String lastPasserName;
+
     private boolean homeTeamPoss;
 
     private boolean startOfGame;
@@ -93,10 +96,11 @@ public class MatchEngine implements Subject {
     PlayersMatchStats playersMatchStats = new PlayersMatchStats();
 
     private int pitchPos;
-    Player playerInPosses;
+    private Player playerInPosses = null;
 
     private DefenderDecisions defenderDecisions;
     private MidfielderDecisions midfielderDecisions;
+    private ShotCalculations shotCalculations;
     private MatchSetup matchSetup;
 
 
@@ -121,6 +125,7 @@ public class MatchEngine implements Subject {
         this.updateInGameMatchStats = new UpdateInGameMatchStats(this.match);
         this.updateInGamePlayerStats = new UpdateInGamePlayerStats(this);
         this.defenderDecisions = new DefenderDecisions(this.updateInGamePlayerStats, this);
+        this.shotCalculations = new ShotCalculations(this,this.updateInGamePlayerStats);
         this.midfielderDecisions = new MidfielderDecisions(this.updateInGamePlayerStats, this);
     }
 
@@ -159,11 +164,16 @@ public class MatchEngine implements Subject {
 
         while(gameFinished != true){
             switch (action){
+                case "goalKick":
                 case "kickOff":
                     action = kickOff();
                     startOfGame = false;
                     break;
                 case "ballOnTheLine":
+                    if(homeTeamPoss)
+                        playerInPosses = homeTeam.getDcl();
+                    else
+                        playerInPosses = awayTeam.getDcr();
                     action = "ballInDefence"; //needs to be coded
                     break;
                 case "ballInDefence":
@@ -187,7 +197,7 @@ public class MatchEngine implements Subject {
                 case "counterAttack":
                     break;
                 case "shot": //isnt one on one just a nice shot - no blocks i guess
-                    action = kickOff();
+                    action = shotCalculations.calculateShotChance((OutfieldPlayer)playerInPosses, false);
                     break;
             }
             //increment time somehow - should probably depend on the action and there should be an element of randomness
@@ -211,7 +221,7 @@ public class MatchEngine implements Subject {
         if(startOfGame == true){
             coinflip();
         }
-        Player playerInPosses = choosePlayerInPosses();
+        playerInPosses = choosePlayerInPosses();
         //prob should turn posses over
         return "ballInDefence";
     }
@@ -307,21 +317,7 @@ public class MatchEngine implements Subject {
         notifyObservers();
         return obj ;
     }
-    public void updateScore(Team attackingTeam, Player scorer, Player assister){
-        if(attackingTeam.getTeamName().equals(homeTeam.getTeamName())){
-            homeScore +=1;
-            homeScorers.add(scorer.getLastName());
-            homeAssisters.add(assister.getLastName());
-        }
-        else{
-            awayScore+=1;
-            awayScorers.add(scorer.getLastName());
-            awayAssisters.add(assister.getLastName());
-
-        }
-    }
-
-    public void changePossession(String howBallWasLost){
+    public void changePossession(String howBallWasLost){ //is this attempting something similar to the next functiom
         Team temp = this.attackingTeam; //temp = man
         this.attackingTeam = this.defendingTeam; //attacking team = tot
         this.defendingTeam = temp;
@@ -337,6 +333,20 @@ public class MatchEngine implements Subject {
         playerInPosses = markers.get(playerInPosses); //same for now
     }
 
+    public void goalScored(String goalScorer){
+        updateInGamePlayerStats.updateGoalStat(goalScorer);
+        if (lastPasserName != null)
+            updateInGamePlayerStats.updateAssistStat(lastPasserName);
+        if(homeTeamPoss) {
+            homeScore ++;
+            homeScorers.add(goalScorer);
+            homeAssisters.add(lastPasserName); //if null just add null to the list
+        } else {
+            awayScore++;
+            awayScorers.add(goalScorer);
+            awayAssisters.add(lastPasserName);
+        }
+    }
 
     public void addMatchParameters(){
         match.setHomeTeam(homeTeamName);

@@ -62,4 +62,25 @@ public class UpdateInGamePlayerStats {
             log.error(e + playerName);
         }
     }
+
+    public void updateShotStat(String playerName){
+
+    }
+
+    public void updateGoalStat(String playerName){
+        if (matchEngine.getHomePlayersMatchStatsMap().containsKey(playerName)) {
+            int goals = matchEngine.getHomePlayersMatchStatsMap().get(playerName).getGoals();
+            goals++;
+            matchEngine.getHomePlayersMatchStatsMap().get(playerName).setGoals(goals);
+        } else {
+            int goals = matchEngine.getAwayPlayersMatchStatsMap().get(playerName).getGoals();
+            goals++;
+            matchEngine.getAwayPlayersMatchStatsMap().get(playerName).setGoals(goals);
+        }
+
+    }
+
+    public void updateAssistStat(String playerName ){
+
+    }
 }

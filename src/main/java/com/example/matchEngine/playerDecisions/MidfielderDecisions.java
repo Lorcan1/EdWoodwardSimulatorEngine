@@ -90,7 +90,7 @@ public class MidfielderDecisions extends PlayerDecisions {
         }
 
         if(randomChance > 1){ //pass is succesful
-            playerInPoss = passReceiver;
+            matchEngine.setPlayerInPosses(passReceiver);
             updateInGamePlayerStats.updatePassStat(playerInPoss.getLastName());
             updateInGamePlayerStats.updateTouchStat(passReceiver.getLastName());
             return true;

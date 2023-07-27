@@ -3,6 +3,7 @@ package com.example.matchEngine.engine;
 import com.example.matchEngine.matchSetup.MatchSetup;
 import com.example.matchEngine.observerPattern.Observer;
 import com.example.matchEngine.observerPattern.Subject;
+import com.example.matchEngine.playerDecisions.AttackerDecisions;
 import com.example.matchEngine.playerDecisions.DefenderDecisions;
 import com.example.matchEngine.playerDecisions.MidfielderDecisions;
 import com.example.matchEngine.shotCalculations.ShotCalculations;
@@ -100,6 +101,7 @@ public class MatchEngine implements Subject {
 
     private DefenderDecisions defenderDecisions;
     private MidfielderDecisions midfielderDecisions;
+    private AttackerDecisions attackerDecisions;
     private ShotCalculations shotCalculations;
     private MatchSetup matchSetup;
 
@@ -127,6 +129,7 @@ public class MatchEngine implements Subject {
         this.defenderDecisions = new DefenderDecisions(this.updateInGamePlayerStats, this);
         this.shotCalculations = new ShotCalculations(this,this.updateInGamePlayerStats);
         this.midfielderDecisions = new MidfielderDecisions(this.updateInGamePlayerStats, this);
+        this.attackerDecisions = new AttackerDecisions(this.updateInGamePlayerStats, this);
     }
 
     @Override
@@ -188,7 +191,7 @@ public class MatchEngine implements Subject {
 //                    action = looseBallMidfield(); //need to code this
                     break;
                 case "ballInAttack": //  it's not a throughBall
-                    action = midfielderDecisions.midfielderMakeDecision(pitchPos,homeTeamPoss,playerInPosses,attackingTeam,defendingTeam);
+                    action = attackerDecisions.attackerMakeDecision(pitchPos,homeTeamPoss,playerInPosses,attackingTeam,defendingTeam);
                     break;
                 case "oneOnOne": //not all attackers recieve perfect through balls, some have to create own chances with ball to feet/dribbling/pace
 //                    action = throughBallOutcome2();
@@ -196,7 +199,7 @@ public class MatchEngine implements Subject {
                     break;
                 case "counterAttack":
                     break;
-                case "shot": //isnt one on one just a nice shot - no blocks i guess
+                case "shot": //isnt one on one just a nice shot - no blocks i guess // shouldnt I move this inside the other logic
                     action = shotCalculations.calculateShotChance((OutfieldPlayer)playerInPosses, false);
                     break;
             }

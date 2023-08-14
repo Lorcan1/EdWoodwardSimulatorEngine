@@ -12,7 +12,7 @@ import java.util.Random;
 
 @Getter
 @Setter
-public class DefenderDecisions extends PlayerDecisions {
+public class DefenderDecisions implements PlayerDecisions {
     private UpdateInGamePlayerStats updateInGamePlayerStats;
     private MatchEngine matchEngine;
     private Random random = new Random();
@@ -27,7 +27,7 @@ public class DefenderDecisions extends PlayerDecisions {
 
     // *** this should be superclassed
 
-    public String defenderMakeDecision(int pitchPos, boolean homeTeamPoss, Player playerInPosses, Team attackingTeam,
+    public String playerMakeDecision(int pitchPos, boolean homeTeamPoss, Player playerInPosses, Team attackingTeam,
                                        Team defendingTeam) {
         //possible decisions, pass to goalkeeper, pass to other defender, pass to midfielder, get tackles, carry the ball forward
         //but the decision depends on what area of the pitch the player is in

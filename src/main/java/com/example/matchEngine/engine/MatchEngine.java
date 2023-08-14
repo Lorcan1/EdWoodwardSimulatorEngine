@@ -6,6 +6,7 @@ import com.example.matchEngine.observerPattern.Subject;
 import com.example.matchEngine.playerDecisions.AttackerDecisions;
 import com.example.matchEngine.playerDecisions.DefenderDecisions;
 import com.example.matchEngine.playerDecisions.MidfielderDecisions;
+import com.example.matchEngine.playerDecisions.PlayerDecisions;
 import com.example.matchEngine.shotCalculations.ShotCalculations;
 import com.example.matchEngine.updateStats.UpdateInGameMatchStats;
 import com.example.matchEngine.updateStats.UpdateInGamePlayerStats;
@@ -99,9 +100,9 @@ public class MatchEngine implements Subject {
     private int pitchPos;
     private Player playerInPosses = null;
 
-    private DefenderDecisions defenderDecisions;
-    private MidfielderDecisions midfielderDecisions;
-    private AttackerDecisions attackerDecisions;
+    private PlayerDecisions defenderDecisions; //this should be of type PlayerDecisions
+    private PlayerDecisions midfielderDecisions;
+    private PlayerDecisions attackerDecisions;
     private ShotCalculations shotCalculations;
     private MatchSetup matchSetup;
 
@@ -180,18 +181,18 @@ public class MatchEngine implements Subject {
                     action = "ballInDefence"; //needs to be coded
                     break;
                 case "ballInDefence":
-                    action = defenderDecisions.defenderMakeDecision(pitchPos,homeTeamPoss,playerInPosses,attackingTeam,defendingTeam);
+                    action = defenderDecisions.playerMakeDecision(pitchPos,homeTeamPoss,playerInPosses,attackingTeam,defendingTeam);
                     break;
                 case "ballInDefenceOutWide":
 //                    action = fullbackMakeDecisiom();
                 case "ballInMidfield":
-                    action = midfielderDecisions.midfielderMakeDecision(pitchPos,homeTeamPoss,playerInPosses,attackingTeam,defendingTeam);
+                    action = midfielderDecisions.playerMakeDecision(pitchPos,homeTeamPoss,playerInPosses,attackingTeam,defendingTeam);
                     break;
                 case "looseBallMidfield":
 //                    action = looseBallMidfield(); //need to code this
                     break;
                 case "ballInAttack": //  it's not a throughBall
-                    action = attackerDecisions.attackerMakeDecision(pitchPos,homeTeamPoss,playerInPosses,attackingTeam,defendingTeam);
+                    action = attackerDecisions.playerMakeDecision(pitchPos,homeTeamPoss,playerInPosses,attackingTeam,defendingTeam);
                     break;
                 case "oneOnOne": //not all attackers recieve perfect through balls, some have to create own chances with ball to feet/dribbling/pace
 //                    action = throughBallOutcome2();

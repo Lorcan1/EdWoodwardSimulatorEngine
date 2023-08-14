@@ -9,7 +9,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class GoalkeeperDecisions extends PlayerDecisions {
+public class GoalkeeperDecisions implements PlayerDecisions {
 
 
 
@@ -23,7 +23,7 @@ public class GoalkeeperDecisions extends PlayerDecisions {
     }
 
 
-    public String goalkeeperMakeDecision(int pitchPos, boolean homeTeamPoss, Player playerInPosses, Team attackingTeam,
+    public String playerMakeDecision(int pitchPos, boolean homeTeamPoss, Player playerInPosses, Team attackingTeam,
                                        Team defendingTeam) {
         //possible decisions, pass to Defender, pass to Midfielder, pass to attacker
         //obvs alot of the passes to Midfielders and attackers go astray

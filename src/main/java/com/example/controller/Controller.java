@@ -153,16 +153,6 @@ public class Controller {
 //        return example;
     }
 
-    @GetMapping("/return-result-observer-pattern") //http://localhost:8080/get-heading?name=Laporte
-    public JSONObject returnResultObserver(@RequestParam(value = "home-club", defaultValue = "MCFC") String homeClub, @RequestParam(value = "away-club",defaultValue = "Spurs") String awayClub) throws JsonProcessingException {
-        String homeClubNameFull = returnFullClubName(homeClub);
-        String awayClubNameFull = returnFullClubName(awayClub);
-        MatchEngine matchEngine = new MatchEngine(teamSetup, homeClubNameFull, awayClubNameFull); //Subject
-        MatchResult matchResult = new MatchResult(matchEngine);
-
-        return matchEngine.runMatchEngine();
-    }
-
     @GetMapping("/processMatch") //http://localhost:8080/get-heading?name=Laporte
     public JSONObject processMatch(@RequestParam(value = "home-club", defaultValue = "MCFC") String homeClub, @RequestParam(value = "away-club",defaultValue = "Spurs") String awayClub) throws JsonProcessingException {
         String homeClubNameFull = returnFullClubName(homeClub);

@@ -1,8 +1,6 @@
 package com.example.matchEngine.engine;
 
 import com.example.matchEngine.matchSetup.MatchSetup;
-import com.example.matchEngine.observerPattern.Observer;
-import com.example.matchEngine.observerPattern.Subject;
 import com.example.matchEngine.playerDecisions.AttackerDecisions;
 import com.example.matchEngine.playerDecisions.DefenderDecisions;
 import com.example.matchEngine.playerDecisions.MidfielderDecisions;
@@ -25,7 +23,6 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 //
 //import players.*;
@@ -41,11 +38,11 @@ import java.util.stream.Collectors;
 @Getter
 @Setter
 @Slf4j
-public class MatchEngine implements Subject {
+public class MatchEngine {
 
-
-    private UpdateInGameMatchStats updateInGameMatchStats;
-    private UpdateInGamePlayerStats updateInGamePlayerStats;
+    private Match match = new Match();//need to set an Id and give it to the player stats
+    private UpdateInGameMatchStats updateInGameMatchStats  = new UpdateInGameMatchStats(match);
+    private UpdateInGamePlayerStats updateInGamePlayerStats = new UpdateInGamePlayerStats(this);
 
     //need to change the design so that an endpoint can be hit and every time its hit the gamestate moves on a chunk of time until the game is over
     private final TeamSetup teamSetup;
@@ -70,14 +67,14 @@ public class MatchEngine implements Subject {
 
     private List<com.example.matchEngine.observerPattern.Observer> observers;
 
-    HashMap<Player, Player> markers;
+    HashMap<Player, Player> markers = new HashMap<>();   // this needs to be put in its own function
 
-    private Match match;
+
 
     private Map<String,InGamePlayerStats> homePlayersMatchStatsMap;
     private Map<String,InGamePlayerStats> awayPlayersMatchStatsMap;
 
-    private InGameMatchStats inGameMatchStats;
+    private InGameMatchStats inGameMatchStats = new InGameMatchStats();
 
     private float time;
     private float addedTime;
@@ -93,62 +90,37 @@ public class MatchEngine implements Subject {
 
     private boolean homeTeamPoss;
 
-    private boolean startOfGame;
+    private boolean startOfGame = true;
 
     PlayersMatchStats playersMatchStats = new PlayersMatchStats();
 
     private int pitchPos;
     private Player playerInPosses = null;
 
-    private PlayerDecisions defenderDecisions; //this should be of type PlayerDecisions
-    private PlayerDecisions midfielderDecisions;
-    private PlayerDecisions attackerDecisions;
-    private ShotCalculations shotCalculations;
-    private MatchSetup matchSetup;
+    private PlayerDecisions defenderDecisions = new DefenderDecisions(updateInGamePlayerStats, this);
+    private PlayerDecisions midfielderDecisions = new MidfielderDecisions(this.updateInGamePlayerStats, this);
+    private PlayerDecisions attackerDecisions = new AttackerDecisions(this.updateInGamePlayerStats, this);
+    private ShotCalculations shotCalculations = new ShotCalculations(this,this.updateInGamePlayerStats);
+    private MatchSetup matchSetup = new MatchSetup(playersMatchStats);
 
 
     public MatchEngine(TeamSetup teamSetup, String homeTeamName, String awayTeamName) {
         this.teamSetup = teamSetup;
         this.homeTeamName = homeTeamName;
         this.awayTeamName = awayTeamName;
-        this.homeTeam = new Team(homeTeamName,teamSetup);
+        this.homeTeam = new Team(homeTeamName,teamSetup); //should the next three be in teamSetup/ new class?
         this.awayTeam = new Team(awayTeamName,teamSetup);
-        this.markers = new HashMap<>();   // this needs to be put in its own function
-        markers.put(homeTeam.getMcl() ,awayTeam.getMcr());
-        markers.put(homeTeam.getMcr() ,awayTeam.getMcl());
-        markers.put(awayTeam.getMcr() ,homeTeam.getMcl());
-        markers.put(awayTeam.getMcr() ,homeTeam.getMcl());
-        this.observers = new ArrayList<>();
-        this.match = new Match();//need to set an Id and give it to the player stats
-        this.matchSetup = new MatchSetup(playersMatchStats);
-        this.homePlayersMatchStatsMap = playersMatchStats.createMapfromArray(this.matchSetup.assignPlayersToMatch(this.homeTeam,true).getInGamePlayerStatsArray());
+        initilizeMarkers();
+        this.homePlayersMatchStatsMap = playersMatchStats.createMapfromArray(this.matchSetup.assignPlayersToMatch(this.homeTeam,true).getInGamePlayerStatsArray()); //decipher this
         this.awayPlayersMatchStatsMap= playersMatchStats.createMapfromArray(this.matchSetup.assignPlayersToMatch(this.awayTeam,false).getInGamePlayerStatsArray());
-        this.inGameMatchStats = new InGameMatchStats();
-        this.startOfGame = true;
-        this.updateInGameMatchStats = new UpdateInGameMatchStats(this.match);
-        this.updateInGamePlayerStats = new UpdateInGamePlayerStats(this);
-        this.defenderDecisions = new DefenderDecisions(this.updateInGamePlayerStats, this);
-        this.shotCalculations = new ShotCalculations(this,this.updateInGamePlayerStats);
-        this.midfielderDecisions = new MidfielderDecisions(this.updateInGamePlayerStats, this);
-        this.attackerDecisions = new AttackerDecisions(this.updateInGamePlayerStats, this);
     }
 
-    @Override
-    public void registerObserver(com.example.matchEngine.observerPattern.Observer o){
-        observers.add(o);
-    }
 
-    @Override
-    public void removeObserver(Observer o){
-        int observerIndex = observers.indexOf(o);
-        if(observerIndex >= 0){
-            observers.remove(observerIndex);
-        }
-    }
-
-    @Override
-    public void notifyObservers(){ //look at this for updating match at the end before pushing to db, what about UpdateMatchStats in this equation
-        observers.forEach(o->o.update(match)); //need to review how this works
+    public void initilizeMarkers() {
+        this.markers.put(this.homeTeam.getMcl(), this.awayTeam.getMcr());
+        this.markers.put(this.homeTeam.getMcr(), this.awayTeam.getMcl());
+        this.markers.put(this.awayTeam.getMcr(), this.homeTeam.getMcl());
+        this.markers.put(this.awayTeam.getMcr(), this.homeTeam.getMcl());
     }
 
     public InGameMatchStats updateInGameMatchStatsTemp(){
@@ -318,7 +290,6 @@ public class MatchEngine implements Subject {
         obj.put("awayTeamScore","1");
         obj.put("homeTeamScore","3");
         obj.put("Scorer",scorers);
-        notifyObservers();
         return obj ;
     }
     public void changePossession(String howBallWasLost){ //is this attempting something similar to the next functiom

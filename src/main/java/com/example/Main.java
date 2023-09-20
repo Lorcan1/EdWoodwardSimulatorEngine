@@ -2,7 +2,6 @@ package com.example;
 
 import com.example.repository.GoalkeeperRepository;
 import com.example.team.Team;
-import com.example.team.TeamSetup;
 import com.example.matchEngine.engine.MatchEngine;
 import com.example.model.player.Player;
 import com.example.repository.OutfieldPlayerRepository;
@@ -13,6 +12,8 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 //@SpringBootApplication(exclude={DataSourceAutoConfiguration.class})
@@ -20,6 +21,8 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 @SpringBootApplication
 @EnableJpaRepositories("com.example.repository")
 @EnableAutoConfiguration
+@Configuration
+@ComponentScan("com.example.team, com.example.repository")
 public class Main {
 
     private static final Logger log = LoggerFactory.getLogger(Main.class);
@@ -30,10 +33,9 @@ public class Main {
 
 
     @Bean
-    public CommandLineRunner demo(OutfieldPlayerRepository repository, GoalkeeperRepository goalkeeper) {
+    public CommandLineRunner demo() {
         return (args) -> {
-            TeamSetup teamSetup = new TeamSetup(repository, goalkeeper);
-            MatchEngine matchEngine = new MatchEngine(teamSetup, "Manchester City","Tottenham Hotspur");
+            MatchEngine matchEngine = new MatchEngine("Manchester City","Tottenham Hotspur");
             Team awayTeam = matchEngine.getAwayTeam();
             Team homeTeam = matchEngine.getHomeTeam();
             for(Player player: homeTeam.getPlayers()){
@@ -46,7 +48,7 @@ public class Main {
 //            positionsMapAway.put("ST",awayTeam.get(awayTeam.size()-1));
 //            positionsMapAway.put("ML",awayTeam.get(awayTeam.size()-2));
 
-            Team team= new Team("Manchester City",teamSetup);
+            Team team= new Team("Manchester City");
 //            matchEngine.runMatchEngine();
 //            matchEngine.newRunMatchEngine();
 

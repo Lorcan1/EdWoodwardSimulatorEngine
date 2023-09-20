@@ -8,10 +8,13 @@ import com.example.model.player.OutfieldPlayer;
 import com.example.model.player.Player;
 import com.example.repository.GoalkeeperRepository;
 import com.example.repository.OutfieldPlayerRepository;
+import com.example.repository.PlayerService;
+import com.example.team.Team;
 import com.example.team.TeamSetup;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.json.simple.JSONObject;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
@@ -23,23 +26,18 @@ import java.util.*;
 public class Controller {
 
     // standard constructors
+    @Autowired
+    PlayerService playerService;
 
-    private final OutfieldPlayerRepository outfieldPlayerRepository;
-    private final GoalkeeperRepository goalkeeperRepository;
-    private final TeamSetup teamSetup;
+    @Autowired
+    TeamSetup teamSetup;
+
     Map<String, Player> positions= new HashMap<>();
 
 
-
-    public Controller(OutfieldPlayerRepository outfieldPlayerRepository, GoalkeeperRepository goalkeeperRepository, TeamSetup teamSetup) {
-        this.outfieldPlayerRepository = outfieldPlayerRepository;
-        this.goalkeeperRepository = goalkeeperRepository;
-        this.teamSetup = teamSetup;
-    }
-
     @GetMapping("/players-names")
     public List<String> getUsers() {
-        List<OutfieldPlayer> outfieldPlayers =  (List<OutfieldPlayer>) outfieldPlayerRepository.findAll();
+        List<OutfieldPlayer> outfieldPlayers =  (List<OutfieldPlayer>) playerService.findALlOutfield();
         List<String> secondNames = new ArrayList<>();
         for(OutfieldPlayer outfieldPlayer: outfieldPlayers){
             secondNames.add(outfieldPlayer.getLastName());
@@ -49,7 +47,7 @@ public class Controller {
 
     @GetMapping("/get-heading") //http://localhost:8080/get-heading?name=Laporte
     public int getHeading(@RequestParam(value = "name", defaultValue = "Haaland") String name) {
-        List<OutfieldPlayer> outfieldPlayers =  (List<OutfieldPlayer>) outfieldPlayerRepository.findAll();
+        List<OutfieldPlayer> outfieldPlayers =  (List<OutfieldPlayer>) playerService.findALlOutfield();
         for(OutfieldPlayer player: outfieldPlayers){
             if(player.getLastName().equals(name)){
                 return player.getHeading();
@@ -60,7 +58,7 @@ public class Controller {
 
     @GetMapping("/get-player") //http://localhost:8080/get-heading?name=Laporte
     public String getPlayer(@RequestParam(value = "name", defaultValue = "Haaland") String name) throws JsonProcessingException {
-        List<OutfieldPlayer> outfieldPlayers =  (List<OutfieldPlayer>) outfieldPlayerRepository.findAll() ;
+        List<OutfieldPlayer> outfieldPlayers =  (List<OutfieldPlayer>) playerService.findALlOutfield();
         for(OutfieldPlayer player: outfieldPlayers){
             if(player.getLastName().equals(name)){
                 ObjectMapper objectMapper = new ObjectMapper();
@@ -72,14 +70,14 @@ public class Controller {
 
     @GetMapping("/get-player-id") //http://localhost:8080/get-heading?name=Laporte
     public String getPlayerId(@RequestParam(value = "id", defaultValue = "29179241") int id) throws JsonProcessingException {
-        List<OutfieldPlayer> outfieldPlayers =  (List<OutfieldPlayer>) outfieldPlayerRepository.findAll() ;
+        List<OutfieldPlayer> outfieldPlayers =  (List<OutfieldPlayer>) playerService.findALlOutfield() ;
         for(OutfieldPlayer player: outfieldPlayers){
             if(player.getId() == id) {
                 ObjectMapper objectMapper = new ObjectMapper();
                 return objectMapper.writeValueAsString(player);
             }
         }
-        List<Goalkeeper> goalkeepers = (List<Goalkeeper>) goalkeeperRepository.findAll();
+        List<Goalkeeper> goalkeepers = (List<Goalkeeper>) playerService.findALlGoalkeeper();
         for(Goalkeeper goalkeeper: goalkeepers){
             if(goalkeeper.getId() == id){
                 ObjectMapper objectMapper = new ObjectMapper();
@@ -91,7 +89,7 @@ public class Controller {
 
     @GetMapping("/get-walker") //http://localhost:8080/get-heading?name=Laporte
     public String getPlayer() throws JsonProcessingException {
-        List<OutfieldPlayer> outfieldPlayers =  (List<OutfieldPlayer>) outfieldPlayerRepository.findAll() ;
+        List<OutfieldPlayer> outfieldPlayers =  (List<OutfieldPlayer>) playerService.findALlOutfield() ;
         Map<String, OutfieldPlayer> map = new HashMap<String, OutfieldPlayer>();
         ObjectMapper objectMapper = new ObjectMapper();
         for(OutfieldPlayer player: outfieldPlayers){
@@ -104,7 +102,7 @@ public class Controller {
 
     @GetMapping("/get-outfield-players") //http://localhost:8080/get-heading?name=Laporte
     public String getPlayers(@RequestParam(value = "club", defaultValue = "Manchester City") String club) throws JsonProcessingException {
-        List<OutfieldPlayer> outfieldPlayers =  (List<OutfieldPlayer>) outfieldPlayerRepository.findOutfieldPlayersClub(club);
+        List<OutfieldPlayer> outfieldPlayers =  (List<OutfieldPlayer>) playerService.findOutfieldPlayersClub(club);
 //        Map<String, OutfieldPlayer> map = new HashMap<String, OutfieldPlayer>();
         ObjectMapper objectMapper = new ObjectMapper();
 //        for(OutfieldPlayer player: outfieldPlayers){
@@ -116,28 +114,28 @@ public class Controller {
     @GetMapping("/get-all-players") //http://localhost:8080/get-heading?name=Laporte
     public String getAllPlayers(@RequestParam(value = "club", defaultValue = "Manchester City") String club) throws JsonProcessingException {
         club = returnFullClubName(club);
-        List<Player> goalkeepers = goalkeeperRepository.findAllPlayersClub(club);
-        List<Player> outfieldPlayers =  outfieldPlayerRepository.findAllPlayersClub(club);
+        List<Player> goalkeepers = playerService.findAllGoalkeepersClub(club);
+        List<Player> outfieldPlayers =  playerService.findAllOutfieldPlayersClub(club);
         goalkeepers.addAll(outfieldPlayers);
 
         ObjectMapper objectMapper = new ObjectMapper();
         return objectMapper.writeValueAsString(goalkeepers);
     }
 
-    @GetMapping("/get-positions") //http://localhost:8080/get-heading?name=Laporte
-    public String getPositions(@RequestParam(value = "club", defaultValue = "Manchester City") String club) throws JsonProcessingException {
-        club = returnFullClubName(club);
-        List<Player> team = teamSetup.returnStartingEleven(club);
-        ObjectMapper objectMapper = new ObjectMapper();
-        return objectMapper.writeValueAsString(team);
-//        return new ObjectMapper().writeValueAsString(team);
-    }
+//    @GetMapping("/get-positions") //http://localhost:8080/get-heading?name=Laporte
+//    public String getPositions(@RequestParam(value = "club", defaultValue = "Manchester City") String club) throws JsonProcessingException {
+//        club = returnFullClubName(club);
+//        List<Player> team = teamSetup.returnStartingEleven(club);
+//        ObjectMapper objectMapper = new ObjectMapper();
+//        return objectMapper.writeValueAsString(team);
+////        return new ObjectMapper().writeValueAsString(team);
+//    }
 
     @GetMapping("/return-result") //http://localhost:8080/get-heading?name=Laporte
     public JSONObject returnResult(@RequestParam(value = "home-club", defaultValue = "MCFC") String homeClub, @RequestParam(value = "away-club",defaultValue = "Spurs") String awayClub) throws JsonProcessingException {
         String homeClubNameFull = returnFullClubName(homeClub);
         String awayClubNameFull = returnFullClubName(awayClub);
-        MatchEngine matchEngine = new MatchEngine(teamSetup, homeClubNameFull, awayClubNameFull);
+        MatchEngine matchEngine = new MatchEngine(homeClubNameFull, awayClubNameFull);
         JSONObject object = matchEngine.runMatchEngine();
         return object;
 //        JSONObject example = new JSONObject();
@@ -157,7 +155,7 @@ public class Controller {
     public JSONObject processMatch(@RequestParam(value = "home-club", defaultValue = "MCFC") String homeClub, @RequestParam(value = "away-club",defaultValue = "Spurs") String awayClub) throws JsonProcessingException {
         String homeClubNameFull = returnFullClubName(homeClub);
         String awayClubNameFull = returnFullClubName(awayClub);
-        MatchEngine matchEngine = new MatchEngine(teamSetup, homeClubNameFull, awayClubNameFull); //Subject
+        MatchEngine matchEngine = new MatchEngine(homeClubNameFull, awayClubNameFull); //Subject
         ObjectMapper objectMapper = new ObjectMapper();
         matchEngine.newRunMatchEngine();
         List<InGamePlayerStats> homePlayerMatchStats = new ArrayList<>(matchEngine.getHomePlayersMatchStatsMap().values());

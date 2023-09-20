@@ -14,7 +14,6 @@ import com.example.model.player.OutfieldPlayer;
 import com.example.model.player.InGamePlayerStats;
 import com.example.team.PlayersMatchStats;
 import com.example.team.Team;
-import com.example.team.TeamSetup;
 import com.example.model.player.Player;
 import lombok.Getter;
 import lombok.Setter;
@@ -44,8 +43,7 @@ public class MatchEngine {
     private UpdateInGameMatchStats updateInGameMatchStats  = new UpdateInGameMatchStats(match);
     private UpdateInGamePlayerStats updateInGamePlayerStats = new UpdateInGamePlayerStats(this);
 
-    //need to change the design so that an endpoint can be hit and every time its hit the gamestate moves on a chunk of time until the game is over
-    private final TeamSetup teamSetup;
+    //need to change the design so that an endpoint can be hit and every time its hit the gamestate moves on a chunk of time until the game is overprivate final TeamSetup teamSetup;
     private Team homeTeam;
 
     private Team awayTeam;
@@ -104,12 +102,11 @@ public class MatchEngine {
     private MatchSetup matchSetup = new MatchSetup(playersMatchStats);
 
 
-    public MatchEngine(TeamSetup teamSetup, String homeTeamName, String awayTeamName) {
-        this.teamSetup = teamSetup;
+    public MatchEngine( String homeTeamName, String awayTeamName) {
         this.homeTeamName = homeTeamName;
         this.awayTeamName = awayTeamName;
-        this.homeTeam = new Team(homeTeamName,teamSetup); //should the next three be in teamSetup/ new class?
-        this.awayTeam = new Team(awayTeamName,teamSetup);
+        this.homeTeam = new Team(homeTeamName); //should the next three be in teamSetup/ new class?
+        this.awayTeam = new Team(awayTeamName);
         initilizeMarkers();
         this.homePlayersMatchStatsMap = playersMatchStats.createMapfromArray(this.matchSetup.assignPlayersToMatch(this.homeTeam,true).getInGamePlayerStatsArray()); //decipher this
         this.awayPlayersMatchStatsMap= playersMatchStats.createMapfromArray(this.matchSetup.assignPlayersToMatch(this.awayTeam,false).getInGamePlayerStatsArray());

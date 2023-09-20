@@ -1,7 +1,6 @@
 package com.example.controller;
 
 import com.example.matchEngine.engine.MatchEngine;
-import com.example.matchEngine.result.MatchResult;
 import com.example.model.player.Goalkeeper;
 import com.example.model.player.InGamePlayerStats;
 import com.example.model.player.OutfieldPlayer;
@@ -9,30 +8,27 @@ import com.example.model.player.Player;
 import com.example.repository.GoalkeeperRepository;
 import com.example.repository.OutfieldPlayerRepository;
 import com.example.repository.PlayerService;
-import com.example.team.Team;
 import com.example.team.TeamSetup;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.json.simple.JSONObject;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:4200")
-
 //@CrossOrigin(origins = "http://localhost:4200")
 public class Controller {
 
-    // standard constructors
-    @Autowired
-    PlayerService playerService;
-
-    @Autowired
-    TeamSetup teamSetup;
-
+    private final PlayerService playerService;
+    private final TeamSetup teamSetup;
     Map<String, Player> positions= new HashMap<>();
+
+    public Controller( PlayerService playerService, TeamSetup teamSetup) {
+        this.playerService = playerService;
+        this.teamSetup = teamSetup;
+    }
 
 
     @GetMapping("/players-names")
@@ -68,7 +64,7 @@ public class Controller {
         return "Not found";
     }
 
-    @GetMapping("/get-player-id") //http://localhost:8080/get-heading?name=Laporte
+    @RequestMapping("/get-player-id") //http://localhost:8080/get-heading?name=Laporte
     public String getPlayerId(@RequestParam(value = "id", defaultValue = "29179241") int id) throws JsonProcessingException {
         List<OutfieldPlayer> outfieldPlayers =  (List<OutfieldPlayer>) playerService.findALlOutfield() ;
         for(OutfieldPlayer player: outfieldPlayers){
@@ -135,7 +131,7 @@ public class Controller {
     public JSONObject returnResult(@RequestParam(value = "home-club", defaultValue = "MCFC") String homeClub, @RequestParam(value = "away-club",defaultValue = "Spurs") String awayClub) throws JsonProcessingException {
         String homeClubNameFull = returnFullClubName(homeClub);
         String awayClubNameFull = returnFullClubName(awayClub);
-        MatchEngine matchEngine = new MatchEngine(homeClubNameFull, awayClubNameFull);
+        MatchEngine matchEngine = new MatchEngine(homeClubNameFull, awayClubNameFull,teamSetup);
         JSONObject object = matchEngine.runMatchEngine();
         return object;
 //        JSONObject example = new JSONObject();
@@ -155,7 +151,7 @@ public class Controller {
     public JSONObject processMatch(@RequestParam(value = "home-club", defaultValue = "MCFC") String homeClub, @RequestParam(value = "away-club",defaultValue = "Spurs") String awayClub) throws JsonProcessingException {
         String homeClubNameFull = returnFullClubName(homeClub);
         String awayClubNameFull = returnFullClubName(awayClub);
-        MatchEngine matchEngine = new MatchEngine(homeClubNameFull, awayClubNameFull); //Subject
+        MatchEngine matchEngine = new MatchEngine(homeClubNameFull, awayClubNameFull,teamSetup); //Subject
         ObjectMapper objectMapper = new ObjectMapper();
         matchEngine.newRunMatchEngine();
         List<InGamePlayerStats> homePlayerMatchStats = new ArrayList<>(matchEngine.getHomePlayersMatchStatsMap().values());

@@ -5,6 +5,7 @@ import com.example.team.Team;
 import com.example.matchEngine.engine.MatchEngine;
 import com.example.model.player.Player;
 import com.example.repository.OutfieldPlayerRepository;
+import com.example.team.TeamSetup;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.CommandLineRunner;
@@ -33,9 +34,9 @@ public class Main {
 
 
     @Bean
-    public CommandLineRunner demo() {
+    public CommandLineRunner demo(TeamSetup teamSetup) {
         return (args) -> {
-            MatchEngine matchEngine = new MatchEngine("Manchester City","Tottenham Hotspur");
+            MatchEngine matchEngine = new MatchEngine("Manchester City","Tottenham Hotspur",teamSetup);
             Team awayTeam = matchEngine.getAwayTeam();
             Team homeTeam = matchEngine.getHomeTeam();
             for(Player player: homeTeam.getPlayers()){
@@ -48,7 +49,7 @@ public class Main {
 //            positionsMapAway.put("ST",awayTeam.get(awayTeam.size()-1));
 //            positionsMapAway.put("ML",awayTeam.get(awayTeam.size()-2));
 
-            Team team= new Team("Manchester City");
+//            Team team= new Team("Manchester City");
 //            matchEngine.runMatchEngine();
 //            matchEngine.newRunMatchEngine();
 

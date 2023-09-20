@@ -15,6 +15,7 @@ import com.example.model.player.InGamePlayerStats;
 import com.example.team.PlayersMatchStats;
 import com.example.team.Team;
 import com.example.model.player.Player;
+import com.example.team.TeamSetup;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
@@ -48,8 +49,8 @@ public class MatchEngine {
 
     private Team awayTeam;
 
-    public String homeTeamName;
-    public String awayTeamName;
+    private String homeTeamName;
+    private String awayTeamName;
 
     private Map<String, Player> positionsMapAway;
     private Map<String, Player> positionsMapHome;
@@ -101,12 +102,16 @@ public class MatchEngine {
     private ShotCalculations shotCalculations = new ShotCalculations(this,this.updateInGamePlayerStats);
     private MatchSetup matchSetup = new MatchSetup(playersMatchStats);
 
+    private TeamSetup teamSetup;
 
-    public MatchEngine( String homeTeamName, String awayTeamName) {
+
+    public MatchEngine(String homeTeamName, String awayTeamName, TeamSetup teamSetup) {
+
         this.homeTeamName = homeTeamName;
         this.awayTeamName = awayTeamName;
-        this.homeTeam = new Team(homeTeamName); //should the next three be in teamSetup/ new class?
-        this.awayTeam = new Team(awayTeamName);
+        this.teamSetup = teamSetup;
+        this.homeTeam = teamSetup.fetchTeam(homeTeamName);//should the next three be in teamSetup/ new class?
+        this.awayTeam = teamSetup.fetchTeam(awayTeamName);
         initilizeMarkers();
         this.homePlayersMatchStatsMap = playersMatchStats.createMapfromArray(this.matchSetup.assignPlayersToMatch(this.homeTeam,true).getInGamePlayerStatsArray()); //decipher this
         this.awayPlayersMatchStatsMap= playersMatchStats.createMapfromArray(this.matchSetup.assignPlayersToMatch(this.awayTeam,false).getInGamePlayerStatsArray());

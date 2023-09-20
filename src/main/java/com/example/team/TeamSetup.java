@@ -10,13 +10,16 @@ import org.springframework.stereotype.Component;
 
 import java.util.*;
 import java.util.stream.Stream;
-
+@Component
 public class TeamSetup {
 //    10 outfield players and a goalkeeper
 //    once there are more than 10 players in a team, a #first eleven starter will have to be
 
-   @Autowired
    PlayerService playerService;
+   public TeamSetup(PlayerService playerService){
+       this.playerService = playerService;
+
+   }
 
     public Team fetchTeam(String teamName) {
         Team team = new Team();

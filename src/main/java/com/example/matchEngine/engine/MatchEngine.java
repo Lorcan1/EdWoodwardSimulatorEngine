@@ -108,8 +108,8 @@ public class MatchEngine {
         this.teamSetup = teamSetup;
         this.homeTeamName = homeTeamName;
         this.awayTeamName = awayTeamName;
-        this.homeTeam = new Team(homeTeamName,teamSetup); //should the next three be in teamSetup/ new class?
-        this.awayTeam = new Team(awayTeamName,teamSetup);
+        this.homeTeam = teamSetup.createTeam(homeTeamName); //should the next three be in teamSetup/ new class?
+        this.awayTeam = teamSetup.createTeam(awayTeamName);
         initilizeMarkers();
         this.homePlayersMatchStatsMap = playersMatchStats.createMapfromArray(this.matchSetup.assignPlayersToMatch(this.homeTeam,true).getInGamePlayerStatsArray()); //decipher this
         this.awayPlayersMatchStatsMap= playersMatchStats.createMapfromArray(this.matchSetup.assignPlayersToMatch(this.awayTeam,false).getInGamePlayerStatsArray());

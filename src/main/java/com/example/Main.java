@@ -46,7 +46,7 @@ public class Main {
 //            positionsMapAway.put("ST",awayTeam.get(awayTeam.size()-1));
 //            positionsMapAway.put("ML",awayTeam.get(awayTeam.size()-2));
 
-            Team team= new Team("Manchester City",teamSetup);
+            Team team= teamSetup.createTeam("Manchester City");
 //            matchEngine.runMatchEngine();
 //            matchEngine.newRunMatchEngine();
 

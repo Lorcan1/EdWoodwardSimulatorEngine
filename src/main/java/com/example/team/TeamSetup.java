@@ -193,6 +193,52 @@ public class TeamSetup {
         }
         return players;
     }
+
+    public Team createTeam(String teamName) {
+        Team team = new Team();
+        team.setTeamName(teamName);
+        List<Player> teamList = returnStartingEleven(teamName);
+        List<Player> startingPlayers = new ArrayList<>();
+        for (Player player : teamList) {
+            if (player.getStartingPosition().equals("GK")) {
+                team.setGk(player);
+                startingPlayers.add(player);
+            }else if(player.getStartingPosition().equals("DL")){
+                team.setDl(player);
+                startingPlayers.add(player);
+            }else if(player.getStartingPosition().equals("DCL")){
+                team.setDcl(player);
+                startingPlayers.add(player);
+            }else if(player.getStartingPosition().equals("DCR")){
+                team.setDcr(player);
+                startingPlayers.add(player);
+            }else if(player.getStartingPosition().equals("DR")){
+                team.setDr(player);
+                startingPlayers.add(player);
+            }else if(player.getStartingPosition().equals("DM")){
+                team.setDm(player);
+                startingPlayers.add(player);
+            }else if(player.getStartingPosition().equals("MR")){
+                team.setMr(player);
+                startingPlayers.add(player);
+            }else if(player.getStartingPosition().equals("MCR")){
+                team.setMcr(player);
+                startingPlayers.add(player);
+            }else if(player.getStartingPosition().equals("MCL")){
+                team.setMcl(player);
+                startingPlayers.add(player);
+            }else if(player.getStartingPosition().equals("ML")){
+                team.setMl(player);
+                startingPlayers.add(player);
+            }else if(player.getStartingPosition().equals("ST")){
+                team.setSt(player);
+                startingPlayers.add(player);
+            }
+        }
+
+        team.setPlayers(startingPlayers);
+        return team;
+    }
 }
 
 

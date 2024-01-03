@@ -157,7 +157,7 @@ public class Controller {
     public JSONObject processMatch(@RequestParam(value = "home-club", defaultValue = "MCFC") String homeClub, @RequestParam(value = "away-club",defaultValue = "Spurs") String awayClub) throws JsonProcessingException {
         String homeClubNameFull = returnFullClubName(homeClub);
         String awayClubNameFull = returnFullClubName(awayClub);
-        MatchEngine matchEngine = new MatchEngine(teamSetup, homeClubNameFull, awayClubNameFull); //Subject
+        MatchEngine matchEngine = new MatchEngine(teamSetup, homeClubNameFull, awayClubNameFull);
         ObjectMapper objectMapper = new ObjectMapper();
         matchEngine.newRunMatchEngine();
         List<InGamePlayerStats> homePlayerMatchStats = new ArrayList<>(matchEngine.getHomePlayersMatchStatsMap().values());
@@ -169,6 +169,7 @@ public class Controller {
         jsonObject.put("players", homePlayerMatchStats);
         jsonObject.put("match",matchEngine.updateInGameMatchStatsTemp());
         jsonObject.put("pbp","11:44 - BOS - Robert Williams elevates for a shot at the rim");
+        jsonObject.put("score" , matchEngine.runMatchEngine());
         return jsonObject;
     }
 

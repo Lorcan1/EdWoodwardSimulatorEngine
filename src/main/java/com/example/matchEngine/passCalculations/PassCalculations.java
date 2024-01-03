@@ -7,10 +7,6 @@ import java.util.*;
 
 public class PassCalculations {
     private Random random = new Random();
-
-
-
-
     public Player whichPlayerReceivesTheBall(Team attackingTeam, String position) { //this should be changed to reflect what runs an attacker is making
         Player player1 = null;
         Player player2 = null;

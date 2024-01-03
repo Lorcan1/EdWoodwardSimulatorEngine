@@ -57,8 +57,8 @@ public class MatchEngine {
     private Map<String, Player> positionsMapHome;
 
 
-    public int homeScore;
-    public int awayScore;
+    public int homeScore = 0;
+    public int awayScore = 0;
 
     private List<String> homeScorers = new ArrayList<>();
     private List<String> awayScorers= new ArrayList<>();
@@ -241,6 +241,7 @@ public class MatchEngine {
     }
 
     public JSONObject runMatchEngine() {
+        Random r = new Random();
 
 //        playBall(homeTeam,awayTeam);
 //        playBall(awayTeam,homeTeam);
@@ -255,40 +256,85 @@ public class MatchEngine {
         addMatchParameters();
         log.info("Final Score: " + homeScore + "-" + awayScore + homeScorers.toString() + awayScorers.toString());
         JSONArray scorers = new JSONArray();
-        JSONObject scorer1 = new JSONObject();
-        scorer1.put("name","Son");
-        scorer1.put("team","home");
-        JSONArray goals1 = new JSONArray();
-        goals1.add("15'");
-        goals1.add("30'");
-        scorer1.put("goals",goals1);
+        if(homeScore != 0) {
+            for (int i = 0; i < homeScore; i++) {
+                JSONObject scorerHome = new JSONObject();
+                JSONArray goalsHome = new JSONArray();
+                scorerHome.put("name", homeScorers.get(i));
+                scorerHome.put("team", "home");
+                //I should make a class that does all the random number generation
+                int result = r.nextInt(90);
+                goalsHome.add(result);
+                scorerHome.put("goals", goalsHome);
+                scorers.add(scorerHome);
 
-        JSONObject scorer2 = new JSONObject();
-        scorer2.put("name","Kane");
-        scorer2.put("team","home");
-        JSONArray goals2 = new JSONArray();
-        goals2.add("40'");
-        scorer2.put("goals",goals2);
+            }
+        }
+            if(awayScore != 0){
+                for(int i = 0; i< awayScore; i++ ) {
+                    JSONObject scorerHome = new JSONObject();
+                    JSONArray goalsHome = new JSONArray();
+                    scorerHome.put("name", awayScorers.get(i));
+                    scorerHome.put("team", "away");
+                    //I should make a class that does all the random number generation
+                    int result = r.nextInt(90);
+                    goalsHome.add(result);
+                    scorerHome.put("goals", goalsHome);
+                    scorers.add(scorerHome);
+                }
 
-        JSONObject scorer3 = new JSONObject();
-        scorer3.put("name","Haaland");
-        scorer3.put("team","away");
-        JSONArray goals3 = new JSONArray();
-        goals3.add("40'");
-        scorer3.put("goals",goals3);
+
+
+        }
+
+//        JSONObject scorerAway = new JSONObject();
+//        JSONArray goalsAway = new JSONArray();
+//        if(awayScore != 0){
+//            for(int i = 0; i< awayScore; i++ ){
+//                scorerAway.put("name", awayScorers.get(i));
+//                scorerAway.put("team","away");
+//                //I should make a class that does all the random number generation
+//                int result = r.nextInt(90);
+//                goalsAway.add(result);
+//                scorerAway.put("goals",goalsAway);
+//                scorers.add(scorerAway);
+//
+//            }
+//
+//        }
+//        scorer1.put("name","Son");
+//        scorer1.put("team","home");
+//        JSONArray goals1 = new JSONArray();
+//        goals1.add("15'");
+//        goals1.add("30'");
+//        scorer1.put("goals",goals1);
+
+//        JSONObject scorer2 = new JSONObject();
+//        scorer2.put("name","Kane");
+//        scorer2.put("team","home");
+//        JSONArray goals2 = new JSONArray();
+//        goals2.add("40'");
+//        scorer2.put("goals",goals2);
+//
+//        JSONObject scorer3 = new JSONObject();
+//        scorer3.put("name","Haaland");
+//        scorer3.put("team","away");
+//        JSONArray goals3 = new JSONArray();
+//        goals3.add("40'");
+//        scorer3.put("goals",goals3);
 //        obj.put("homeScorers", homeScorers.toString().replace("[", "").replace("]", ""));
 //        obj.put("awayScorers",awayScorers.toString().replace("[", "").replace("]", ""));
 //        obj.put("homeScorers",homeScorers);
 //        obj.put("awayScorers",awayScorers);
-        scorers.add(scorer1);
-        scorers.add(scorer2);
-        scorers.add(scorer3);
+//        scorers.add(scorer1);
+//        scorers.add(scorer2);
+//        scorers.add(scorer3);
 
         JSONObject obj = new JSONObject();
-        obj.put("homeTeam","Tottenham Hotspur");
-        obj.put("awayTeam","Manchester City");
-        obj.put("awayTeamScore","1");
-        obj.put("homeTeamScore","3");
+        obj.put("homeTeam",homeTeamName);
+        obj.put("awayTeam",awayTeamName);
+        obj.put("awayTeamScore",awayScore);
+        obj.put("homeTeamScore",homeScore);
         obj.put("Scorer",scorers);
         return obj ;
     }
@@ -309,6 +355,7 @@ public class MatchEngine {
     }
 
     public void goalScored(String goalScorer){
+        log.info("Goal Scored!");
         updateInGamePlayerStats.updateGoalStat(goalScorer);
         if (lastPasserName != null)
             updateInGamePlayerStats.updateAssistStat(lastPasserName);

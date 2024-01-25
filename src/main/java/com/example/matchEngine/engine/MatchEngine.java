@@ -139,6 +139,15 @@ public class MatchEngine {
     public void playGame(String action){ //how do we deal with teamInPossesion/ attacking team? - keep it as an instance variable?
 
         while(gameFinished != true){
+            if (playerInPosses != null) {
+                System.out.println(playerInPosses.getClub());
+            } else{
+                System.out.println("null");
+            }
+
+            System.out.println(homeTeamPoss);
+            System.out.println(action);
+            System.out.println("///////////////////");
             switch (action){
                 case "goalKick":
                 case "kickOff":
@@ -269,6 +278,17 @@ public class MatchEngine {
                 scorers.add(scorerHome);
 
             }
+        } else {
+            for (int i = 0; i < awayScore; i++) {
+                JSONObject scorerHomeNull = new JSONObject();
+                JSONArray goalsHomeNull = new JSONArray();
+                scorerHomeNull.put("name", "");
+                scorerHomeNull.put("team", "home");
+                //I should make a class that does all the random number generation
+                scorerHomeNull.put("goals", " ");
+                scorers.add(scorerHomeNull);
+            }
+
         }
             if(awayScore != 0){
                 for(int i = 0; i< awayScore; i++ ) {
@@ -283,9 +303,18 @@ public class MatchEngine {
                     scorers.add(scorerHome);
                 }
 
+        }else {
+                for (int i = 0; i < homeScore; i++) {
+                    JSONObject scorerHomeNull = new JSONObject();
+                    JSONArray goalsHomeNull = new JSONArray();
+                    scorerHomeNull.put("name", "");
+                    scorerHomeNull.put("team", "away");
+                    //I should make a class that does all the random number generation
+                    scorerHomeNull.put("goals", " ");
+                    scorers.add(scorerHomeNull);
+                }
 
-
-        }
+            }
 
 //        JSONObject scorerAway = new JSONObject();
 //        JSONArray goalsAway = new JSONArray();
@@ -342,6 +371,14 @@ public class MatchEngine {
         Team temp = this.attackingTeam; //temp = man
         this.attackingTeam = this.defendingTeam; //attacking team = tot
         this.defendingTeam = temp;
+
+        if(howBallWasLost.equals("pass") || howBallWasLost.equals("tackle") || howBallWasLost.equals("temp")) { //other teams player needs to have ball, hardcode for now, should be in a new function which decided which oppo player gets ball
+            if(homeTeamPoss){ //obvs tackle and pass should be different aswell - NEEDS TO BE CHANGED
+                playerInPosses = awayTeam.getDcr();
+            } else{
+                playerInPosses = homeTeam.getDcr();
+            }
+        }
         homeTeamPoss = !homeTeamPoss;
 
     }

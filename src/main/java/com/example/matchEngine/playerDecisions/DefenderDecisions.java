@@ -116,7 +116,9 @@ public class DefenderDecisions implements PlayerDecisions {
         //but must be removed from the player currently in posession
         //for attackers this can be changed to dribble
         //change strata to midfield
+        //harcoded for now - NEEDS TO BE CHANGED
         return true;
+
     }
 
     public String calcTackleResult(int pitchPos, Player playerInPosses){

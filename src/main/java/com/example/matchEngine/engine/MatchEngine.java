@@ -265,17 +265,33 @@ public class MatchEngine {
         addMatchParameters();
         log.info("Final Score: " + homeScore + "-" + awayScore + homeScorers.toString() + awayScorers.toString());
         JSONArray scorers = new JSONArray();
+        List<String> previous_scores = new ArrayList<>();
         if(homeScore != 0) {
             for (int i = 0; i < homeScore; i++) {
                 JSONObject scorerHome = new JSONObject();
                 JSONArray goalsHome = new JSONArray();
-                scorerHome.put("name", homeScorers.get(i));
-                scorerHome.put("team", "home");
-                //I should make a class that does all the random number generation
-                int result = r.nextInt(90);
-                goalsHome.add(result);
-                scorerHome.put("goals", goalsHome);
-                scorers.add(scorerHome);
+                if(scorers!= null && previous_scores.contains(homeScorers.get(i))){
+                    for(int j = 0; j < scorers.size(); j++){
+                            JSONObject current = (JSONObject) scorers.get(j);
+                            if(current.get("name").equals(homeScorers.get(i))){
+                                int result = r.nextInt(90);
+                                String currentS = (String) current.get("goals");
+                                String S = currentS + "," + Integer.toString(result);
+                                current.put("goals",S);
+                                break;
+                        }
+                    }
+                } else {
+                    previous_scores.add(homeScorers.get((i)));
+                    scorerHome.put("name", homeScorers.get(i));
+                    scorerHome.put("team", "home");
+                    //I should make a class that does all the random number generation
+
+
+                    int result = r.nextInt(90);
+                    scorerHome.put("goals", Integer.toString(result));
+                    scorers.add(scorerHome);
+                }
 
             }
         } else {
@@ -298,7 +314,7 @@ public class MatchEngine {
                     scorerHome.put("team", "away");
                     //I should make a class that does all the random number generation
                     int result = r.nextInt(90);
-                    goalsHome.add(result);
+                    goalsHome.add(Integer.toString(result));
                     scorerHome.put("goals", goalsHome);
                     scorers.add(scorerHome);
                 }

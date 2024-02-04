@@ -39,7 +39,7 @@ import java.util.*;
 @Getter
 @Setter
 @Slf4j
-public class MatchEngine {
+public class MatchEngine implements MatchEngineDecisions {
 
     private Match match = new Match();//need to set an Id and give it to the player stats
     private UpdateInGameMatchStats updateInGameMatchStats  = new UpdateInGameMatchStats(match);
@@ -146,7 +146,7 @@ public class MatchEngine {
 
     public void playGame(String action){ //how do we deal with teamInPossesion/ attacking team? - keep it as an instance variable?
 
-        while(gameFinished != true){
+        while(!gameFinished){
             if (playerInPosses != null) {
                 System.out.println(playerInPosses.getClub());
             } else{
@@ -211,7 +211,7 @@ public class MatchEngine {
     }
 
     public String kickOff(){
-        if(startOfGame == true){
+        if(startOfGame){
             coinflip();
         }
         playerInPosses = choosePlayerInPosses();

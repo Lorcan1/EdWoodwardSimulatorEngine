@@ -1,6 +1,7 @@
 package com.example.matchEngine.playerDecisions;
 
 import com.example.matchEngine.engine.MatchEngine;
+import com.example.matchEngine.engine.MatchEngineDecisions;
 import com.example.matchEngine.passCalculations.PassCalculations;
 import com.example.matchEngine.updateStats.UpdateInGamePlayerStats;
 import com.example.model.player.Player;
@@ -14,12 +15,12 @@ import java.util.Random;
 @Setter
 public class DefenderDecisions implements PlayerDecisions {
     private UpdateInGamePlayerStats updateInGamePlayerStats;
-    private MatchEngine matchEngine;
+    private MatchEngineDecisions matchEngine;
     private Random random = new Random();
     private PassCalculations passCalculations;
 
 
-    public DefenderDecisions(UpdateInGamePlayerStats updateInGamePlayerStats, MatchEngine matchEngine) {
+    public DefenderDecisions(UpdateInGamePlayerStats updateInGamePlayerStats, MatchEngineDecisions matchEngine) {
         this.updateInGamePlayerStats = updateInGamePlayerStats;
         this.matchEngine = matchEngine;
         this.passCalculations = new PassCalculations();

@@ -48,7 +48,7 @@ public class ShotCalculations { //add oneOnOne calcs to this class
             if(shotChance > 80){    //what is the likelihood of this, see python script. With the compusure and finishing seems to be abput 1/10
                 //great finish      //weaker players should have less chance of scoring here but more chance against weaker goalkeepers
                 //were going to need the passer for the key chances/ assists
-                matchEngine.goalScored(attacker.getLastName());
+                matchEngine.goalScored(attacker);
                 return "kickOff";
             } else{
 
@@ -56,7 +56,7 @@ public class ShotCalculations { //add oneOnOne calcs to this class
                     matchEngine.changePossession("temp");
                     return "ballInDefence";
                 } else{
-                    matchEngine.goalScored(attacker.getLastName());
+                    matchEngine.goalScored(attacker);
                     return "kickOff";
                 }
             }
@@ -84,7 +84,7 @@ public class ShotCalculations { //add oneOnOne calcs to this class
                     matchEngine.changePossession("temp");
                     return "ballInDefence";
                 } else{
-                    matchEngine.goalScored(attacker.getLastName());
+                    matchEngine.goalScored(attacker);
                     return "kickOff";
 
                 }

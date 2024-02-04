@@ -3,12 +3,15 @@ package com.example.services;
 import java.util.*;
 
 public class FeedService {
-    private List feed = new ArrayList();
+    private List feed;
+
     private Map<String, List<String>> responses;
 
-    public FeedService() {
+    public FeedService(List feed) {
         this.responses = new HashMap<String, List<String>>();
-        responses.put("action1", Arrays.asList(" is tackled and looses the ball. Great tackle by ", " is dispossessed by ", " looses it. Solid challenge from "));
+        responses.put("action1", Arrays.asList(" is tackled and looses the ball. Great tackle by player2 ", " is dispossessed by player2 ", " looses it. Solid challenge from player2 "));
+        responses.put("goal",Arrays.asList(" scores", " finishes a fine move", " puts it past player2", " smashes it past player2"));
+        this.feed = feed;
     }
 
 
@@ -22,16 +25,16 @@ public class FeedService {
 //        responses.put("action3", Arrays.asList("Response7", "Response8", "Response9"));
     }
 
-    public List responseGenerator(String time, String club, String player1, String player2, String initalResponse){
+    private void responseGenerator(String time, String club, String player1, String player2, String initalResponse){
         String staticResponse = time + " - " + club + " - ";
-        feed.add(staticResponse + player1 + initalResponse + player2);
-        return feed;
+        String addedPlayer2 = initalResponse.replace("player2", player2);
+        feed.add(staticResponse + player1 + addedPlayer2);
 
     }
-    public List getRandomResponse(String time, String club, String player1, String player2, String action) {
+    public void getRandomResponse(String time, String club, String player1, String player2, String action) {
         List<String> responseList = responses.get(action);
         Random rand = new Random();
         String initialResponse =  responseList.get(rand.nextInt(responseList.size()));
-        return responseGenerator(time,club,player1,player2,initialResponse);
+        responseGenerator(time,club,player1,player2,initialResponse);
     }
 }

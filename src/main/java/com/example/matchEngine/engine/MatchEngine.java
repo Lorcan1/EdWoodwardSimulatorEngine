@@ -12,6 +12,7 @@ import com.example.model.InGameMatchStats;
 import com.example.model.Match;
 import com.example.model.player.OutfieldPlayer;
 import com.example.model.player.InGamePlayerStats;
+import com.example.services.FeedService;
 import com.example.team.PlayersMatchStats;
 import com.example.team.Team;
 import com.example.team.TeamSetup;
@@ -62,6 +63,9 @@ public class MatchEngine {
 
     private List<String> homeScorers = new ArrayList<>();
     private List<String> awayScorers= new ArrayList<>();
+
+    private List<String> homeScorersTime = new ArrayList<>();
+    private List<String> awayScorersTime = new ArrayList<>();
     private List<String> homeAssisters= new ArrayList<>();
     private List<String> awayAssisters= new ArrayList<>();
 
@@ -102,6 +106,8 @@ public class MatchEngine {
     private PlayerDecisions attackerDecisions = new AttackerDecisions(this.updateInGamePlayerStats, this);
     private ShotCalculations shotCalculations = new ShotCalculations(this,this.updateInGamePlayerStats);
     private MatchSetup matchSetup = new MatchSetup(playersMatchStats);
+    private FeedService feedService;
+    public List feed;
 
 
     public MatchEngine(TeamSetup teamSetup, String homeTeamName, String awayTeamName) {
@@ -113,6 +119,8 @@ public class MatchEngine {
         initilizeMarkers();
         this.homePlayersMatchStatsMap = playersMatchStats.createMapfromArray(this.matchSetup.assignPlayersToMatch(this.homeTeam,true).getInGamePlayerStatsArray()); //decipher this
         this.awayPlayersMatchStatsMap= playersMatchStats.createMapfromArray(this.matchSetup.assignPlayersToMatch(this.awayTeam,false).getInGamePlayerStatsArray());
+        this.feed = new ArrayList();
+        this.feedService = new FeedService(this.feed);
     }
 
 
@@ -274,9 +282,9 @@ public class MatchEngine {
                     for(int j = 0; j < scorers.size(); j++){
                             JSONObject current = (JSONObject) scorers.get(j);
                             if(current.get("name").equals(homeScorers.get(i))){
-                                int result = r.nextInt(90);
+//                                int result = r.nextInt(90);
                                 String currentS = (String) current.get("goals");
-                                String S = currentS + "," + Integer.toString(result);
+                                String S = currentS + "," + homeScorersTime.get(i);
                                 current.put("goals",S);
                                 break;
                         }
@@ -288,8 +296,8 @@ public class MatchEngine {
                     //I should make a class that does all the random number generation
 
 
-                    int result = r.nextInt(90);
-                    scorerHome.put("goals", Integer.toString(result));
+//                    int result = r.nextInt(90);
+                    scorerHome.put("goals", homeScorersTime.get(i));
                     scorers.add(scorerHome);
                 }
 
@@ -407,19 +415,29 @@ public class MatchEngine {
         playerInPosses = markers.get(playerInPosses); //same for now
     }
 
-    public void goalScored(String goalScorer){
+    public void goalScored(Player goalScorer){
         log.info("Goal Scored!");
-        updateInGamePlayerStats.updateGoalStat(goalScorer);
+
+        if(homeTeamPoss){ //this needs to be abstracted somewhere, maybe have a current team in posses Team variable
+            feedService.getRandomResponse(Integer.toString(Math.round(time)), "MCFC", goalScorer.getLastName(), awayTeam.getGk().getLastName(), "goal");
+        } else {
+            feedService.getRandomResponse(Integer.toString(Math.round(time)), "TOT", goalScorer.getLastName(), homeTeam.getGk().getLastName(), "goal"); //need to sort goalscorer.getClubAbrev - currently null
+
+        }
+
+        updateInGamePlayerStats.updateGoalStat(goalScorer.getLastName());
         if (lastPasserName != null)
             updateInGamePlayerStats.updateAssistStat(lastPasserName);
         if(homeTeamPoss) {
             homeScore ++;
-            homeScorers.add(goalScorer);
+            homeScorers.add(goalScorer.getLastName());
             homeAssisters.add(lastPasserName); //if null just add null to the list
+            homeScorersTime.add(Integer.toString(Math.round(time)));
         } else {
             awayScore++;
-            awayScorers.add(goalScorer);
+            awayScorers.add(goalScorer.getLastName());
             awayAssisters.add(lastPasserName);
+            awayScorersTime.add(Integer.toString(Math.round(time)));
         }
     }
 

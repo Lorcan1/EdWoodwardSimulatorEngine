@@ -168,7 +168,7 @@ public class Controller {
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("players", homePlayerMatchStats);
         jsonObject.put("match",matchEngine.updateInGameMatchStatsTemp());
-        jsonObject.put("pbp","11:44 - BOS - Robert Williams elevates for a shot at the rim");
+        jsonObject.put("pbp", matchEngine.getFeed());
         jsonObject.put("score" , matchEngine.runMatchEngine());
         return jsonObject;
     }

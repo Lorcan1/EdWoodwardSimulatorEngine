@@ -12,7 +12,7 @@ import java.util.List;
 public class Team {
     private  List<String> positions= new ArrayList<>();
     private  String teamName;
-    private  TeamSetup teamSetup;
+    private TeamSetupLogic teamSetupLogic;
     private Player gk;
     private  Player dl;
     private  Player dcl;

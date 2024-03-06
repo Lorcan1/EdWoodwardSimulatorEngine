@@ -8,6 +8,7 @@ import com.example.team.Team;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.HashMap;
 import java.util.Random;
 
 @Getter
@@ -84,8 +85,10 @@ public class DefenderDecisions implements PlayerDecisions {
 
         if(randomChance > 1){ //pass is succesful
             gameState.setPlayerInPosses(passReceiver);
-//            updateInGamePlayerStats.updatePassStat(playerInPoss.getLastName());
-//            updateInGamePlayerStats.updateTouchStat(passReceiver.getLastName());
+            HashMap<String, String> playerStatsToBeUpdated = gameState.getPlayerStatsToBeUpdated();
+            playerStatsToBeUpdated.put(gameState.getPlayerInPosses().getLastName(), "pass");
+            playerStatsToBeUpdated.put(passReceiver.getLastName(), "touch");
+            gameState.setPlayerStatsToBeUpdated(playerStatsToBeUpdated);
             return true;
         } else{
             gameState.setPossLost("pass");

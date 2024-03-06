@@ -2,6 +2,7 @@ package com.example.matchEngine.engine;
 
 import com.example.matchEngine.playerDecisions.DefenderDecisions;
 import com.example.matchEngine.playerDecisions.PlayerDecisions;
+import com.example.matchEngine.updateStats.UpdateInGamePlayerStats;
 import com.example.team.Team;
 import com.example.model.player.Player;
 import lombok.Getter;
@@ -38,6 +39,8 @@ public class MatchEngineLogic {
     int time = 0;
 
     private PlayerDecisions defenderDecisions = new DefenderDecisions();
+
+    private UpdateInGamePlayerStats updateInGamePlayerStats = new UpdateInGamePlayerStats(homeTeam.getPlayers(), awayTeam.getPlayers());
 
     public MatchEngineLogic(String homeTeamName, String awayTeamName) {
         this.homeTeamName = homeTeamName;
@@ -95,11 +98,15 @@ public class MatchEngineLogic {
                 //currently i am passing in those 5 values, why not make a gamestate object or add them to match and pass it in and return it??
 
             }
+
+            updateInGamePlayerStats.updateInGamePlayerStats(gameState.getPlayerStatsToBeUpdated());
             action = gameState.getAction();
             if(!gameState.getPossLost().isEmpty()){
                 changePossession(gameState.getPossLost());
                 gameState.setPossLost(" ");
             }
+
+
             time = time + 1;
             if(time > 20){
                 gameFinished = true;

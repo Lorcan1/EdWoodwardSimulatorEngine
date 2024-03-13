@@ -2,7 +2,9 @@ package com.example.matchEngine.engine;
 
 import com.example.matchEngine.playerDecisions.DefenderDecisions;
 import com.example.matchEngine.playerDecisions.PlayerDecisions;
+import com.example.matchEngine.updateStats.UpdateInGameMatchStats;
 import com.example.matchEngine.updateStats.UpdateInGamePlayerStats;
+import com.example.model.InGameMatchStats;
 import com.example.team.Team;
 import com.example.model.player.Player;
 import lombok.Getter;
@@ -41,6 +43,7 @@ public class MatchEngineLogic {
     private PlayerDecisions defenderDecisions = new DefenderDecisions();
 
     private UpdateInGamePlayerStats updateInGamePlayerStats = new UpdateInGamePlayerStats(homeTeam.getPlayers(), awayTeam.getPlayers());
+    private UpdateInGameMatchStats updateInGameMatchStats = new UpdateInGameMatchStats(new InGameMatchStats());
 
     public MatchEngineLogic(String homeTeamName, String awayTeamName) {
         this.homeTeamName = homeTeamName;
@@ -96,17 +99,25 @@ public class MatchEngineLogic {
                     gameState = defenderDecisions.playerMakeDecision(gameState);
                     break;
                 //currently i am passing in those 5 values, why not make a gamestate object or add them to match and pass it in and return it??
-
             }
 
-            updateInGamePlayerStats.updateInGamePlayerStats(gameState.getPlayerStatsToBeUpdated());
             action = gameState.getAction();
             if(!gameState.getPossLost().isEmpty()){
                 changePossession(gameState.getPossLost());
                 gameState.setPossLost(" ");
             }
 
+            //should the above be before or after the updating of the stats. HomeTeamPoss is changed above and is used
+            // to decide who took the actions in the below
+            //can actions from both teams be present in PlayersStatsToBeUpdated?
 
+            //if a player attempts a pass and fails then what happens currently and what should happen?
+
+
+            updateInGamePlayerStats.updateInGamePlayerStats(gameState.getPlayerStatsToBeUpdated());
+            updateInGameMatchStats.updateMatchStats(gameState.homeTeamPoss, gameState.getPlayerStatsToBeUpdated(), gameState.getShot());
+
+            //we need to clear a lot of things from gamestate now !!!
             time = time + 1;
             if(time > 20){
                 gameFinished = true;

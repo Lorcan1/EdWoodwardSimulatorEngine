@@ -5,6 +5,8 @@ import com.example.team.Team;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.HashMap;
+
 @Getter
 @Setter
 public class GameState {
@@ -15,4 +17,5 @@ public class GameState {
     int pitchPoss;
     String action;
     String possLost = " ";
+    HashMap<String, String> playerStatsToBeUpdated = new HashMap();
 }

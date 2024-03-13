@@ -10,15 +10,15 @@ import java.util.HashMap;
 public class UpdateInGameMatchStats {
 
     InGameMatchStats inGameMatchStats;
-    int homePossession;
-    int awayPossession;
     int totalTime;
+    int[] possession;
+    int[] totalPossession;
 
     public UpdateInGameMatchStats(InGameMatchStats inGameMatchStats){
         this.inGameMatchStats = inGameMatchStats;
-        this.homePossession = 0;
-        this.awayPossession = 0;
         this.totalTime = 90;
+        this.possession = new int[2]; // Array to store possession for each team
+        this.totalPossession = new int[2]; // Array to store total possession for each team
 
 
     }
@@ -28,19 +28,29 @@ public class UpdateInGameMatchStats {
       updateShotAndGoalStats(playersStatsToBeUpdated, homeTeamPoss,shot);
     }
 
-    public void updatePossessionStats(Boolean homeTeamPoss){
-        if(homeTeamPoss) {
-            homePossession += 10; //this is dependent on how many times the total number of run throughs divided by the total time
-        }else {
-            awayPossession += 10;
-        }
+    private void updatePossessionStats(Boolean homeTeamPoss){
+        int team;
+        if(homeTeamPoss)
+            team = 0;
+        else
+
+            team = 1;
+        possession[team]++;
+
+        // Update total possession for the team
+        totalPossession[team] += possession[team];
+
+        // Calculate possession percentage for each team
+        double possessionPercentageTeamA = (double) totalPossession[0] / (totalPossession[0] + totalPossession[1]) * 100;
+        double possessionPercentageTeamB = (double) totalPossession[1] / (totalPossession[0] + totalPossession[1]) * 100;
+
 
         // Calculate possession percentage for both teams
-        inGameMatchStats.setHomePoss(homePossession / totalTime * 100) ;
-        inGameMatchStats.setAwayPoss(awayPossession / totalTime * 100) ;
+        inGameMatchStats.setHomePoss((int) possessionPercentageTeamA) ;
+        inGameMatchStats.setAwayPoss((int) possessionPercentageTeamB) ;
     }
 
-    public void updateShotAndGoalStats(HashMap<String, String> playersStatsToBeUpdated, Boolean homeTeamPoss, Shot shot){
+    private void updateShotAndGoalStats(HashMap<String, String> playersStatsToBeUpdated, Boolean homeTeamPoss, Shot shot){
         for (String playerName : playersStatsToBeUpdated.keySet()) {
             if(playersStatsToBeUpdated.get(playerName).equals("shot")){
                 updateShots(playerName,homeTeamPoss, shot);
@@ -51,7 +61,7 @@ public class UpdateInGameMatchStats {
         }
     }
 
-    public void updateShots(String playerName, Boolean homeTeamPoss, Shot shot) {
+    private void updateShots(String playerName, Boolean homeTeamPoss, Shot shot) {
         if (homeTeamPoss) {
             inGameMatchStats.setHomeShots(inGameMatchStats.getHomeShots() + 1);
             inGameMatchStats.setHomexG(inGameMatchStats.getHomexG() + shot.getXG());
@@ -67,13 +77,16 @@ public class UpdateInGameMatchStats {
         }
     }
 
-    public void updateGoals(String scorerName, Boolean homeTeamPoss, Shot goal){
+    private void updateGoals(String scorerName, Boolean homeTeamPoss, Shot goal){
         if(!scorerName.equals(goal.getGoal().getScorerName())){
             throw new IllegalArgumentException("Temp");
         }
-        if(homeTeamPoss)
+        if(homeTeamPoss) {
             inGameMatchStats.getHomeGoals().add(goal.getGoal());
-        else
+            inGameMatchStats.setHomeScore(inGameMatchStats.getHomeScore() + 1);
+        }else {
             inGameMatchStats.getAwayGoals().add(goal.getGoal());
+            inGameMatchStats.setAwayScore(inGameMatchStats.getAwayScore() + 1);
+        }
     }
 }

@@ -1,5 +1,6 @@
 package com.example.matchEngine.engine;
 
+import com.example.model.Shot;
 import com.example.model.player.Player;
 import com.example.team.Team;
 import lombok.Getter;
@@ -18,4 +19,5 @@ public class GameState {
     String action;
     String possLost = " ";
     HashMap<String, String> playerStatsToBeUpdated = new HashMap();
+    Shot shot;
 }

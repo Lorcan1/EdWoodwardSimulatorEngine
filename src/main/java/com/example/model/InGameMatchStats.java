@@ -3,6 +3,9 @@ package com.example.model;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Getter
 @Setter
 public class InGameMatchStats {
@@ -12,6 +15,10 @@ public class InGameMatchStats {
     int awayShots;
     int homeShotsOnT;
     int awayShotsOnT;
-    int homexG;
-    int awayxG;
+    Double homexG = 0.0;
+    Double awayxG = 0.0;
+    List<Goal> homeGoals = new ArrayList<>();
+    List<Goal> awayGoals = new ArrayList<>();
+    int homeScore;
+    int awayScore;
 }

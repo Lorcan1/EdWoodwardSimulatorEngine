@@ -1,4 +1,4 @@
-package com.example.matchEngine.updateStats;
+package com.example.matchEngine.services.UpdateStats;
 
 import com.example.model.InGameMatchStats;
 import com.example.model.Shot;

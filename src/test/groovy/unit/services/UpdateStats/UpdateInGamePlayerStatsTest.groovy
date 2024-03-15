@@ -1,17 +1,17 @@
-package groovy.matchEngine.updateStats
+package groovy.unit.services.UpdateStats
 
-import com.example.matchEngine.updateStats.UpdateInGamePlayerStats
+import com.example.matchEngine.services.UpdateStats.UpdateInGamePlayerStats
+import com.example.model.player.OutfieldPlayer
 import com.example.model.player.Player
-import com.example.services.FeedService
 import spock.lang.Shared
 import spock.lang.Specification
 
 class UpdateInGamePlayerStatsTest extends Specification{
 
     @Shared
-    TestPlayer testHomePlayer = new TestPlayer();
+    OutfieldPlayer testHomePlayer = new OutfieldPlayer();
     @Shared
-    TestPlayer testAwayPlayer = new TestPlayer();
+    OutfieldPlayer testAwayPlayer = new OutfieldPlayer();
     @Shared
     List<Player> homePlayers = new ArrayList<>()
     @Shared

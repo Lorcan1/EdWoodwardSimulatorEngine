@@ -2,9 +2,12 @@ package com.example.matchEngine.engine;
 
 import com.example.matchEngine.playerDecisions.DefenderDecisions;
 import com.example.matchEngine.playerDecisions.PlayerDecisions;
-import com.example.matchEngine.updateStats.UpdateInGameMatchStats;
-import com.example.matchEngine.updateStats.UpdateInGamePlayerStats;
+import com.example.matchEngine.services.ShotService.ShotCalculations;
+import com.example.matchEngine.services.ShotService.ShotService;
+import com.example.matchEngine.services.UpdateStats.UpdateInGameMatchStats;
+import com.example.matchEngine.services.UpdateStats.UpdateInGamePlayerStats;
 import com.example.model.InGameMatchStats;
+import com.example.model.player.Goalkeeper;
 import com.example.team.Team;
 import com.example.model.player.Player;
 import lombok.Getter;
@@ -44,6 +47,9 @@ public class MatchEngineLogic {
 
     private UpdateInGamePlayerStats updateInGamePlayerStats = new UpdateInGamePlayerStats(homeTeam.getPlayers(), awayTeam.getPlayers());
     private UpdateInGameMatchStats updateInGameMatchStats = new UpdateInGameMatchStats(new InGameMatchStats());
+
+
+    ShotService shotService = new ShotService(new ShotCalculations(), (Goalkeeper) homeTeam.getGk(), (Goalkeeper) awayTeam.getGk()); //look at springifying this
 
     public MatchEngineLogic(String homeTeamName, String awayTeamName) {
         this.homeTeamName = homeTeamName;
@@ -98,14 +104,16 @@ public class MatchEngineLogic {
                 case "ballInDefence":
                     gameState = defenderDecisions.playerMakeDecision(gameState);
                     break;
+                case "shot":
+                    gameState = shotService.calculateShotChance(gameState, false, time);
+
                 //currently i am passing in those 5 values, why not make a gamestate object or add them to match and pass it in and return it??
             }
 
             action = gameState.getAction();
-            if(!gameState.getPossLost().isEmpty()){
-                changePossession(gameState.getPossLost());
-                gameState.setPossLost(" ");
-            }
+
+            //feedService here
+
 
             //should the above be before or after the updating of the stats. HomeTeamPoss is changed above and is used
             // to decide who took the actions in the below
@@ -113,10 +121,14 @@ public class MatchEngineLogic {
 
             //if a player attempts a pass and fails then what happens currently and what should happen?
 
-
             updateInGamePlayerStats.updateInGamePlayerStats(gameState.getPlayerStatsToBeUpdated());
             updateInGameMatchStats.updateMatchStats(gameState.homeTeamPoss, gameState.getPlayerStatsToBeUpdated(), gameState.getShot());
 
+
+            if(!gameState.getPossLost().isEmpty()){
+                changePossession(gameState.getPossLost());
+                gameState.setPossLost(" ");
+            }
             //we need to clear a lot of things from gamestate now !!!
             time = time + 1;
             if(time > 20){

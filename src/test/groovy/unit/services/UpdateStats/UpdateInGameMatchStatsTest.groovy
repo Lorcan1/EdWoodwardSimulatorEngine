@@ -1,6 +1,6 @@
-package groovy.matchEngine.updateStats
+package groovy.unit.services.UpdateStats
 
-import com.example.matchEngine.updateStats.UpdateInGameMatchStats
+import com.example.matchEngine.services.UpdateStats.UpdateInGameMatchStats
 import com.example.model.Goal
 import com.example.model.InGameMatchStats
 import com.example.model.Shot

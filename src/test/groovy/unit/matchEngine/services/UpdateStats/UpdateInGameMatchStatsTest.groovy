@@ -1,4 +1,4 @@
-package groovy.unit.services.UpdateStats
+package groovy.unit.matchEngine.services.UpdateStats
 
 import com.example.matchEngine.services.UpdateStats.UpdateInGameMatchStats
 import com.example.model.Goal

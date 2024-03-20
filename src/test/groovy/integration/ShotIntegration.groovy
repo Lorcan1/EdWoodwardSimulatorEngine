@@ -1,8 +1,8 @@
 package groovy.integration
 
 import com.example.matchEngine.engine.GameState
-import com.example.matchEngine.services.ShotService.ShotCalculations
-import com.example.matchEngine.services.ShotService.ShotService
+import com.example.matchEngine.services.inGameActionCalculations.shotService.ShotCalculations
+import com.example.matchEngine.services.inGameActionCalculations.shotService.ShotService
 import com.example.model.player.Goalkeeper
 import com.example.model.player.OutfieldPlayer
 import spock.lang.Specification

@@ -1,11 +1,11 @@
-package com.example.matchEngine.passCalculations;
+package com.example.matchEngine.services.inGameActionCalculations.passCalculations;
 
 import com.example.model.player.Player;
 import com.example.team.Team;
 
 import java.util.*;
 
-public class PassCalculations {
+public class PassChooseReceiver {
     private Random random = new Random();
     public Player whichPlayerReceivesTheBall(Team attackingTeam, String position) { //this should be changed to reflect what runs an attacker is making
         Player player1 = null;

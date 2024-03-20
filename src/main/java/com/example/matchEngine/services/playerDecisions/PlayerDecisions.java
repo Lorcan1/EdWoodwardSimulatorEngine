@@ -1,4 +1,4 @@
-package com.example.matchEngine.playerDecisions;
+package com.example.matchEngine.services.playerDecisions;
 
 import com.example.matchEngine.engine.GameState;
 import com.example.model.player.Player;

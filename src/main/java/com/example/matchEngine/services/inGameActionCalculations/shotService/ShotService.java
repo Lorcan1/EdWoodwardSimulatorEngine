@@ -1,7 +1,6 @@
-package com.example.matchEngine.services.ShotService;
+package com.example.matchEngine.services.inGameActionCalculations.shotService;
 
 import com.example.matchEngine.engine.GameState;
-import com.example.model.Goal;
 import com.example.model.Shot;
 import com.example.model.player.Goalkeeper;
 import com.example.model.player.OutfieldPlayer;

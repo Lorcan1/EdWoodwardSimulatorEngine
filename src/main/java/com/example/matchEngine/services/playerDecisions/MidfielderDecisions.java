@@ -1,5 +1,6 @@
 //package com.example.matchEngine.playerDecisions;
 //
+//import com.example.matchEngine.engine.GameState;
 //import com.example.matchEngine.engine.MatchEngine;
 //import com.example.matchEngine.engine.MatchEngineDecisions;
 //import com.example.matchEngine.passCalculations.PassCalculations;
@@ -14,21 +15,18 @@
 //@Getter
 //@Setter
 //public class MidfielderDecisions implements PlayerDecisions {
-//    private UpdateInGamePlayerStats updateInGamePlayerStats;
-//    private MatchEngineDecisions matchEngine;
 //    private Random random = new Random();
 //    private PassCalculations passCalculations;
 //
 //
-//    public MidfielderDecisions(UpdateInGamePlayerStats updateInGamePlayerStats, MatchEngineDecisions matchEngine) {
-//        this.updateInGamePlayerStats = updateInGamePlayerStats;
-//        this.matchEngine = matchEngine;
+//    public MidfielderDecisions() {
+//
 //        this.passCalculations = new PassCalculations();
 //    }
 //
 //    // *** this should be superclassed
-//    public String playerMakeDecision(int pitchPos, boolean homeTeamPoss, Player playerInPosses, Team attackingTeam,
-//                                       Team defendingTeam) {
+//    public String playerMakeDecision(GameState gamestate, boolean homeTeamPoss, Player playerInPosses, Team attackingTeam,
+//                                     Team defendingTeam) {
 //        //possible decisions, pass to goalkeeper, pass to  defender, pass to other midfielder, get tackles, carry the ball forward
 //        //but the decision depends on what area of the pitch the player is in
 //
@@ -66,40 +64,7 @@
 //        }
 //    }
 //
-//    public boolean calcPassSuccess(Player playerInPoss, Player passReceiver, Player marker, String possibleRisk){
-//        //going to vary depending on the part of the pitch, ignore for now
-//        //there should be a much higher chance of getting turned over in attack than in defence
-//        //if it fails then change the attacking team
-//        int randomChance = 0;
-//        switch (possibleRisk) { // use other factor to make the random chance is interesting
-//            case "Very Low": //pass to other defender/fullback - how do they pick another defender - fullbacks shouldn't pass to the other full back that much other player is picked in the pass receiver functiom
-//                //players attributes should have a say here
-//                randomChance = random.nextInt(200) + 1; //increasing the bound increases the chance of this happening
-//                break;
-//            // if the stat is two low then they miss the pass
-//            // the players skill stats should affect it here
-//            case "Low":
-//                randomChance = random.nextInt(150) + 1;
-//                break;
-//            case "Medium":
-//                randomChance = random.nextInt(50) + 1;
-//                break;
-//            case "High":
-//                randomChance = random.nextInt((3)) + 1;
-//                break;
 //
-//        }
-//
-//        if(randomChance > 1){ //pass is succesful
-//            matchEngine.setPlayerInPosses(passReceiver);
-//            updateInGamePlayerStats.updatePassStat(playerInPoss.getLastName());
-//            updateInGamePlayerStats.updateTouchStat(passReceiver.getLastName());
-//            return true;
-//        } else{
-//            matchEngine.changePossession("pass");
-//            return false;
-//        }
-//    }
 //
 //    //these should be put in a super class. Also a good chance to work on changing logic from a parent class
 //    //in a child class

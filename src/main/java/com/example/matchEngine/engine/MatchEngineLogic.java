@@ -1,11 +1,15 @@
 package com.example.matchEngine.engine;
 
-import com.example.matchEngine.playerDecisions.DefenderDecisions;
-import com.example.matchEngine.playerDecisions.PlayerDecisions;
-import com.example.matchEngine.services.ShotService.ShotCalculations;
-import com.example.matchEngine.services.ShotService.ShotService;
+import com.example.matchEngine.services.inGameActionCalculations.carryCalculations.CarryCalculations;
+import com.example.matchEngine.services.inGameActionCalculations.passCalculations.PassCalculateSuccess;
+import com.example.matchEngine.services.inGameActionCalculations.passCalculations.PassChooseReceiver;
+import com.example.matchEngine.services.playerDecisions.DefenderDecisions;
+import com.example.matchEngine.services.playerDecisions.PlayerDecisions;
+import com.example.matchEngine.services.inGameActionCalculations.shotService.ShotCalculations;
+import com.example.matchEngine.services.inGameActionCalculations.shotService.ShotService;
 import com.example.matchEngine.services.UpdateStats.UpdateInGameMatchStats;
 import com.example.matchEngine.services.UpdateStats.UpdateInGamePlayerStats;
+import com.example.matchEngine.services.inGameActionCalculations.tackleCalculations.TackleCalculateSuccess;
 import com.example.model.InGameMatchStats;
 import com.example.model.player.Goalkeeper;
 import com.example.team.Team;
@@ -14,22 +18,13 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 
-//
-//import players.*;
-//import team.Team;
-//import team.TeamSetup;
-//
-//import java.io.BufferedWriter;
-//import java.io.FileWriter;
-//import java.io.IOException;
-//import java.util.Random;
-//
-//
+import java.util.Random;
 @Getter
 @Setter
 @Slf4j
 public class MatchEngineLogic {
 
+    //look into builder pattern
     Team homeTeam;
     Team awayTeam;
 
@@ -43,7 +38,7 @@ public class MatchEngineLogic {
 
     int time = 0;
 
-    private PlayerDecisions defenderDecisions = new DefenderDecisions();
+    private PlayerDecisions defenderDecisions = new DefenderDecisions(new PassCalculateSuccess(new Random()), new PassChooseReceiver(), new TackleCalculateSuccess(), new CarryCalculations(), new Random());
 
     private UpdateInGamePlayerStats updateInGamePlayerStats = new UpdateInGamePlayerStats(homeTeam.getPlayers(), awayTeam.getPlayers());
     private UpdateInGameMatchStats updateInGameMatchStats = new UpdateInGameMatchStats(new InGameMatchStats());
@@ -58,9 +53,7 @@ public class MatchEngineLogic {
 
     public void simulateMatch() {
         playGame("kickOff");
-//
     }
-
 
 
     public String kickOff() {
@@ -78,7 +71,6 @@ public class MatchEngineLogic {
         gameState.setDefendingTeam(awayTeam);
         gameState.setHomeTeamPoss(true);
         gameState.setPitchPoss(1);
-        ;
     }
 
     public Player choosePlayerInPosses() {
@@ -107,7 +99,7 @@ public class MatchEngineLogic {
                 case "shot":
                     gameState = shotService.calculateShotChance(gameState, false, time);
 
-                //currently i am passing in those 5 values, why not make a gamestate object or add them to match and pass it in and return it??
+                    //currently i am passing in those 5 values, why not make a gamestate object or add them to match and pass it in and return it??
             }
 
             action = gameState.getAction();
@@ -125,31 +117,27 @@ public class MatchEngineLogic {
             updateInGameMatchStats.updateMatchStats(gameState.homeTeamPoss, gameState.getPlayerStatsToBeUpdated(), gameState.getShot());
 
 
-            if(!gameState.getPossLost().isEmpty()){
+            if (!gameState.getPossLost().isEmpty()) {
                 changePossession(gameState.getPossLost());
                 gameState.setPossLost(" ");
             }
             //we need to clear a lot of things from gamestate now !!!
             time = time + 1;
-            if(time > 20){
+            if (time > 20) {
                 gameFinished = true;
             }
-
-
-
         }
-
     }
 
-        public void changePossession(String howBallWasLost){ //is this attempting something similar to the next functiom
-        Team temp = gameState.getAttackingTeam(); //temp = man
+    public void changePossession(String howBallWasLost) { //should prob be in a separate class
+        Team temp = gameState.getAttackingTeam();
         gameState.setAttackingTeam(gameState.getDefendingTeam()); //attacking team = to
         gameState.setDefendingTeam(temp);
 
-        if(howBallWasLost.equals("pass") || howBallWasLost.equals("tackle") || howBallWasLost.equals("temp")) { //other teams player needs to have ball, hardcode for now, should be in a new function which decided which oppo player gets ball
-            if(gameState.getHomeTeamPoss()){ //obvs tackle and pass should be different aswell - NEEDS TO BE CHANGED
+        if (howBallWasLost.equals("pass") || howBallWasLost.equals("tackle") || howBallWasLost.equals("temp")) { //other teams player needs to have ball, hardcode for now, should be in a new function which decided which oppo player gets ball
+            if (gameState.getHomeTeamPoss()) { //obvs tackle and pass should be different aswell - NEEDS TO BE CHANGED
                 gameState.setPlayerInPosses(awayTeam.getDcr());
-            } else{
+            } else {
                 gameState.setPlayerInPosses(homeTeam.getDcr());
             }
         }
@@ -157,5 +145,3 @@ public class MatchEngineLogic {
 
     }
 }
-
-

@@ -1,4 +1,4 @@
-package groovy.unit.services
+package unit.services
 
 import com.example.services.FeedService
 import spock.lang.Specification;

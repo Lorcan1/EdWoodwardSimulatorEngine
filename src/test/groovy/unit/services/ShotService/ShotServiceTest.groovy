@@ -1,4 +1,4 @@
-package groovy.unit.services.ShotService
+package unit.services.ShotService
 
 import com.example.matchEngine.engine.GameState
 import com.example.matchEngine.services.ShotService.ShotCalculations

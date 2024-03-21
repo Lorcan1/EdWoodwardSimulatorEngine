@@ -1,4 +1,4 @@
-package groovy.unit.matchEngine.services.playerDecisions
+package unit.matchEngine.services.playerDecisions
 
 import com.example.matchEngine.engine.GameState
 import com.example.matchEngine.services.inGameActionCalculations.carryCalculations.CarryCalculations

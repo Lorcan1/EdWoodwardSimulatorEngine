@@ -1,4 +1,4 @@
-package groovy.unit.matchEngine.services
+package unit.matchEngine.services
 
 import com.example.services.FeedService
 import spock.lang.Specification;

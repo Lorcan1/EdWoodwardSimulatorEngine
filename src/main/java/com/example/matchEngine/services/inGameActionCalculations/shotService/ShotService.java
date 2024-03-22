@@ -14,15 +14,6 @@ public class ShotService {
     private Goalkeeper homeGoalkeeper;
     private Goalkeeper awayGoalkeeper;
 
-
-
-    public ShotService(ShotCalculations shotCalculations, Goalkeeper homeGoalkeeper, Goalkeeper awayGoalkeeper){
-        this.shotCalculations = shotCalculations;
-        this.homeGoalkeeper = homeGoalkeeper;
-        this.awayGoalkeeper = awayGoalkeeper;
-
-    }
-
     public GameState calculateShotChance(GameState gameState, boolean isLongShot, int time){
         Shot shot = new Shot();
         int shotDifficulty = random.nextInt(100) + 1; //certain players with good decision-making probably won't take really unlikely shots?

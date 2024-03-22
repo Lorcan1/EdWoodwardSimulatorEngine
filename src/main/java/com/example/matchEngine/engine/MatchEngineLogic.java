@@ -17,10 +17,13 @@ import com.example.model.player.Player;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import java.util.Random;
 @Getter
 @Setter
+@Component
 @Slf4j
 public class MatchEngineLogic {
 
@@ -40,18 +43,15 @@ public class MatchEngineLogic {
 
     private PlayerDecisions defenderDecisions = new DefenderDecisions(new PassCalculateSuccess(new Random()), new PassChooseReceiver(), new TackleCalculateSuccess(), new CarryCalculations(), new Random());
 
-    private UpdateInGamePlayerStats updateInGamePlayerStats = new UpdateInGamePlayerStats(homeTeam.getPlayers(), awayTeam.getPlayers());
+    private UpdateInGamePlayerStats updateInGamePlayerStats = new UpdateInGamePlayerStats();
     private UpdateInGameMatchStats updateInGameMatchStats = new UpdateInGameMatchStats(new InGameMatchStats());
 
 
-    ShotService shotService = new ShotService(new ShotCalculations(), (Goalkeeper) homeTeam.getGk(), (Goalkeeper) awayTeam.getGk()); //look at springifying this
+    ShotService shotService = new ShotService(); //look at springifying this
 
-    public MatchEngineLogic(String homeTeamName, String awayTeamName) {
+    public void simulateMatch(String homeTeamName, String awayTeamName) {
         this.homeTeamName = homeTeamName;
         this.awayTeamName = awayTeamName;
-    }
-
-    public void simulateMatch() {
         playGame("kickOff");
     }
 

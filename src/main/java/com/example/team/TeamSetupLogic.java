@@ -4,6 +4,7 @@ import com.example.model.player.Player;
 import com.example.repository.GoalkeeperRepository;
 import com.example.repository.OutfieldPlayerRepository;
 import org.json.JSONArray;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.*;
@@ -13,7 +14,10 @@ import java.util.stream.Stream;
 public class TeamSetupLogic implements ITeamSetup {
     //10 outfield players and a goalkeeper
     //once there are more than 10 players in a team, a #first eleven starter will have to be
+    @Autowired
     private OutfieldPlayerRepository outfieldPlayerRepository;
+
+    @Autowired
     private GoalkeeperRepository goalkeeperRepository;
 
     public TeamSetupLogic(OutfieldPlayerRepository outfieldPlayerRepository, GoalkeeperRepository goalkeeperRepository) {

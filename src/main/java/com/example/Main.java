@@ -6,10 +6,12 @@ import com.example.team.TeamSetupLogic;
 import com.example.repository.OutfieldPlayerRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
@@ -26,13 +28,17 @@ public class Main {
         SpringApplication.run(Main.class);
     }
 
+//    @Bean
+//    public CommandLineRunner demo(OutfieldPlayerRepository repository, GoalkeeperRepository goalkeeper) {
+//        return (args) -> {
+//            TeamSetupLogic teamSetupLogic = new TeamSetupLogic(repository, goalkeeper);
+//            Simulate simulate = new Simulate(teamSetupLogic,"Manchester City","Tottenham Hotspur");
+//            simulate.simulateMatch();
 
-    @Bean
-    public CommandLineRunner demo(OutfieldPlayerRepository repository, GoalkeeperRepository goalkeeper) {
-        return (args) -> {
-            TeamSetupLogic teamSetupLogic = new TeamSetupLogic(repository, goalkeeper);
-            Simulate simulate = new Simulate(teamSetupLogic,"Manchester City","Tottenham Hotspur");
-            simulate.simulateMatch();
+
+
+
+
 //            MatchEngine matchEngine = new MatchEngine(teamSetup, "Manchester City","Tottenham Hotspur");
 //            Team awayTeam = matchEngine.getAwayTeam();
 //            Team homeTeam = matchEngine.getHomeTeam();
@@ -49,6 +55,6 @@ public class Main {
 //            Team team= teamSetup.createTeam("Manchester City");
 ////            matchEngine.runMatchEngine();
 ////            matchEngine.newRunMatchEngine();
-        };
-    }
+//        };
+//    }
 }

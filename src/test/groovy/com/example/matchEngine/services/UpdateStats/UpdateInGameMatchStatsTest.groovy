@@ -1,4 +1,4 @@
-package unit.matchEngine.services.UpdateStats
+package com.example.matchEngine.services.UpdateStats
 
 import com.example.matchEngine.services.UpdateStats.UpdateInGameMatchStats
 import com.example.model.Goal

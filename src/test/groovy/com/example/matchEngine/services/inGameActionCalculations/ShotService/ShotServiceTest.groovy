@@ -1,4 +1,4 @@
-package unit.matchEngine.services.inGameActionCalculations.ShotService
+package com.example.matchEngine.services.inGameActionCalculations.ShotService
 
 import com.example.matchEngine.engine.GameState
 import com.example.matchEngine.services.inGameActionCalculations.shotService.ShotCalculations

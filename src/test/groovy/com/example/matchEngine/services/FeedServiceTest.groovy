@@ -1,4 +1,4 @@
-package unit.matchEngine.services
+package com.example.matchEngine.services
 
 import com.example.services.FeedService
 import spock.lang.Specification;

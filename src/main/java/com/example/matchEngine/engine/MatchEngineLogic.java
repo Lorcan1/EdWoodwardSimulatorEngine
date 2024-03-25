@@ -52,6 +52,8 @@ public class MatchEngineLogic {
     public void simulateMatch(String homeTeamName, String awayTeamName) {
         this.homeTeamName = homeTeamName;
         this.awayTeamName = awayTeamName;
+        updateInGamePlayerStats.setHomeTeamPlayersStats(updateInGamePlayerStats.initializeInGamePlayerStats(homeTeam.getPlayers()));
+        updateInGamePlayerStats.setAwayTeamPlayersStats(updateInGamePlayerStats.initializeInGamePlayerStats(awayTeam.getPlayers()));
         playGame("kickOff");
     }
 
@@ -103,6 +105,7 @@ public class MatchEngineLogic {
             }
 
             action = gameState.getAction();
+            log.info(action);
 
             //feedService here
 

@@ -4,15 +4,27 @@ import com.example.matchEngine.engine.GameState;
 import com.example.model.Shot;
 import com.example.model.player.Goalkeeper;
 import com.example.model.player.OutfieldPlayer;
+import lombok.Getter;
+import lombok.Setter;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+import spock.mock.AutoAttach;
 
 import java.util.Random;
 
-
+@Getter
+@Setter
 public class ShotService {
     private Random random = new Random();
+
     ShotCalculations shotCalculations;
+
     private Goalkeeper homeGoalkeeper;
     private Goalkeeper awayGoalkeeper;
+
+    public ShotService(ShotCalculations shotCalculations){
+        this.shotCalculations = shotCalculations;
+    }
 
     public GameState calculateShotChance(GameState gameState, boolean isLongShot, int time){
         Shot shot = new Shot();

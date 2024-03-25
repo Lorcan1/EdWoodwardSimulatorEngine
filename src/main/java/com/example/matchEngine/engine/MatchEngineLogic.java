@@ -47,7 +47,7 @@ public class MatchEngineLogic {
     private UpdateInGameMatchStats updateInGameMatchStats = new UpdateInGameMatchStats(new InGameMatchStats());
 
 
-    ShotService shotService = new ShotService(); //look at springifying this
+    ShotService shotService = new ShotService(new ShotCalculations()); //look at springifying this
 
     public void simulateMatch(String homeTeamName, String awayTeamName) {
         this.homeTeamName = homeTeamName;

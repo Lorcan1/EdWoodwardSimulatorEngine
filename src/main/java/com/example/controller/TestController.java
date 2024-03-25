@@ -7,9 +7,9 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 public class TestController {
 
+    @Autowired
     private final Simulate simulate;
 
-    @Autowired
     public TestController(Simulate simulate) {
         this.simulate = simulate;
     }
@@ -22,6 +22,7 @@ public class TestController {
 
     @GetMapping("/hello")
     public String hello() {
+        System.out.println("This is the controller");
         return "Hello World";
     }
 }

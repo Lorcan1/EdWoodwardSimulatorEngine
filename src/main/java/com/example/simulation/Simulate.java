@@ -33,9 +33,9 @@ public class Simulate {
 
 
     public void simulateMatch(String homeTeamName, String awayTeamName){
-//        createTeams(homeTeamName, awayTeamName);
+        createTeams(homeTeamName, awayTeamName);
         log.info("Created Teams");
-//        matchEngineLogic.simulateMatch(homeTeamName, awayTeamName);
+        matchEngineLogic.simulateMatch(homeTeamName, awayTeamName);
     }
     public void createTeams(String homeTeamName, String awayTeamName){
         matchEngineLogic.setHomeTeam(teamSetup.createTeam(homeTeamName));

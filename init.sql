@@ -60,10 +60,6 @@ CREATE TABLE "outfield_players_current" (
       starting_position varchar(255)
 );
 
---COPY "outfield_players_current"
---FROM '/data/csv/outfield.csv'
---DELIMITER ','
---CSV HEADER;
 COPY "outfield_players_current" (
     "UniqueID",
     "first_name",
@@ -190,3 +186,67 @@ CREATE TABLE "goalkeepers_current" (
 , club_abbrev varchar(255), starting_position varchar(255)
 );
 
+COPY "goalkeepers_current" (
+    "UniqueID",
+    "first_name",
+    "second_name",
+    "Club",
+    "Country",
+    "Age",
+    "position_natural",
+    "position_accomplished",
+    "Foot",
+    "Height",
+    "Weight",
+    "int_caps",
+    "int_goals",
+    "sell_value",
+    "Wages",
+    "contract_end",
+    "Overall",
+    "Potential",
+    "image_url",
+    "club_url",
+    "country_url",
+    "aerial-reach",
+    "command-of-area",
+    "communication",
+    "eccentricity",
+    "first-touch",
+    "handling",
+    "kicking",
+    "one-on-ones",
+    "passing",
+    "punching-tendency",
+    "reflexes",
+    "rushing-out-tendency",
+    "throwing",
+    "aggression",
+    "anticipation",
+    "bravery",
+    "composure",
+    "concentration",
+    "decisions",
+    "determination",
+    "flair",
+    "leadership",
+    "off-the-ball",
+    "positioning",
+    "teamwork",
+    "vision",
+    "work-rate",
+    "acceleration",
+    "agility",
+    "balance",
+    "jumping-reach",
+    "natural-fitness",
+    "pace",
+    "stamina",
+    "strength",
+    "free-kick-taking",
+    "penalty-taking",
+    "technique"
+)
+FROM '/data/csv/goalkeeper.csv'
+DELIMITER ','
+CSV HEADER;

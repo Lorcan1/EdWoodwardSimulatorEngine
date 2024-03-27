@@ -35,10 +35,10 @@ public class OutfieldPlayer extends Player {
     @Column(name="heading")
     private int heading;
 
-    @Column(name="long-shots")
+    @Column(name="long_shots")
     private int longShots;
 
-    @Column(name="long-throws")
+    @Column(name="long_throws")
     private int longThrows;
 
     @Transient

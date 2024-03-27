@@ -1,13 +1,5 @@
 version: '3.9'
 services:
-  engine-service:
-    build:
-      context: .
-      dockerfile: Dockerfile
-    ports:
-      - "8080:8080"
-    volumes:
-      - csv-data:/data/csv
   postgres:
     image: postgres:14
     ports:

@@ -13,10 +13,10 @@ import lombok.Setter;
 @Table(name="goalkeepers_current")
 public class Goalkeeper extends Player {
 
-    @Column(name="aerial-reach")
+    @Column(name="aerial_reach")
     private int aerialReach;
 
-    @Column(name="command-of-area")
+    @Column(name="command_of_area")
     private int commandOfArea;
 
     @Column(name="communication")
@@ -31,16 +31,16 @@ public class Goalkeeper extends Player {
     @Column(name="kicking")
     private int kicking;
 
-    @Column(name="one-on-ones")
+    @Column(name="one_on_ones")
     private int oneOnOnes;
 
-    @Column(name="punching-tendency")
+    @Column(name="punching_tendency")
     private int punchingTendency;
 
     @Column(name="reflexes")
     private int reflexes;
 
-    @Column(name="rushing-out-tendency")
+    @Column(name="rushing_out_tendency")
     private int rushingOut;
 
     @Column(name="throwing")

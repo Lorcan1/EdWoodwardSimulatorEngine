@@ -155,7 +155,7 @@ import java.util.List;
 public abstract class Player implements Comparable<Player> {
 
     @Id
-    @Column(name="UniqueID")
+    @Column(name="uniqueid")
     private int id;
 
     @Column(name="first_name")
@@ -164,16 +164,16 @@ public abstract class Player implements Comparable<Player> {
     @Column(name="second_name")
     private String lastName;
 
-    @Column(name="Club")
+    @Column(name="club")
     private String club;
 
     @Transient
     private String clubAbbrev;
 
-    @Column(name="Country")
+    @Column(name="country")
     private String nation;
 
-    @Column(name="Age")
+    @Column(name="age")
     private int age;
 
     @Column(name="position_natural")
@@ -194,13 +194,13 @@ public abstract class Player implements Comparable<Player> {
 
     public String startingPosition;
 
-    @Column(name="Foot")
+    @Column(name="foot")
     private String foot;
 
-    @Column(name="Height")
+    @Column(name="height")
     private int height;
 
-    @Column(name="Weight")
+    @Column(name="weight")
     private int weight;
 
     @Column(name="int_caps")
@@ -212,16 +212,16 @@ public abstract class Player implements Comparable<Player> {
     @Column(name="sell_value")
     private String sellValue;
 
-    @Column(name="Wages")
+    @Column(name="wages")
     private String wages;
 
     @Column(name="contract_end")
     private String contractEnd;
 
-    @Column(name="Overall")
+    @Column(name="overall")
     private int overall;
 
-    @Column(name="Potential")
+    @Column(name="potential")
     private int potential;
 
     @Column(name="image_url")
@@ -233,13 +233,13 @@ public abstract class Player implements Comparable<Player> {
     @Column(name="country_url")
     private String countryUrl;
 
-    @Column(name="first-touch")
+    @Column(name="first_touch")
     private int firstTouch;
 
-    @Column(name="free-kick-taking")
+    @Column(name="free_kick_taking")
     private int freeKickTaking;
 
-    @Column(name="penalty-taking")
+    @Column(name="penalty_taking")
     private int penaltyTaking;
 
     @Column(name="technique")
@@ -275,7 +275,7 @@ public abstract class Player implements Comparable<Player> {
     @Column(name="leadership")
     private int leadership;
 
-    @Column(name="off-the-ball")
+    @Column(name="off_the_ball")
     private int offTheBall;
 
     @Column(name="positioning")
@@ -287,7 +287,7 @@ public abstract class Player implements Comparable<Player> {
     @Column(name="vision")
     private int vision;
 
-    @Column(name="work-rate")
+    @Column(name="work_rate")
     private int workRate;
 
     @Column(name="acceleration")
@@ -299,10 +299,10 @@ public abstract class Player implements Comparable<Player> {
     @Column(name="balance")
     private int balance;
 
-    @Column(name="jumping-reach")
+    @Column(name="jumping_reach")
     private int jumpingReach;
 
-    @Column(name="natural-fitness")
+    @Column(name="natural_fitness")
     private int naturalFitness;
 
     @Column(name="pace")

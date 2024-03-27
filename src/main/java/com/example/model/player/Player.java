@@ -167,6 +167,7 @@ public abstract class Player implements Comparable<Player> {
     @Column(name="Club")
     private String club;
 
+    @Transient
     private String clubAbbrev;
 
     @Column(name="Country")

@@ -12,13 +12,8 @@ import java.util.List;
 @Setter
 public class  UpdateInGamePlayerStats{
 
-    HashMap<String,InGamePlayerStats> homeTeamPlayersStats = new HashMap<>();
-    HashMap<String,InGamePlayerStats> awayTeamPlayersStats = new HashMap<>();
-
-    public UpdateInGamePlayerStats(List<Player> homePlayers, List<Player> awayPlayers) {
-        homeTeamPlayersStats = initializeInGamePlayerStats(homePlayers);
-        awayTeamPlayersStats = initializeInGamePlayerStats(awayPlayers);
-    }
+    HashMap<String,InGamePlayerStats> homeTeamPlayersStats;
+    HashMap<String,InGamePlayerStats> awayTeamPlayersStats;
 
     public HashMap<String, InGamePlayerStats> initializeInGamePlayerStats(List<Player> players){
         HashMap<String,InGamePlayerStats> tempHashMap = new HashMap<>();

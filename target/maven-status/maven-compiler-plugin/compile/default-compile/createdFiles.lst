@@ -1,4 +1,3 @@
-com\example\matchEngine\playerDecisions\DefenderDecisions.class
 com\example\model\player\InGamePlayerStats.class
 com\example\services\FeedService.class
 com\example\Main.class
@@ -11,16 +10,11 @@ com\example\repository\PlayerRepository.class
 com\example\matchEngine\services\UpdateStats\UpdateInGameMatchStats.class
 com\example\model\JsonArray.class
 com\example\repository\OutfieldPlayerRepository.class
-com\example\matchEngine\passCalculations\PassCalculations.class
 com\example\model\Goal.class
 com\example\repository\GoalkeeperRepository.class
 com\example\matchEngine\services\UpdateStats\UpdateInGamePlayerStats.class
 com\example\model\player\Player.class
-com\example\matchEngine\FileWriter.class
-com\example\matchEngine\RedundantCode.class
 com\example\model\Shot.class
-com\example\deprecated\DeprecatedTeamSetup.class
-com\example\matchEngine\services\ShotService\ShotCalculations.class
 com\example\team\PlayersMatchStats.class
 com\example\matchEngine\matchSetup\MatchSetup.class
 com\example\model\Match.class
@@ -28,13 +22,8 @@ com\example\simulation\Simulate.class
 com\example\matchEngine\engine\MatchEngineDecisions.class
 com\example\matchEngine\SaveCalculation.class
 com\example\team\ITeamSetup.class
-com\example\matchEngine\services\ShotService\ShotService.class
 com\example\matchEngine\engine\GameState.class
-com\example\matchEngine\playerDecisions\PlayerDecisions.class
-com\example\matchEngine\MatchEngineBuilder\MatchEngineBuilder.class
 com\example\matchEngine\engine\MatchEngineLogic.class
 com\example\team\TeamSetup.class
 com\example\model\InGameMatchStats.class
 com\example\model\player\OutfieldPlayer.class
-com\example\matchEngine\observerPattern\Observer.class
-com\example\matchEngine\observerPattern\Subject.class

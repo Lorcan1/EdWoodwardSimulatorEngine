@@ -16,6 +16,9 @@ class UpdateInGamePlayerStatsTest extends Specification{
     List<Player> homePlayers = new ArrayList<>()
     @Shared
     List<Player> awayPlayers = new ArrayList<>()
+    @Shared
+    UpdateInGamePlayerStats updateInGamePlayerStats = new UpdateInGamePlayerStats()
+
 
     def setupSpec() {
         // Initialize the shared resource here
@@ -23,11 +26,13 @@ class UpdateInGamePlayerStatsTest extends Specification{
         homePlayers.add(testHomePlayer)
         testAwayPlayer.setLastName("testAwayPlayer")
         awayPlayers.add(testAwayPlayer)
+        updateInGamePlayerStats.setHomeTeamPlayersStats(updateInGamePlayerStats.initializeInGamePlayerStats(homePlayers))
+        updateInGamePlayerStats.setAwayTeamPlayersStats(updateInGamePlayerStats.initializeInGamePlayerStats(awayPlayers))
     }
 
 
     def "test pass"(){
-        UpdateInGamePlayerStats updateInGamePlayerStats = new UpdateInGamePlayerStats(homePlayers,awayPlayers)
+
         HashMap<String,String> hashMapTest = new HashMap<>()
         hashMapTest.put("testHomePlayer", "pass" )
 
@@ -39,7 +44,6 @@ class UpdateInGamePlayerStatsTest extends Specification{
     }
 
     def "test touch"(){
-        UpdateInGamePlayerStats updateInGamePlayerStats = new UpdateInGamePlayerStats(homePlayers,awayPlayers)
         HashMap<String,String> hashMapTest = new HashMap<>()
         hashMapTest.put("testHomePlayer", "touch" )
 

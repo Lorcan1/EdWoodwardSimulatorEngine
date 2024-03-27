@@ -12,17 +12,16 @@ class ShotServiceTest extends Specification {
         def shotCalculations = Mock(ShotCalculations)
         def homeGoalkeeper = Mock(Goalkeeper)
         def awayGoalkeeper = Mock(Goalkeeper)
-        ShotService shotService = new ShotService(shotCalculations, homeGoalkeeper, awayGoalkeeper)
-        Shot shot = new Shot()
+        ShotService shotService = new ShotService(shotCalculations)
+        shotService.setHomeGoalkeeper(homeGoalkeeper)
+        shotService.setAwayGoalkeeper(awayGoalkeeper)
         GameState gameState = new GameState();
         gameState.setHomeTeamPoss(true)
 
-
-
         when:
         shotCalculations.isShotSuccesful(_, _, _, _, _)  >> "goal"
+        shotCalculations.possLostValues = ["goal"]
         shotService.calculateShotChance(gameState, false, 1)
-//        shotService.calculateShotChance(_ as OutfieldPlayer, 1, 1, true, shot) >> "goal"
 
         then:
         assert gameState.getShot().getIsGoal() == true

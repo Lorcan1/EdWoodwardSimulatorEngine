@@ -3,6 +3,7 @@ package com.example.team;
 import com.example.model.player.Player;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;

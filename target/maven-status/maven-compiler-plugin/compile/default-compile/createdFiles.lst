@@ -1,7 +1,12 @@
+com\example\matchEngine\services\inGameActionCalculations\passCalculations\PassCalculateSuccess.class
+com\example\matchEngine\services\inGameActionCalculations\shotService\ShotCalculations.class
+com\example\matchEngine\services\inGameActionCalculations\shotService\ShotService.class
 com\example\model\player\InGamePlayerStats.class
 com\example\services\FeedService.class
 com\example\Main.class
 com\example\pitch\Pitch.class
+com\example\matchEngine\services\inGameActionCalculations\passCalculations\PassChooseReceiver.class
+com\example\matchEngine\services\inGameActionCalculations\tackleCalculations\TackleCalculateSuccess.class
 com\example\matchEngine\result\MatchResult.class
 com\example\model\player\Goalkeeper.class
 com\example\team\Team.class
@@ -14,8 +19,12 @@ com\example\model\Goal.class
 com\example\repository\GoalkeeperRepository.class
 com\example\matchEngine\services\UpdateStats\UpdateInGamePlayerStats.class
 com\example\model\player\Player.class
+com\example\matchEngine\services\playerDecisions\DefenderDecisions.class
 com\example\model\Shot.class
+com\example\controller\Controller.class
+com\example\matchEngine\services\inGameActionCalculations\carryCalculations\CarryCalculations.class
 com\example\team\PlayersMatchStats.class
+com\example\matchEngine\services\playerDecisions\PlayerDecisions.class
 com\example\matchEngine\matchSetup\MatchSetup.class
 com\example\model\Match.class
 com\example\simulation\Simulate.class

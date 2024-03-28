@@ -3,6 +3,7 @@ package com.example.team;
 import com.example.model.player.Player;
 import com.example.repository.GoalkeeperRepository;
 import com.example.repository.OutfieldPlayerRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.json.JSONArray;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -11,6 +12,7 @@ import java.util.*;
 import java.util.stream.Stream;
 
 @Component
+@Slf4j
 public class TeamSetupLogic implements ITeamSetup {
     //10 outfield players and a goalkeeper
     //once there are more than 10 players in a team, a #first eleven starter will have to be
@@ -25,11 +27,10 @@ public class TeamSetupLogic implements ITeamSetup {
         this.goalkeeperRepository = goalkeeperRepository;
     }
 
-
-
-
     public List<Player> returnStartingEleven(String club){
         List<Player> outfieldPlayers = outfieldPlayerRepository.findAllPlayersClub(club);
+        log.info("List of players: " + outfieldPlayers.size());
+        System.out.println("List of players " + outfieldPlayers.size());
         List<Player> goalkeepers = goalkeeperRepository.findAllPlayersClub(club);
         Player goalkeeper = returnStartingKeeper(goalkeepers);
         List<Player> allPlayers = new ArrayList<>();

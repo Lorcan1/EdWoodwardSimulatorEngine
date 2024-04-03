@@ -7,11 +7,13 @@ import com.example.model.Shot;
 import com.example.model.player.Goalkeeper;
 import com.example.model.player.OutfieldPlayer;
 import lombok.NoArgsConstructor;
+import org.springframework.stereotype.Component;
 
 import java.util.Arrays;
 import java.util.List;
 
 @NoArgsConstructor
+@Component
 public class ShotCalculations { //add oneOnOne calcs to this class
     SaveCalculation saveCalculation;
 

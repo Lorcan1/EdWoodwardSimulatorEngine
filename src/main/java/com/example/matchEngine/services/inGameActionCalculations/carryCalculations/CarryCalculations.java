@@ -1,7 +1,9 @@
 package com.example.matchEngine.services.inGameActionCalculations.carryCalculations;
 
 import com.example.model.player.Player;
+import org.springframework.stereotype.Component;
 
+@Component
 public class CarryCalculations {
     public boolean calcCarrySuccess(Player playerInPoss, Player marker) {
         //should tackles only be possible here? According to tackle definition the ball can go to either team

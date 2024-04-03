@@ -3,10 +3,12 @@ package com.example.matchEngine.services.UpdateStats;
 import com.example.model.InGameMatchStats;
 import com.example.model.Shot;
 import lombok.Getter;
+import org.springframework.stereotype.Component;
 
 import java.util.HashMap;
 
 @Getter
+@Component
 public class UpdateInGameMatchStats {
 
     InGameMatchStats inGameMatchStats;

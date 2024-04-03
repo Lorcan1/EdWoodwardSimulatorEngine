@@ -8,11 +8,14 @@ import com.example.matchEngine.services.inGameActionCalculations.tackleCalculati
 import com.example.model.player.Player;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import java.util.Random;
 
 @Getter
 @Setter
+@Component
 public class DefenderDecisions implements PlayerDecisions {
     private Random random;
     private PassChooseReceiver passChooseReceiver;
@@ -20,6 +23,7 @@ public class DefenderDecisions implements PlayerDecisions {
     private TackleCalculateSuccess tackleCalculateSuccess;
     private CarryCalculations carryCalculations;
 
+    @Autowired
     public DefenderDecisions(PassCalculateSuccess passCalculateSuccess, PassChooseReceiver passChooseReceiver, TackleCalculateSuccess tackleCalculateSuccess, CarryCalculations carryCalculations, Random random) {
         this.passCalculateSuccess = passCalculateSuccess;
         this.passChooseReceiver = passChooseReceiver;

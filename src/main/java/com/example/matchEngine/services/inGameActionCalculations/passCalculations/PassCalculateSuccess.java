@@ -2,12 +2,15 @@ package com.example.matchEngine.services.inGameActionCalculations.passCalculatio
 
 import com.example.matchEngine.engine.GameState;
 import com.example.model.player.Player;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import java.util.HashMap;
 import java.util.Random;
-
+@Component
 public class PassCalculateSuccess {
     private Random random;
+    @Autowired
     public PassCalculateSuccess(Random random){
         this.random = random;
     }

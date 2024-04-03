@@ -14,6 +14,7 @@ import java.util.Random;
 
 @Getter
 @Setter
+@Component
 public class ShotService {
     private Random random = new Random();
 

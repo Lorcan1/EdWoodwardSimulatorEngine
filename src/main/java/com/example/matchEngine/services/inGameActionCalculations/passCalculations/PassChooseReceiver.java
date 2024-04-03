@@ -2,9 +2,11 @@ package com.example.matchEngine.services.inGameActionCalculations.passCalculatio
 
 import com.example.model.player.Player;
 import com.example.team.Team;
+import org.springframework.stereotype.Component;
 
 import java.util.*;
 
+@Component
 public class PassChooseReceiver {
     private Random random = new Random();
     public Player whichPlayerReceivesTheBall(Team attackingTeam, String position) { //this should be changed to reflect what runs an attacker is making

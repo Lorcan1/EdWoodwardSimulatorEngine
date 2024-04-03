@@ -27,7 +27,6 @@ import java.util.Random;
 @Slf4j
 public class MatchEngineLogic {
 
-    //look into builder pattern
     Team homeTeam;
     Team awayTeam;
 
@@ -41,13 +40,17 @@ public class MatchEngineLogic {
 
     int time = 0;
 
-    private PlayerDecisions defenderDecisions = new DefenderDecisions(new PassCalculateSuccess(new Random()), new PassChooseReceiver(), new TackleCalculateSuccess(), new CarryCalculations(), new Random());
+    @Autowired
+    private PlayerDecisions defenderDecisions;
 
-    private UpdateInGamePlayerStats updateInGamePlayerStats = new UpdateInGamePlayerStats();
-    private UpdateInGameMatchStats updateInGameMatchStats = new UpdateInGameMatchStats(new InGameMatchStats());
+    @Autowired
+    private UpdateInGamePlayerStats updateInGamePlayerStats;
 
+    @Autowired
+    private UpdateInGameMatchStats updateInGameMatchStats;
 
-    ShotService shotService = new ShotService(new ShotCalculations()); //look at springifying this
+    @Autowired
+    ShotService shotService;
 
     public void simulateMatch(String homeTeamName, String awayTeamName) {
         this.homeTeamName = homeTeamName;
@@ -56,7 +59,6 @@ public class MatchEngineLogic {
         updateInGamePlayerStats.setAwayTeamPlayersStats(updateInGamePlayerStats.initializeInGamePlayerStats(awayTeam.getPlayers()));
         playGame("kickOff");
     }
-
 
     public String kickOff() {
         if (startOfGame) {

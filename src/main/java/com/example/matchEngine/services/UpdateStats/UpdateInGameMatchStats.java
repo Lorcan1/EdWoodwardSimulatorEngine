@@ -1,7 +1,8 @@
 package com.example.matchEngine.services.UpdateStats;
 
 import com.example.model.InGameMatchStats;
-import com.example.model.Shot;
+import com.example.model.playeraction.PlayerAction;
+import com.example.model.playeraction.shot.Shot;
 import lombok.Getter;
 import org.springframework.stereotype.Component;
 
@@ -25,9 +26,9 @@ public class UpdateInGameMatchStats {
 
     }
 
-    public void updateMatchStats(Boolean homeTeamPoss, HashMap<String, String> playersStatsToBeUpdated, Shot shot){
+    public void updateMatchStats(Boolean homeTeamPoss, HashMap<String, String> playersStatsToBeUpdated, PlayerAction shot){
       updatePossessionStats(homeTeamPoss);
-      updateShotAndGoalStats(playersStatsToBeUpdated, homeTeamPoss,shot);
+      updateShotAndGoalStats(playersStatsToBeUpdated, homeTeamPoss, (Shot) shot);
     }
 
     private void updatePossessionStats(Boolean homeTeamPoss){

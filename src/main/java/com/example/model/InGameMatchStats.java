@@ -1,5 +1,6 @@
 package com.example.model;
 
+import com.example.model.playeraction.shot.Goal;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.stereotype.Component;

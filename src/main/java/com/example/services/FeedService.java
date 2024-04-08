@@ -1,17 +1,25 @@
 package com.example.services;
 
+import com.example.matchEngine.engine.GameState;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
 import java.util.*;
 
+@Component
 public class FeedService {
     private List feed;
 
     private Map<String, List<String>> responses;
+    private Random random;
 
+    @Autowired
     public FeedService(List feed) {
         this.responses = new HashMap<String, List<String>>();
         responses.put("action1", Arrays.asList(" is tackled and looses the ball. Great tackle by player2 ", " is dispossessed by player2 ", " looses it. Solid challenge from player2 "));
         responses.put("goal",Arrays.asList(" scores", " finishes a fine move", " puts it past player2", " smashes it past player2"));
         this.feed = feed;
+        this.random = random;
     }
 
 
@@ -33,8 +41,15 @@ public class FeedService {
     }
     public void getRandomResponse(String time, String club, String player1, String player2, String action) {
         List<String> responseList = responses.get(action);
-        Random rand = new Random();
-        String initialResponse =  responseList.get(rand.nextInt(responseList.size()));
+        String initialResponse =  responseList.get(random.nextInt(responseList.size()));
         responseGenerator(time,club,player1,player2,initialResponse);
+    }
+
+    public void getRandomResponse(GameState gameState, String club) {
+        List<String> responseList = responses.get(gameState.getAction());
+        String initialResponse =  responseList.get(random.nextInt(responseList.size()));
+//        responseGenerator(gameState.getTime(),club,gameState.getPlayerStatsToBeUpdated(),player2,initialResponse);
+        //depending on the action, different logic needs to be implemented, ie if a goal is scored, player2 should be a goalkeeper
+        //not sure about tackling and how that will work
     }
 }

@@ -1,9 +1,9 @@
 package com.example.matchEngine.services.UpdateStats
 
-import com.example.matchEngine.services.UpdateStats.UpdateInGameMatchStats
-import com.example.model.Goal
+
+import com.example.model.playeraction.shot.Goal
 import com.example.model.InGameMatchStats
-import com.example.model.Shot
+import com.example.model.playeraction.shot.Shot
 import spock.lang.Specification
 
 class UpdateInGameMatchStatsTest extends Specification {

@@ -1,6 +1,7 @@
 package com.example.simulation;
 
 import com.example.matchEngine.engine.MatchEngineLogic;
+import com.example.services.AbbrevService;
 import com.example.team.ITeamSetup;
 import com.example.team.TeamSetupLogic;
 import lombok.extern.slf4j.Slf4j;
@@ -12,12 +13,14 @@ import org.springframework.stereotype.Component;
 public class Simulate {
     ITeamSetup teamSetup;
     MatchEngineLogic matchEngineLogic;
+    AbbrevService abbrevService;
 
 
     @Autowired
-    public Simulate(TeamSetupLogic teamSetupLogic, MatchEngineLogic matchEngineLogic){
+    public Simulate(TeamSetupLogic teamSetupLogic, MatchEngineLogic matchEngineLogic, AbbrevService abbrevService){
         this.teamSetup = teamSetupLogic;
         this.matchEngineLogic = matchEngineLogic;
+        this.abbrevService = abbrevService;
 
 
     }
@@ -32,14 +35,19 @@ public class Simulate {
     // of course this is breaking SOLID Principles, why is match engine in charge of making that call
 
 
-    public void simulateMatch(String homeTeamName, String awayTeamName){
+    public void simulateMatch(String homeTeamNameAbbrev, String awayTeamNameAbbrev){
+        String homeTeamName = abbrevService.returnFullName(homeTeamNameAbbrev);
+        String awayTeamName = abbrevService.returnFullName(awayTeamNameAbbrev);
         createTeams(homeTeamName, awayTeamName);
         log.info("Created Teams");
+        matchEngineLogic.setHomeTeamNameAbbrev(homeTeamNameAbbrev);
+        matchEngineLogic.setAwayTeamNameAbbrev(awayTeamNameAbbrev);
         matchEngineLogic.simulateMatch(homeTeamName, awayTeamName);
     }
     public void createTeams(String homeTeamName, String awayTeamName){
         matchEngineLogic.setHomeTeam(teamSetup.createTeam(homeTeamName));
         matchEngineLogic.setAwayTeam(teamSetup.createTeam(awayTeamName));
+
     }
 }
 

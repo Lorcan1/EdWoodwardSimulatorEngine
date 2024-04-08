@@ -1,7 +1,10 @@
 package com.example.matchEngine.services.UpdateStats;
 
+import com.example.model.playeraction.PlayerAction;
 import com.example.model.player.InGamePlayerStats;
 import com.example.model.player.Player;
+import com.example.model.playeraction.pass.Pass;
+import com.example.model.playeraction.touch.Touch;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.stereotype.Component;
@@ -24,21 +27,21 @@ public class  UpdateInGamePlayerStats{
         }
         return tempHashMap;
     }
-    public void updateInGamePlayerStats(HashMap<String, String> playersStatsToBeUpdated) {
+    public void updateInGamePlayerStats(HashMap<String, PlayerAction> playersStatsToBeUpdated) {
         for (String playerName : playersStatsToBeUpdated.keySet()) {
-            String statToBeUpdated = playersStatsToBeUpdated.get(playerName);
+            PlayerAction playerAction = playersStatsToBeUpdated.get(playerName);
             if (homeTeamPlayersStats.containsKey(playerName)) {
-                updateInGamePlayerStatsLogic(playerName, statToBeUpdated, homeTeamPlayersStats);
+                updateInGamePlayerStatsLogic(playerName, playerAction, homeTeamPlayersStats);
             } else if (awayTeamPlayersStats.containsKey(playerName)) {
-                updateInGamePlayerStatsLogic(playerName, statToBeUpdated, awayTeamPlayersStats);
+                updateInGamePlayerStatsLogic(playerName, playerAction, awayTeamPlayersStats);
             }
         }
     }
-    public void updateInGamePlayerStatsLogic(String playerName,String statToBeUpdated,  HashMap<String,InGamePlayerStats> playerStatsHashMap ){
+    public void updateInGamePlayerStatsLogic(String playerName, PlayerAction playerAction, HashMap<String,InGamePlayerStats> playerStatsHashMap ){
         InGamePlayerStats playerStats = playerStatsHashMap.get(playerName);
-        if(statToBeUpdated.equals("pass")){
+        if(playerAction instanceof Pass){
             playerStats.setPasses(playerStats.getPasses() + 1);
-        } else if(statToBeUpdated.equals("touch")){
+        } else if(playerAction instanceof Touch){
             playerStats.setTouches(playerStats.getTouches() + 1);
         }
     }

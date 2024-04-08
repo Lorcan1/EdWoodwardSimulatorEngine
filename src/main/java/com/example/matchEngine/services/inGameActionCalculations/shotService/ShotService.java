@@ -1,14 +1,12 @@
 package com.example.matchEngine.services.inGameActionCalculations.shotService;
 
 import com.example.matchEngine.engine.GameState;
-import com.example.model.Shot;
+import com.example.model.playeraction.shot.Shot;
 import com.example.model.player.Goalkeeper;
 import com.example.model.player.OutfieldPlayer;
 import lombok.Getter;
 import lombok.Setter;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import spock.mock.AutoAttach;
 
 import java.util.Random;
 
@@ -47,7 +45,7 @@ public class ShotService {
             shot.setGoal(shotCalculations.createGoal(gameState, time));
             shot.setIsGoal(true);
         }
-        gameState.setShot(shot);
+        gameState.setPlayerAction(shot);
         return gameState;
 
     }

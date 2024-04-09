@@ -3,6 +3,7 @@ package com.example.team;
 import com.example.model.player.Player;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,7 +13,7 @@ import java.util.List;
 public class Team {
     private  List<String> positions= new ArrayList<>();
     private  String teamName;
-    private  TeamSetup teamSetup;
+    private TeamSetupLogic teamSetupLogic;
     private Player gk;
     private  Player dl;
     private  Player dcl;

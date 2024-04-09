@@ -1,11 +1,12 @@
 spring:
     datasource:
-      url: jdbc:sqlite:data/EdWoodwardDb.db
-      driverClassName: org.sqlite.JDBC
+      url: jdbc:postgresql://localhost:5432/POSTGRES_DB
+      driverClassName: org.postgresql.Driver
       hikari.maximumPoolSize: 2
+      username: user
+      password: password
     jpa:
-      database-platform: org.hibernate.community.dialect.SQLiteDialect
       hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
         ddl-auto: update
         show-sql: true
-        dialect: org.hibernate.community.dialect.SQLiteDialect

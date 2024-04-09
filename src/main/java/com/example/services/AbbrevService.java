@@ -1,5 +1,8 @@
 package com.example.services;
 
+import org.springframework.stereotype.Component;
+
+@Component
 public class AbbrevService { //prob should be a database table someday
 
     public String returnFullName(String abbrev){

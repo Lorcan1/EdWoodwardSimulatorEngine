@@ -52,6 +52,9 @@ public class FeedService {
 
     public void getRandomResponse(GameState gameState, String club) {
         List<String> responseList = responses.get(gameState.getAction());
+        if(responseList == null){
+            return;
+        }
         String initialResponse =  responseList.get(random.nextInt(responseList.size()));
 //        responseGenerator(gameState.getTime(),club,gameState.getPlayerStatsToBeUpdated(),player2,initialResponse);
         //depending on the action, different logic needs to be implemented, ie if a goal is scored, player2 should be a goalkeeper

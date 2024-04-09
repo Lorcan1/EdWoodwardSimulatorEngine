@@ -1,25 +1,30 @@
 package com.example.services;
 
 import com.example.matchEngine.engine.GameState;
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.*;
 
 @Component
+@Getter
+@Setter
 public class FeedService {
-    private List feed;
 
-    private Map<String, List<String>> responses;
     private Random random;
+    private List feed = new ArrayList();
+    private Map<String, List<String>> responses = new HashMap<String, List<String>>();
 
     @Autowired
-    public FeedService(List feed) {
-        this.responses = new HashMap<String, List<String>>();
+    public FeedService(Random random) {
+        this.random = random;
+    }
+
+    public void feedServiceSetup(){
         responses.put("action1", Arrays.asList(" is tackled and looses the ball. Great tackle by player2 ", " is dispossessed by player2 ", " looses it. Solid challenge from player2 "));
         responses.put("goal",Arrays.asList(" scores", " finishes a fine move", " puts it past player2", " smashes it past player2"));
-        this.feed = feed;
-        this.random = random;
     }
 
 

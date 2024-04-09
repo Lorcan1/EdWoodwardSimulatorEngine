@@ -39,7 +39,7 @@ public class ShotService {
         else
             action = shotCalculations.isShotSuccesful((OutfieldPlayer) gameState.getPlayerInPosses(), shotDifficulty, shotSuccessful,  shot, goalkeeper);
         if(shotCalculations.possLostValues.contains(action))
-            gameState.setPossLost("temp");
+            gameState.setPossLost("temp"); //how will this be recoreded in player stats? maybe we can create a blocked shot object?
         gameState.setAction(action);
         if(action.equals("goal")){
             shot.setGoal(shotCalculations.createGoal(gameState, time));

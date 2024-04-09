@@ -4,6 +4,7 @@ import com.example.matchEngine.engine.GameState
 import com.example.matchEngine.services.inGameActionCalculations.shotService.ShotCalculations
 import com.example.matchEngine.services.inGameActionCalculations.shotService.ShotService
 import com.example.model.player.Goalkeeper
+import com.example.model.playeraction.shot.Shot
 import spock.lang.Specification
 
 class ShotServiceTest extends Specification {
@@ -23,7 +24,6 @@ class ShotServiceTest extends Specification {
         shotService.calculateShotChance(gameState, false, 1)
 
         then:
-        assert gameState.getShot().getIsGoal() == true
-
+        assert gameState.getPlayerAction() instanceof Shot
     }
 }

@@ -8,11 +8,14 @@ class FeedServiceTest extends Specification{
     def "get valid response"(){
         given:
         List testList = new ArrayList();
-        FeedService feedService = new FeedService(testList);
+        FeedService feedService = new FeedService(new Random());
+        feedService.setFeed(testList)
+        feedService.feedServiceSetup()
         feedService.getRandomResponse("1", "MCFC", "De Bruyne", "Romero", "action1")
 
+
         expect:
-        testList != null
+        assert feedService.getFeed() != null
     }
 
 }

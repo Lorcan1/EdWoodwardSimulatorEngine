@@ -2,8 +2,8 @@ package com.example.matchEngine.services.inGameActionCalculations.shotService;
 
 import com.example.matchEngine.SaveCalculation;
 import com.example.matchEngine.engine.GameState;
-import com.example.model.Goal;
-import com.example.model.Shot;
+import com.example.model.playeraction.shot.Goal;
+import com.example.model.playeraction.shot.Shot;
 import com.example.model.player.Goalkeeper;
 import com.example.model.player.OutfieldPlayer;
 import lombok.NoArgsConstructor;

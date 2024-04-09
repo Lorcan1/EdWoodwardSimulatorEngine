@@ -3,6 +3,9 @@ package com.example.matchEngine.services.UpdateStats
 import com.example.matchEngine.services.UpdateStats.UpdateInGamePlayerStats
 import com.example.model.player.OutfieldPlayer
 import com.example.model.player.Player
+import com.example.model.playeraction.PlayerAction
+import com.example.model.playeraction.pass.Pass
+import com.example.model.playeraction.touch.Touch
 import spock.lang.Shared
 import spock.lang.Specification
 
@@ -33,8 +36,9 @@ class UpdateInGamePlayerStatsTest extends Specification{
 
     def "test pass"(){
 
-        HashMap<String,String> hashMapTest = new HashMap<>()
-        hashMapTest.put("testHomePlayer", "pass" )
+        HashMap<String, PlayerAction> hashMapTest = new HashMap<>()
+        Pass pass = new Pass();
+        hashMapTest.put("testHomePlayer", pass )
 
         updateInGamePlayerStats.updateInGamePlayerStats(hashMapTest)
 
@@ -44,8 +48,9 @@ class UpdateInGamePlayerStatsTest extends Specification{
     }
 
     def "test touch"(){
-        HashMap<String,String> hashMapTest = new HashMap<>()
-        hashMapTest.put("testHomePlayer", "touch" )
+        HashMap<String,PlayerAction> hashMapTest = new HashMap<>()
+        Touch touch = new Touch();
+        hashMapTest.put("testHomePlayer", touch)
 
         updateInGamePlayerStats.updateInGamePlayerStats(hashMapTest)
 

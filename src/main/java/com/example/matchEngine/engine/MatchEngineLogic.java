@@ -1,17 +1,11 @@
 package com.example.matchEngine.engine;
 
-import com.example.matchEngine.services.inGameActionCalculations.carryCalculations.CarryCalculations;
-import com.example.matchEngine.services.inGameActionCalculations.passCalculations.PassCalculateSuccess;
-import com.example.matchEngine.services.inGameActionCalculations.passCalculations.PassChooseReceiver;
-import com.example.matchEngine.services.playerDecisions.DefenderDecisions;
 import com.example.matchEngine.services.playerDecisions.PlayerDecisions;
-import com.example.matchEngine.services.inGameActionCalculations.shotService.ShotCalculations;
 import com.example.matchEngine.services.inGameActionCalculations.shotService.ShotService;
 import com.example.matchEngine.services.UpdateStats.UpdateInGameMatchStats;
 import com.example.matchEngine.services.UpdateStats.UpdateInGamePlayerStats;
-import com.example.matchEngine.services.inGameActionCalculations.tackleCalculations.TackleCalculateSuccess;
-import com.example.model.InGameMatchStats;
-import com.example.model.player.Goalkeeper;
+import com.example.services.AbbrevService;
+import com.example.services.FeedService;
 import com.example.team.Team;
 import com.example.model.player.Player;
 import lombok.Getter;
@@ -20,7 +14,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.util.Random;
+import java.util.ArrayList;
+import java.util.List;
+
 @Getter
 @Setter
 @Component
@@ -38,6 +34,9 @@ public class MatchEngineLogic {
     String homeTeamName;
     String awayTeamName;
 
+    String homeTeamNameAbbrev;
+    String awayTeamNameAbbrev;
+
     int time = 0;
 
     @Autowired
@@ -52,12 +51,20 @@ public class MatchEngineLogic {
     @Autowired
     ShotService shotService;
 
+    @Autowired
+    FeedService feedService;
+
+    List testList = new ArrayList();
+
     public void simulateMatch(String homeTeamName, String awayTeamName) {
         this.homeTeamName = homeTeamName;
         this.awayTeamName = awayTeamName;
         updateInGamePlayerStats.setHomeTeamPlayersStats(updateInGamePlayerStats.initializeInGamePlayerStats(homeTeam.getPlayers()));
         updateInGamePlayerStats.setAwayTeamPlayersStats(updateInGamePlayerStats.initializeInGamePlayerStats(awayTeam.getPlayers()));
+        feedService.setFeed(testList);
+        feedService.feedServiceSetup();
         playGame("kickOff");
+
     }
 
     public String kickOff() {
@@ -109,17 +116,21 @@ public class MatchEngineLogic {
             action = gameState.getAction();
             log.info(action);
 
-            //feedService here
-
-
             //should the above be before or after the updating of the stats. HomeTeamPoss is changed above and is used
             // to decide who took the actions in the below
             //can actions from both teams be present in PlayersStatsToBeUpdated?
 
             //if a player attempts a pass and fails then what happens currently and what should happen?
 
-            updateInGamePlayerStats.updateInGamePlayerStats(gameState.getPlayerStatsToBeUpdated());
-            updateInGameMatchStats.updateMatchStats(gameState.homeTeamPoss, gameState.getPlayerStatsToBeUpdated(), gameState.getShot());
+            updateInGamePlayerStats.updateInGamePlayerStats(gameState.getPlayerActions());
+            if(gameState.getIsGoal())
+                updateInGameMatchStats.updateMatchStats(gameState.homeTeamPoss, gameState.getPlayerStatsToBeUpdated(), gameState.getPlayerAction());
+            if(gameState.getHomeTeamPoss()){
+                feedService.getRandomResponse(gameState, homeTeamNameAbbrev);
+            } else{
+                feedService.getRandomResponse(gameState, awayTeamNameAbbrev);
+            }
+
 
 
             if (!gameState.getPossLost().isEmpty()) {
@@ -131,6 +142,7 @@ public class MatchEngineLogic {
             if (time > 20) {
                 gameFinished = true;
             }
+            gameState.setTime(time);
         }
     }
 

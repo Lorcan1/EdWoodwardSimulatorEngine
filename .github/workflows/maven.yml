@@ -40,3 +40,4 @@ jobs:
 
       - name: Run Maven tests
         run: mvn --batch-mode --update-snapshots verify
+

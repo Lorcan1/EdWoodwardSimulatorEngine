@@ -12,7 +12,7 @@ import java.util.HashMap;
 @Setter
 public class GameState {
     Player playerInPosses;
-    Player lastPasser;
+    String lastPasserName;
     Team attackingTeam;
     Team defendingTeam;
     Boolean homeTeamPoss;

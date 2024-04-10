@@ -23,6 +23,21 @@ import java.util.List;
 @Slf4j
 public class MatchEngineLogic {
 
+    @Autowired
+    private PlayerDecisions defenderDecisions;
+
+    @Autowired
+    private UpdateInGamePlayerStats updateInGamePlayerStats;
+
+    @Autowired
+    private UpdateInGameMatchStats updateInGameMatchStats;
+
+    @Autowired
+    ShotService shotService;
+
+    @Autowired
+    FeedService feedService;
+
     Team homeTeam;
     Team awayTeam;
 
@@ -38,21 +53,6 @@ public class MatchEngineLogic {
     String awayTeamNameAbbrev;
 
     int time = 0;
-
-    @Autowired
-    private PlayerDecisions defenderDecisions;
-
-    @Autowired
-    private UpdateInGamePlayerStats updateInGamePlayerStats;
-
-    @Autowired
-    private UpdateInGameMatchStats updateInGameMatchStats;
-
-    @Autowired
-    ShotService shotService;
-
-    @Autowired
-    FeedService feedService;
 
     List testList = new ArrayList();
 

@@ -7,6 +7,7 @@ import lombok.Getter;
 import org.springframework.stereotype.Component;
 
 import java.util.HashMap;
+import java.util.Map;
 
 @Getter
 @Component
@@ -26,9 +27,13 @@ public class UpdateInGameMatchStats {
 
     }
 
-    public void updateMatchStats(Boolean homeTeamPoss, HashMap<String, String> playersStatsToBeUpdated, PlayerAction shot){
-      updatePossessionStats(homeTeamPoss);
-      updateShotAndGoalStats(playersStatsToBeUpdated, homeTeamPoss, (Shot) shot);
+    public void updateMatchStats(Boolean homeTeamPoss, HashMap<String, PlayerAction> playersStatsToBeUpdated) {
+        updatePossessionStats(homeTeamPoss);
+        for (Map.Entry<String, PlayerAction> entry : playersStatsToBeUpdated.entrySet()) {
+            if (entry.getValue() instanceof Shot) {
+                updateShotAndGoalStats(playersStatsToBeUpdated, homeTeamPoss, (Shot) entry.getValue());
+            }
+        }
     }
 
     private void updatePossessionStats(Boolean homeTeamPoss){
@@ -36,7 +41,6 @@ public class UpdateInGameMatchStats {
         if(homeTeamPoss)
             team = 0;
         else
-
             team = 1;
         possession[team]++;
 
@@ -53,13 +57,13 @@ public class UpdateInGameMatchStats {
         inGameMatchStats.setAwayPoss((int) possessionPercentageTeamB) ;
     }
 
-    private void updateShotAndGoalStats(HashMap<String, String> playersStatsToBeUpdated, Boolean homeTeamPoss, Shot shot){
+    private void updateShotAndGoalStats(HashMap<String, PlayerAction> playersStatsToBeUpdated, Boolean homeTeamPoss, Shot shot) {
         for (String playerName : playersStatsToBeUpdated.keySet()) {
-            if(playersStatsToBeUpdated.get(playerName).equals("shot")){
-                updateShots(playerName,homeTeamPoss, shot);
-            } else if(playersStatsToBeUpdated.get(playerName).equals("goal")){
-                updateShots(playerName,homeTeamPoss, shot);
-                updateGoals(playerName, homeTeamPoss, shot);
+            if (playersStatsToBeUpdated.get(playerName) instanceof Shot) {
+                updateShots(playerName, homeTeamPoss, shot);
+                if (((Shot) playersStatsToBeUpdated.get(playerName)).getIsGoal()) {
+                    updateGoals(playerName, homeTeamPoss, shot);
+                }
             }
         }
     }

@@ -7,6 +7,7 @@ import com.example.model.playeraction.pass.Pass;
 import com.example.model.playeraction.touch.Touch;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.Value;
 import org.springframework.stereotype.Component;
 
 import java.util.HashMap;
@@ -43,6 +44,8 @@ public class  UpdateInGamePlayerStats{
             playerStats.setPasses(playerStats.getPasses() + 1);
         } else if(playerAction instanceof Touch){
             playerStats.setTouches(playerStats.getTouches() + 1);
+        } else {
+            throw new IllegalArgumentException(); // more of a checker currently to nake sure every action is recorded
         }
     }
 }

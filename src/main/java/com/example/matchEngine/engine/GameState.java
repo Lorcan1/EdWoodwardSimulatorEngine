@@ -19,7 +19,6 @@ public class GameState {
     int pitchPoss;
     String action;
     String possLost = " ";
-    HashMap<String, String> playerStatsToBeUpdated = new HashMap();
     HashMap<String, PlayerAction> playerActions = new HashMap<>();
     PlayerAction playerAction;
     int time = 0;

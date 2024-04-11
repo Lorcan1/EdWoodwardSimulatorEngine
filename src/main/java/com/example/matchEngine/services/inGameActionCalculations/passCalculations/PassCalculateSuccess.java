@@ -2,6 +2,8 @@ package com.example.matchEngine.services.inGameActionCalculations.passCalculatio
 
 import com.example.matchEngine.engine.GameState;
 import com.example.model.player.Player;
+import com.example.model.playeraction.PlayerAction;
+import com.example.model.playeraction.pass.Pass;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -38,15 +40,14 @@ public class PassCalculateSuccess {
         }
 
         if(randomChance > 1){ //pass is succesful
+            Pass pass = new Pass();
+            pass.setPlayer1(gameState.getPlayerInPosses().getLastName());
+            pass.setPlayer2(passReceiver.getLastName());
+            gameState.getPlayerActions().put(gameState.getPlayerInPosses().getLastName(), pass);
             gameState.setPlayerInPosses(passReceiver);
-            HashMap<String, String> playerStatsToBeUpdated = gameState.getPlayerStatsToBeUpdated();
-            playerStatsToBeUpdated.put(gameState.getPlayerInPosses().getLastName(), "pass");
-            playerStatsToBeUpdated.put(passReceiver.getLastName(), "touch");
-            gameState.setPlayerStatsToBeUpdated(playerStatsToBeUpdated);
             return true;
         } else{
-            gameState.setPossLost("pass");
-            //who gets the ball?
+            gameState.setPossLost("pass"); //who gets the ball?
             return false;
         }
     }

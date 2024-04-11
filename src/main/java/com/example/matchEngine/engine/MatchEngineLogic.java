@@ -122,9 +122,12 @@ public class MatchEngineLogic {
 
             //if a player attempts a pass and fails then what happens currently and what should happen?
 
-            updateInGamePlayerStats.updateInGamePlayerStats(gameState.getPlayerActions());
+
             if(gameState.getIsGoal())
-                updateInGameMatchStats.updateMatchStats(gameState.homeTeamPoss, gameState.getPlayerStatsToBeUpdated(), gameState.getPlayerAction());
+                updateInGameMatchStats.updateMatchStats(gameState.homeTeamPoss, gameState.getPlayerActions());
+
+            updateInGamePlayerStats.updateInGamePlayerStats(gameState.getPlayerActions()); //going to remove PlayerActions here
+
             if(gameState.getHomeTeamPoss()){
                 feedService.getRandomResponse(gameState, homeTeamNameAbbrev);
             } else{

@@ -27,29 +27,25 @@ public class PassChooseReceiver {
 
         switch (position) {
             case "defender":
-                for (Map.Entry<String, Player> entry : attackingTeam.getDefenders().entrySet()) {
-                    if(playerInPoss.equals(entry.getValue())){
-                        if(playerInPoss.getStartingPosition() == "DL"){
-                            player1 = attackingTeam.getDcl();
-                            player2 = attackingTeam.getDcr();
-                        } else if(playerInPoss.getStartingPosition() == "DCL"){
-                            player1 = attackingTeam.getDl();
-                            player2 = attackingTeam.getDr();
-                        } else if(playerInPoss.getStartingPosition() ==("DCR")){
-                            player1 = attackingTeam.getDr();
-                            player2 = attackingTeam.getDcl();
-                        }else if(playerInPoss.getStartingPosition() ==("DR")){
-                            player1 = attackingTeam.getDcr();
-                            player2 = attackingTeam.getDcl();
-                        } else{
-                            player1 = attackingTeam.getDcr();
-                            player2 = attackingTeam.getDr();
-                            player3 = attackingTeam.getDl();
-                            player4 = attackingTeam.getDcl();
-                            passIsWithinSameTier = false;
-                            passToDefender = true;
-                        }
-                    }
+                if(playerInPoss.getStartingPosition() == "DL"){
+                    player1 = attackingTeam.getDcl();
+                    player2 = attackingTeam.getDcr();
+                } else if(playerInPoss.getStartingPosition() == "DCL"){
+                    player1 = attackingTeam.getDl();
+                    player2 = attackingTeam.getDr();
+                } else if(playerInPoss.getStartingPosition() ==("DCR")){
+                    player1 = attackingTeam.getDr();
+                    player2 = attackingTeam.getDcl();
+                }else if(playerInPoss.getStartingPosition() ==("DR")){
+                    player1 = attackingTeam.getDcr();
+                    player2 = attackingTeam.getDcl();
+                } else{
+                    player1 = attackingTeam.getDcr();
+                    player2 = attackingTeam.getDr();
+                    player3 = attackingTeam.getDl();
+                    player4 = attackingTeam.getDcl();
+                    passIsWithinSameTier = false;
+                    passToDefender = true;
                 }
                 break;
             case "midfielder":

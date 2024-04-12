@@ -4,6 +4,7 @@ import com.example.model.playeraction.PlayerAction;
 import com.example.model.player.InGamePlayerStats;
 import com.example.model.player.Player;
 import com.example.model.playeraction.pass.Pass;
+import com.example.model.playeraction.shot.Shot;
 import com.example.model.playeraction.touch.Touch;
 import lombok.Getter;
 import lombok.Setter;
@@ -42,8 +43,10 @@ public class  UpdateInGamePlayerStats{
         InGamePlayerStats playerStats = playerStatsHashMap.get(playerName);
         if(playerAction instanceof Pass){
             playerStats.setPasses(playerStats.getPasses() + 1);
-        } else if(playerAction instanceof Touch){
+        } else if(playerAction instanceof Touch) {
             playerStats.setTouches(playerStats.getTouches() + 1);
+        } else  if(playerAction instanceof Shot){
+            //implement logic
         } else {
             throw new IllegalArgumentException(); // more of a checker currently to nake sure every action is recorded
         }

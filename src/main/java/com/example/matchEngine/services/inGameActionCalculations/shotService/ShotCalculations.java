@@ -36,13 +36,13 @@ public class ShotCalculations { //add oneOnOne calcs to this class
             if(shotChance > 80){    //what is the likelihood of this, see python script. With the compusure and finishing seems to be abput 1/10
                 //great finish      //weaker players should have less chance of scoring here but more chance against weaker goalkeepers
                 //were going to need the passer for the key chances/ assists
-                return "kickoff";
-            } else{ //this means on target right?
+                return "kickOff";
+            } else{ //this means on taret right?
                 if(saveCalculation.isShotSaved(shotChance, goalkeeper)){
                     shot.setOnTarget(true);
                     return "ballInDefence";
                 } else{
-                    return "kickoff";
+                    return "kickOff";
                 }
             }
 
@@ -58,14 +58,14 @@ public class ShotCalculations { //add oneOnOne calcs to this class
             if(shotChance > 95){    //what is the likelihood of this, see python script. With the compusure and finishing seems to be abput 1/10
                 //great finish
                 // weaker players should have less chance of scoring here but more chance against weaker goalkeepers
-                return "kickoff";
+                return "kickOff";
             } else{
 
                 if(saveCalculation.isLongShotSaved(shotChance, goalkeeper)){
                     //changePossesion
                     return "ballInDefence";
                 } else{
-                    return "kickoff";
+                    return "kickOff";
                 }
             }
         } else{

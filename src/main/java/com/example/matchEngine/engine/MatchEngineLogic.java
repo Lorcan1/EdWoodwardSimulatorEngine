@@ -1,5 +1,6 @@
 package com.example.matchEngine.engine;
 
+import com.example.matchEngine.services.playerDecisions.AttackerDecisions;
 import com.example.matchEngine.services.playerDecisions.DefenderDecisions;
 import com.example.matchEngine.services.playerDecisions.MidfielderDecisions;
 import com.example.matchEngine.services.playerDecisions.PlayerDecisions;
@@ -34,6 +35,9 @@ public class MatchEngineLogic {
 
     @Autowired
     private MidfielderDecisions midfielderDecisions;
+
+    @Autowired
+    private AttackerDecisions attackerDecisions;
 
     @Autowired
     private UpdateInGamePlayerStats updateInGamePlayerStats;
@@ -121,6 +125,8 @@ public class MatchEngineLogic {
                 case "ballInMidfield":
                     gameState = midfielderDecisions.playerMakeDecision(gameState);
                     break;
+                case "ballInAttack":
+                    gameState = attackerDecisions.playerMakeDecision(gameState);
                 case "shot":
                     gameState = shotService.calculateShotChance(gameState, false, time);
 
@@ -140,8 +146,10 @@ public class MatchEngineLogic {
             //if a player attempts a pass and fails then what happens currently and what should happen?
 
 
-            if(gameState.getIsGoal())
+            if(gameState.getIsGoal()) {
                 updateInGameMatchStats.updateMatchStats(gameState.homeTeamPoss, gameState.getPlayerActions());
+                gameState.setIsGoal(false);
+            }
 
             updateInGamePlayerStats.updateInGamePlayerStats(gameState.getPlayerActions()); //going to remove PlayerActions here
 
@@ -161,7 +169,7 @@ public class MatchEngineLogic {
             }
             //we need to clear a lot of things from gamestate now !!!
             time = time + 1;
-            if (time > 20) {
+            if (time > 12000) {
                 gameFinished = true;
             }
             gameState.setTime(time);

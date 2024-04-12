@@ -20,7 +20,6 @@ public class GameState {
     String action;
     String possLost = "";
     HashMap<String, PlayerAction> playerActions = new HashMap<>();
-    PlayerAction playerAction;
     int time = 0;
     Boolean isGoal = Boolean.FALSE;
 }

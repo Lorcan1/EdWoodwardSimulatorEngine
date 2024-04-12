@@ -31,7 +31,7 @@ public class UpdateInGameMatchStats {
         updatePossessionStats(homeTeamPoss);
         for (Map.Entry<String, PlayerAction> entry : playersStatsToBeUpdated.entrySet()) {
             if (entry.getValue() instanceof Shot) {
-                updateShotAndGoalStats(playersStatsToBeUpdated, homeTeamPoss, (Shot) entry.getValue());
+                updateShotAndGoalStats(entry.getKey(), homeTeamPoss, (Shot) entry.getValue());
             }
         }
     }
@@ -57,16 +57,12 @@ public class UpdateInGameMatchStats {
         inGameMatchStats.setAwayPoss((int) possessionPercentageTeamB) ;
     }
 
-    private void updateShotAndGoalStats(HashMap<String, PlayerAction> playersStatsToBeUpdated, Boolean homeTeamPoss, Shot shot) {
-        for (String playerName : playersStatsToBeUpdated.keySet()) {
-            if (playersStatsToBeUpdated.get(playerName) instanceof Shot) {
+    private void updateShotAndGoalStats(String playerName, Boolean homeTeamPoss, Shot shot) {
                 updateShots(playerName, homeTeamPoss, shot);
-                if (((Shot) playersStatsToBeUpdated.get(playerName)).getIsGoal()) {
+                if(shot.getIsGoal()) {
                     updateGoals(playerName, homeTeamPoss, shot);
                 }
             }
-        }
-    }
 
     private void updateShots(String playerName, Boolean homeTeamPoss, Shot shot) {
         if (homeTeamPoss) {

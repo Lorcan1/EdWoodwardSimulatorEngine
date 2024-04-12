@@ -29,6 +29,7 @@ public class FeedService {
         responses.put("Tackle", Arrays.asList(" is tackled and looses the ball. Great tackle by player2 ", " is dispossessed by player2 ", " looses it. Solid challenge from player2 "));
         responses.put("Goal",Arrays.asList(" scores", " finishes a fine move", " puts it past player2", " smashes it past player2"));
         responses.put("Pass",Arrays.asList(" passes to player2"));
+        responses.put("Shot",Arrays.asList(" scores!"));
     }
 
 
@@ -59,23 +60,51 @@ public class FeedService {
         if(playerActions == null) {
             return;
         }
-        for (Map.Entry<String, PlayerAction> entry : playerActions.entrySet()) {
+//        for (Map.Entry<String, PlayerAction> entry : playerActions.entrySet()) {
+//            String key = entry.getKey();
+//            PlayerAction playerAction = entry.getValue();
+//            System.out.println("Key: " + key + ", Value: " + playerAction);
+//
+//            List<String> responseList = responses.get(playerAction.getClassName());
+//            String initialResponse =  responseList.get(random.nextInt(responseList.size()));
+//
+//            if(playerAction instanceof Pass){
+//                responseGenerator(String.valueOf(gameState.getTime()), club, playerAction.getPlayer1(), ((Pass) playerAction).getPlayer2(), initialResponse);
+//                System.out.println("Pass Receiver: " + ((Pass) playerAction).getPlayer2());
+//                playerActions.remove(entry.getKey());
+//            } else if(playerAction instanceof Tackle){ //this will be exactly the same - can probably be split into a list of actions with/without "player2"
+//                responseGenerator(String.valueOf(gameState.getTime()), club, playerAction.getPlayer1(), ((Tackle) playerAction).getPlayer2(), initialResponse);
+//                playerActions.remove(entry.getKey());
+//            }
+//        }
+        Iterator<Map.Entry<String, PlayerAction>> iterator = playerActions.entrySet().iterator();
+        while (iterator.hasNext()) {
+            Map.Entry<String, PlayerAction> entry = iterator.next();
             String key = entry.getKey();
             PlayerAction playerAction = entry.getValue();
             System.out.println("Key: " + key + ", Value: " + playerAction);
 
             List<String> responseList = responses.get(playerAction.getClassName());
-            String initialResponse =  responseList.get(random.nextInt(responseList.size()));
+            String initialResponse = responseList.get(random.nextInt(responseList.size()));
 
-            if(playerAction instanceof Pass){
+            if (playerAction instanceof Pass) {
                 responseGenerator(String.valueOf(gameState.getTime()), club, playerAction.getPlayer1(), ((Pass) playerAction).getPlayer2(), initialResponse);
                 System.out.println("Pass Receiver: " + ((Pass) playerAction).getPlayer2());
-                playerActions.remove(entry.getKey());
-            } else if(playerAction instanceof Tackle){ //this will be exactly the same - can probably be split into a list of actions with/without "player2"
+                iterator.remove(); // Use iterator's remove method
+            } else if (playerAction instanceof Tackle) {
                 responseGenerator(String.valueOf(gameState.getTime()), club, playerAction.getPlayer1(), ((Tackle) playerAction).getPlayer2(), initialResponse);
-                playerActions.remove(entry.getKey());
+                iterator.remove(); // Use iterator's remove method
             }
         }
+
+
+
+
+
+
+
+
+
 //        String initialResponse =  responseList.get(random.nextInt(responseList.size()));
 //        responseGenerator(gameState.getTime(),club,gameState.getPlayerStatsToBeUpdated(),player2,initialResponse);
         //depending on the action, different logic needs to be implemented, ie if a goal is scored, player2 should be a goalkeeper

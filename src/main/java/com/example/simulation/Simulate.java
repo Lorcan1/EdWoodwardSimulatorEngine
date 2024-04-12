@@ -35,7 +35,7 @@ public class Simulate {
     // of course this is breaking SOLID Principles, why is match engine in charge of making that call
 
 
-    public void simulateMatch(String homeTeamNameAbbrev, String awayTeamNameAbbrev){
+    public String simulateMatch(String homeTeamNameAbbrev, String awayTeamNameAbbrev){
         String homeTeamName = abbrevService.returnFullName(homeTeamNameAbbrev);
         String awayTeamName = abbrevService.returnFullName(awayTeamNameAbbrev);
         createTeams(homeTeamName, awayTeamName);
@@ -43,6 +43,8 @@ public class Simulate {
         matchEngineLogic.setHomeTeamNameAbbrev(homeTeamNameAbbrev);
         matchEngineLogic.setAwayTeamNameAbbrev(awayTeamNameAbbrev);
         matchEngineLogic.simulateMatch(homeTeamName, awayTeamName);
+        return String.valueOf((matchEngineLogic.getUpdateInGameMatchStats().getInGameMatchStats().getHomeScore() + ":" +
+                matchEngineLogic.getUpdateInGameMatchStats().getInGameMatchStats().getAwayScore()));
     }
     public void createTeams(String homeTeamName, String awayTeamName){
         matchEngineLogic.setHomeTeam(teamSetup.createTeam(homeTeamName));

@@ -12,7 +12,7 @@ import lombok.Setter;
 @NoArgsConstructor
 public class Shot extends PlayerAction {
     Double xG;
-    Boolean onTarget;
-    Boolean isGoal;
+    Boolean onTarget = false;
+    Boolean isGoal = false;
     Goal goal;
 }

@@ -8,6 +8,7 @@ import com.example.matchEngine.services.inGameActionCalculations.tackleCalculati
 import com.example.model.player.Player;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -16,6 +17,7 @@ import java.util.Random;
 @Getter
 @Setter
 @Component
+@Slf4j
 public class DefenderDecisions implements PlayerDecisions {
     private Random random;
     private PassChooseReceiver passChooseReceiver;
@@ -47,12 +49,15 @@ public class DefenderDecisions implements PlayerDecisions {
         //lets just assign them random chance for now
         int randomChance = random.nextInt(100) + 1; // 1-100 -influenced by pitch strata, as in there shouldn't be any chance of shooting unless the defender is in midfield or attack.
 //        int randomChance = 54;
+        log.info(String.valueOf(randomChance));
         if (randomChance <= 18) { //pass to goalkeeper
             gameState.setPitchPoss(gameState.getHomeTeamPoss() ? 0 : 4);
             gameState.setAction(passCalculateSuccess.calcPassSuccess(gameState, gameState.getAttackingTeam().getGk(), gameState.getDefendingTeam().getSt(), "Very Low") ? "ballOnTheLine" : "oneOnOne");
         } else if (randomChance <= 36) {//pass to other defender/fullback - how do they pick another defender - fullbacks shouldn't pass to the other full back that much
+            //defenders probably so this a lot
             gameState.setPitchPoss(gameState.getHomeTeamPoss() ? 1 : 3);
             Player passReceiverDef = passChooseReceiver.whichPlayerReceivesTheBall(gameState.getPlayerInPosses(),gameState.getAttackingTeam(), "defender");
+
             gameState.setAction(passCalculateSuccess.calcPassSuccess(gameState, passReceiverDef, gameState.getDefendingTeam().getSt(), "Low") ? "ballInDefence" : "ballInAttack");
         } else if (randomChance <= 54) {  //pass to midfielder
             gameState.setPitchPoss(2);

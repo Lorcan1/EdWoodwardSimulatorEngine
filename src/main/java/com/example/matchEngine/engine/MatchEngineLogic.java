@@ -1,9 +1,13 @@
 package com.example.matchEngine.engine;
 
+import com.example.matchEngine.services.playerDecisions.DefenderDecisions;
+import com.example.matchEngine.services.playerDecisions.MidfielderDecisions;
 import com.example.matchEngine.services.playerDecisions.PlayerDecisions;
 import com.example.matchEngine.services.inGameActionCalculations.shotService.ShotService;
 import com.example.matchEngine.services.UpdateStats.UpdateInGameMatchStats;
 import com.example.matchEngine.services.UpdateStats.UpdateInGamePlayerStats;
+import com.example.model.player.Goalkeeper;
+import com.example.model.playeraction.PlayerAction;
 import com.example.services.AbbrevService;
 import com.example.services.FeedService;
 import com.example.team.Team;
@@ -12,10 +16,12 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 @Getter
 @Setter
@@ -24,7 +30,10 @@ import java.util.List;
 public class MatchEngineLogic {
 
     @Autowired
-    private PlayerDecisions defenderDecisions;
+    private DefenderDecisions defenderDecisions;
+
+    @Autowired
+    private MidfielderDecisions midfielderDecisions;
 
     @Autowired
     private UpdateInGamePlayerStats updateInGamePlayerStats;
@@ -63,6 +72,8 @@ public class MatchEngineLogic {
         updateInGamePlayerStats.setAwayTeamPlayersStats(updateInGamePlayerStats.initializeInGamePlayerStats(awayTeam.getPlayers()));
         feedService.setFeed(testList);
         feedService.feedServiceSetup();
+        shotService.setHomeGoalkeeper((Goalkeeper) homeTeam.getGk());
+        shotService.setAwayGoalkeeper((Goalkeeper) awayTeam.getGk());
         playGame("kickOff");
 
     }
@@ -107,6 +118,9 @@ public class MatchEngineLogic {
                 case "ballInDefence":
                     gameState = defenderDecisions.playerMakeDecision(gameState);
                     break;
+                case "ballInMidfield":
+                    gameState = midfielderDecisions.playerMakeDecision(gameState);
+                    break;
                 case "shot":
                     gameState = shotService.calculateShotChance(gameState, false, time);
 
@@ -115,6 +129,9 @@ public class MatchEngineLogic {
 
             action = gameState.getAction();
             log.info(action);
+            for (Map.Entry<String, PlayerAction> entry : gameState.getPlayerActions().entrySet()) {
+                log.info("Key: {}, Value: {}", entry.getKey(), entry.getValue());
+            }
 
             //should the above be before or after the updating of the stats. HomeTeamPoss is changed above and is used
             // to decide who took the actions in the below
@@ -137,8 +154,10 @@ public class MatchEngineLogic {
 
 
             if (!gameState.getPossLost().isEmpty()) {
+
                 changePossession(gameState.getPossLost());
                 gameState.setPossLost("");
+                log.info("Possesion Lost, Player in Poss:" + gameState.getPlayerInPosses().getLastName());
             }
             //we need to clear a lot of things from gamestate now !!!
             time = time + 1;

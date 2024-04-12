@@ -2,9 +2,11 @@ package com.example.matchEngine;
 
 import com.example.model.player.Goalkeeper;
 import com.example.model.player.Player;
+import org.springframework.stereotype.Component;
 
 import java.util.Random;
 
+@Component
 public class SaveCalculation {
     Random random = new Random();
     public boolean isShotSaved(int shotChance, Goalkeeper goalkeeper){

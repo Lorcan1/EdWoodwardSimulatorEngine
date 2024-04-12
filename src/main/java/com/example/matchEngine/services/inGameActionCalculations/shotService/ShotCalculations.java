@@ -7,6 +7,7 @@ import com.example.model.playeraction.shot.Shot;
 import com.example.model.player.Goalkeeper;
 import com.example.model.player.OutfieldPlayer;
 import lombok.NoArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.Arrays;
@@ -15,6 +16,8 @@ import java.util.List;
 @NoArgsConstructor
 @Component
 public class ShotCalculations { //add oneOnOne calcs to this class
+
+    @Autowired
     SaveCalculation saveCalculation;
 
     public List<String> possLostValues = Arrays.asList("ballInDefence", "goalKick", "goal"); //currently theres no logic for players shooting and the same team

@@ -10,8 +10,10 @@ public class AbbrevService { //prob should be a database table someday
         switch (abbrev) {
             case "MCFC":
                 fullName = "Manchester City";
+                break;
             case "TOT":
                 fullName = "Tottenham Hotspur";
+                break;
         }
         if (fullName == null || fullName.isEmpty()) {
             throw new IllegalArgumentException("Input string cannot be null or empty");

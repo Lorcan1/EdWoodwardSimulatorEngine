@@ -15,9 +15,10 @@ public class Controller {
     }
 
     @PostMapping("/test")
-    public void test(@RequestParam("homeTeam") String homeTeam, @RequestParam("awayTeam") String awayTeam) {
+    public String test(@RequestParam("homeTeam") String homeTeam, @RequestParam("awayTeam") String awayTeam) {
         // Use the service
         simulate.simulateMatch(homeTeam, awayTeam);
+        return "Finished";
     }
 
     @GetMapping("/hello")

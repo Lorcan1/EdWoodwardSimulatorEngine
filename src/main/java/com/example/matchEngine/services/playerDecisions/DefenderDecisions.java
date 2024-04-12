@@ -52,15 +52,15 @@ public class DefenderDecisions implements PlayerDecisions {
             gameState.setAction(passCalculateSuccess.calcPassSuccess(gameState, gameState.getAttackingTeam().getGk(), gameState.getDefendingTeam().getSt(), "Very Low") ? "ballOnTheLine" : "oneOnOne");
         } else if (randomChance <= 36) {//pass to other defender/fullback - how do they pick another defender - fullbacks shouldn't pass to the other full back that much
             gameState.setPitchPoss(gameState.getHomeTeamPoss() ? 1 : 3);
-            Player passReceiverDef = passChooseReceiver.whichPlayerReceivesTheBall(gameState.getAttackingTeam(), "defender");
+            Player passReceiverDef = passChooseReceiver.whichPlayerReceivesTheBall(gameState.getPlayerInPosses(),gameState.getAttackingTeam(), "defender");
             gameState.setAction(passCalculateSuccess.calcPassSuccess(gameState, passReceiverDef, gameState.getDefendingTeam().getSt(), "Low") ? "ballInDefence" : "ballInAttack");
         } else if (randomChance <= 54) {  //pass to midfielder
             gameState.setPitchPoss(2);
-            Player passReceiverMid = passChooseReceiver.whichPlayerReceivesTheBall(gameState.getAttackingTeam(), "midfielder");
+            Player passReceiverMid = passChooseReceiver.whichPlayerReceivesTheBall(gameState.getPlayerInPosses(),gameState.getAttackingTeam(), "midfielder");
             gameState.setAction(passCalculateSuccess.calcPassSuccess(gameState, passReceiverMid, gameState.getDefendingTeam().getSt(), "Medium") ? "ballInMidfield" : "ballInMidfield");
         } else if (randomChance <= 72) {  //pass to attacker
             gameState.setPitchPoss(gameState.getHomeTeamPoss() ? 3 : 1);//this doesn't need to be sent to the next function, ball will still be in that zone it's just a matter of who's in possess
-            Player passReceiverAtt = passChooseReceiver.whichPlayerReceivesTheBall(gameState.getAttackingTeam(), "attacker");
+            Player passReceiverAtt = passChooseReceiver.whichPlayerReceivesTheBall(gameState.getPlayerInPosses(),gameState.getAttackingTeam(), "attacker");
             gameState.setAction(passCalculateSuccess.calcPassSuccess(gameState, passReceiverAtt, gameState.getDefendingTeam().getSt(), "High") ? "ballInAttack" : "ballInDefence");
         } else if (randomChance <= 90) { //attempts a carry
             gameState.setAction(carryCalculations.calcCarrySuccess(gameState.getPlayerInPosses(), gameState.getDefendingTeam().getSt()) ? "ballInDefence" : "counterAttack"); //only counter if looses the ball between certain strata?

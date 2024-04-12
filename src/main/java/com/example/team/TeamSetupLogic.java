@@ -210,33 +210,43 @@ public class TeamSetupLogic implements ITeamSetup {
                 startingPlayers.add(player);
             }else if(player.getStartingPosition().equals("DL")){
                 team.setDl(player);
+                team.getDefenders().put("DL", player);
                 startingPlayers.add(player);
             }else if(player.getStartingPosition().equals("DCL")){
                 team.setDcl(player);
+                team.getDefenders().put("DCL", player);
                 startingPlayers.add(player);
             }else if(player.getStartingPosition().equals("DCR")){
                 team.setDcr(player);
+                team.getDefenders().put("DCR", player);
                 startingPlayers.add(player);
             }else if(player.getStartingPosition().equals("DR")){
                 team.setDr(player);
+                team.getDefenders().put("DR", player);
                 startingPlayers.add(player);
             }else if(player.getStartingPosition().equals("DM")){
                 team.setDm(player);
+                team.getMidfielders().put("DM", player);
                 startingPlayers.add(player);
             }else if(player.getStartingPosition().equals("MR")){
                 team.setMr(player);
+                team.getAttackers().put("MR", player);
                 startingPlayers.add(player);
             }else if(player.getStartingPosition().equals("MCR")){
                 team.setMcr(player);
+                team.getMidfielders().put("MCR", player);
                 startingPlayers.add(player);
             }else if(player.getStartingPosition().equals("MCL")){
                 team.setMcl(player);
+                team.getMidfielders().put("MCL", player);
                 startingPlayers.add(player);
             }else if(player.getStartingPosition().equals("ML")){
                 team.setMl(player);
+                team.getAttackers().put("ML", player);
                 startingPlayers.add(player);
             }else if(player.getStartingPosition().equals("ST")){
                 team.setSt(player);
+                team.getAttackers().put("DL", player);
                 startingPlayers.add(player);
             }
         }

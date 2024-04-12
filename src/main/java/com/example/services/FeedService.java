@@ -69,9 +69,11 @@ public class FeedService {
 
             if(playerAction instanceof Pass){
                 responseGenerator(String.valueOf(gameState.getTime()), club, playerAction.getPlayer1(), ((Pass) playerAction).getPlayer2(), initialResponse);
+                System.out.println("Pass Receiver: " + ((Pass) playerAction).getPlayer2());
+                playerActions.remove(entry.getKey());
             } else if(playerAction instanceof Tackle){ //this will be exactly the same - can probably be split into a list of actions with/without "player2"
                 responseGenerator(String.valueOf(gameState.getTime()), club, playerAction.getPlayer1(), ((Tackle) playerAction).getPlayer2(), initialResponse);
-
+                playerActions.remove(entry.getKey());
             }
         }
 //        String initialResponse =  responseList.get(random.nextInt(responseList.size()));

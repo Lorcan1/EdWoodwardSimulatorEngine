@@ -17,13 +17,12 @@ public class PassCalculateSuccess {
         this.random = random;
     }
     public boolean calcPassSuccess(GameState gameState, Player passReceiver, Player marker, String possibleRisk){
-        //going to vary depending on the part of the pitch, ignore for now
         //there should be a much higher chance of getting turned over in attack than in defence
         //if it fails then change the attacking team
         int randomChance = 0;
         switch (possibleRisk) { // use other factor to make the random chance is interesting
             case "Very Low": //pass to other defender/fullback - how do they pick another defender - fullbacks shouldn't pass to the other full back that much
-                //players attributes should have a say here
+                //players attributes should have a say here, especially composure and passing
                 randomChance = random.nextInt(200) + 1; //increasing the bound increases the chance of this happening
                 break;
             // if the stat is two low then they miss the pass

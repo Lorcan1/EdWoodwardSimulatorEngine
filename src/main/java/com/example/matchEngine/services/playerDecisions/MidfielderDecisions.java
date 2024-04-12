@@ -1,32 +1,42 @@
 //package com.example.matchEngine.playerDecisions;
 //
 //import com.example.matchEngine.engine.GameState;
-//import com.example.matchEngine.engine.MatchEngine;
-//import com.example.matchEngine.engine.MatchEngineDecisions;
-//import com.example.matchEngine.passCalculations.PassCalculations;
-//import com.example.matchEngine.updateStats.UpdateInGamePlayerStats;
-//import com.example.model.player.OutfieldPlayer;
+//
+//import com.example.matchEngine.services.inGameActionCalculations.carryCalculations.CarryCalculations;
+//import com.example.matchEngine.services.inGameActionCalculations.passCalculations.PassCalculateSuccess;
+//import com.example.matchEngine.services.inGameActionCalculations.passCalculations.PassChooseReceiver;
+//import com.example.matchEngine.services.inGameActionCalculations.tackleCalculations.TackleCalculateSuccess;
+//import com.example.matchEngine.services.playerDecisions.PlayerDecisions;
 //import com.example.model.player.Player;
 //import com.example.team.Team;
 //import lombok.Getter;
 //import lombok.Setter;
+//import org.springframework.beans.factory.annotation.Autowired;
+//import org.springframework.stereotype.Component;
 //
 //import java.util.Random;
 //@Getter
 //@Setter
+//@Component
 //public class MidfielderDecisions implements PlayerDecisions {
-//    private Random random = new Random();
-//    private PassCalculations passCalculations;
+//
+//    private Random random;
+//    private PassChooseReceiver passChooseReceiver;
+//    private PassCalculateSuccess passCalculateSuccess;
+//    private TackleCalculateSuccess tackleCalculateSuccess;
+//    private CarryCalculations carryCalculations;
 //
 //
-//    public MidfielderDecisions() {
-//
-//        this.passCalculations = new PassCalculations();
+//    @Autowired
+//    public MidfielderDecisions(PassCalculateSuccess passCalculateSuccess, PassChooseReceiver passChooseReceiver, TackleCalculateSuccess tackleCalculateSuccess, CarryCalculations carryCalculations, Random random) {
+//        this.passCalculateSuccess = passCalculateSuccess;
+//        this.passChooseReceiver = passChooseReceiver;
+//        this.tackleCalculateSuccess = tackleCalculateSuccess;
+//        this.carryCalculations = carryCalculations;
+//        this.random = random;
 //    }
-//
 //    // *** this should be superclassed
-//    public String playerMakeDecision(GameState gamestate, boolean homeTeamPoss, Player playerInPosses, Team attackingTeam,
-//                                     Team defendingTeam) {
+//    public GameState playerMakeDecision(GameState gameState) {
 //        //possible decisions, pass to goalkeeper, pass to  defender, pass to other midfielder, get tackles, carry the ball forward
 //        //but the decision depends on what area of the pitch the player is in
 //
@@ -40,11 +50,12 @@
 //        //lets just assign them random chance for now
 //        int randomChance = random.nextInt(100) + 1; // 1-100 -fluenced by pitch strata,a as in there shouldnt be any chance of shooting unless the defender is in midfield or attack.
 //        if(randomChance <= 18) { //pass to goalkeeper
-//            matchEngine.setPitchPos(homeTeamPoss ? 0 : 4);
-//            return calcPassSuccess(playerInPosses, attackingTeam.getGk(), defendingTeam.getSt(), "Very Low") ? "ballOnTheLine" : "oneOnOne";
+//            gameState.setPitchPoss(gameState.getHomeTeamPoss() ? 0 : 4);
+//            gameState.setAction(passCalculateSuccess.calcPassSuccess(gameState, gameState.getAttackingTeam().getGk(), gameState.getDefendingTeam().getSt(), "Very Low") ? "ballOnTheLine" : "oneOnOne");
 //        } else if(randomChance <= 36) {//pass to defender/fullback - how do they pick another defender - fullbacks shouldn't pass to the other full back that much
-//            matchEngine.setPitchPos(homeTeamPoss ? 1 : 3);
-//            Player passReceiverDef = calcPassReceiver(playerInPosses,attackingTeam,"defender");
+//            gameState.setPitchPoss(gameState.getHomeTeamPoss() ? 1 : 3);
+//            Player passReceiverDef = passChooseReceiver.whichPlayerReceivesTheBall(gameState.getAttackingTeam(), "defender");
+//
 //            return calcPassSuccess(playerInPosses, passReceiverDef, defendingTeam.getSt(), "Low") ? "ballInDefence" : "ballInAttack";
 //        } else if(randomChance <= 54 ) {  //pass to other midfielder
 //            matchEngine.setPitchPos(2);

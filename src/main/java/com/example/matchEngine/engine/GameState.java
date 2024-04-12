@@ -18,7 +18,7 @@ public class GameState {
     Boolean homeTeamPoss;
     int pitchPoss;
     String action;
-    String possLost = " ";
+    String possLost = "";
     HashMap<String, PlayerAction> playerActions = new HashMap<>();
     PlayerAction playerAction;
     int time = 0;

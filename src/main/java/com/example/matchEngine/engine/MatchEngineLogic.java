@@ -97,7 +97,7 @@ public class MatchEngineLogic {
                     gameState.setAction(kickOff());
                     startOfGame = false;
                     break;
-                case "ballOnTheLine":
+                case "ballOnTheLine": //add logic here
                     if (gameState.getHomeTeamPoss())
                         gameState.setPlayerInPosses(homeTeam.getDcl());
                     else
@@ -138,7 +138,7 @@ public class MatchEngineLogic {
 
             if (!gameState.getPossLost().isEmpty()) {
                 changePossession(gameState.getPossLost());
-                gameState.setPossLost(" ");
+                gameState.setPossLost("");
             }
             //we need to clear a lot of things from gamestate now !!!
             time = time + 1;

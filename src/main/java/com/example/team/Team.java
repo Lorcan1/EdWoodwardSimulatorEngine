@@ -6,6 +6,8 @@ import lombok.Setter;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 
 @Getter
@@ -27,4 +29,9 @@ public class Team {
     private  Player st;
 
     private List<Player> players = new ArrayList<>();
+
+    private HashMap<String, Player> defenders = new HashMap<>();
+    private HashMap<String, Player> midfielders = new HashMap<>();
+    private HashMap<String, Player> attackers = new HashMap<>();
+
     }

@@ -30,7 +30,7 @@ public class UpdateInGameMatchStats {
     public void updateMatchStats(Boolean homeTeamPoss, HashMap<String, PlayerAction> playersStatsToBeUpdated) {
         updatePossessionStats(homeTeamPoss);
         for (Map.Entry<String, PlayerAction> entry : playersStatsToBeUpdated.entrySet()) {
-            if (entry.getValue() instanceof Shot) {
+            if (entry.getValue().getType() == "shot") {
                 updateShotAndGoalStats(entry.getKey(), homeTeamPoss, (Shot) entry.getValue());
             }
         }

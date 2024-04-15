@@ -6,6 +6,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.List;
+
 @Getter
 @Setter
 @AllArgsConstructor
@@ -15,4 +17,11 @@ public class Shot extends PlayerAction {
     Boolean onTarget = false;
     Boolean isGoal = false;
     Goal goal;
+    final String type = "shot";
+
+    @Override
+    public List getResponseList(List responses) {
+        responses.add(" shoots!");
+        return responses;
+    }
 }

@@ -21,6 +21,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -67,15 +68,12 @@ public class MatchEngineLogic {
 
     int time = 0;
 
-    List testList = new ArrayList();
 
     public void simulateMatch(String homeTeamName, String awayTeamName) {
         this.homeTeamName = homeTeamName;
         this.awayTeamName = awayTeamName;
         updateInGamePlayerStats.setHomeTeamPlayersStats(updateInGamePlayerStats.initializeInGamePlayerStats(homeTeam.getPlayers()));
         updateInGamePlayerStats.setAwayTeamPlayersStats(updateInGamePlayerStats.initializeInGamePlayerStats(awayTeam.getPlayers()));
-        feedService.setFeed(testList);
-        feedService.feedServiceSetup();
         shotService.setHomeGoalkeeper((Goalkeeper) homeTeam.getGk());
         shotService.setAwayGoalkeeper((Goalkeeper) awayTeam.getGk());
         playGame("kickOff");
@@ -127,6 +125,9 @@ public class MatchEngineLogic {
                     break;
                 case "ballInAttack":
                     gameState = attackerDecisions.playerMakeDecision(gameState);
+                case "oneOnOne":
+                    //implemnt logic
+                    gameState.setAction("ballInAttack"); //placeholder
                 case "shot":
                     gameState = shotService.calculateShotChance(gameState, false, time);
 
@@ -167,6 +168,8 @@ public class MatchEngineLogic {
                 gameState.setPossLost("");
                 log.info("Possesion Lost, Player in Poss:" + gameState.getPlayerInPosses().getLastName());
             }
+
+            gameState.setPlayerActions(new HashMap<>());
             //we need to clear a lot of things from gamestate now !!!
             time = time + 1;
             if (time > 12000) {

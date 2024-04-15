@@ -41,11 +41,11 @@ public class  UpdateInGamePlayerStats{
     }
     public void updateInGamePlayerStatsLogic(String playerName, PlayerAction playerAction, HashMap<String,InGamePlayerStats> playerStatsHashMap ){
         InGamePlayerStats playerStats = playerStatsHashMap.get(playerName);
-        if(playerAction instanceof Pass){
+        if(playerAction.getType() ==  "pass"){
             playerStats.setPasses(playerStats.getPasses() + 1);
-        } else if(playerAction instanceof Touch) {
+        } else if(playerAction.getType() == "touch") {
             playerStats.setTouches(playerStats.getTouches() + 1);
-        } else  if(playerAction instanceof Shot){
+        } else  if(playerAction.getType() == "shot"){
             //implement logic
         } else {
             throw new IllegalArgumentException(); // more of a checker currently to nake sure every action is recorded

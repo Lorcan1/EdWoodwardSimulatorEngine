@@ -4,12 +4,14 @@ import com.example.model.InGameMatchStats;
 import com.example.model.playeraction.PlayerAction;
 import com.example.model.playeraction.shot.Shot;
 import lombok.Getter;
+import lombok.Setter;
 import org.springframework.stereotype.Component;
 
 import java.util.HashMap;
 import java.util.Map;
 
 @Getter
+@Setter
 @Component
 public class UpdateInGameMatchStats {
 
@@ -18,8 +20,7 @@ public class UpdateInGameMatchStats {
     int[] possession;
     int[] totalPossession;
 
-    public UpdateInGameMatchStats(InGameMatchStats inGameMatchStats){
-        this.inGameMatchStats = inGameMatchStats;
+    public UpdateInGameMatchStats(){
         this.totalTime = 90;
         this.possession = new int[2]; // Array to store possession for each team
         this.totalPossession = new int[2]; // Array to store total possession for each team

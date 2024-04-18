@@ -8,16 +8,16 @@ import org.springframework.web.bind.annotation.*;
 public class Controller {
 
     @Autowired
-    private final Simulate simulate;
+    private ControllerLogic controllerLogic;
 
-    public Controller(Simulate simulate) {
-        this.simulate = simulate;
+    public Controller(ControllerLogic controllerLogic) {
+        this.controllerLogic = controllerLogic;
     }
 
     @PostMapping("/test")
     public String test(@RequestParam("homeTeam") String homeTeam, @RequestParam("awayTeam") String awayTeam) {
-        // Use the service
-        return simulate.simulateMatch(homeTeam, awayTeam);
+        controllerLogic.processMatch(homeTeam,awayTeam);
+        return "hello";
     }
 
     @GetMapping("/hello")

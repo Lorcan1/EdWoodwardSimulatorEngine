@@ -1,5 +1,6 @@
 package com.example.matchEngine.engine;
 
+import com.example.matchEngine.result.MatchResult;
 import com.example.matchEngine.services.playerDecisions.AttackerDecisions;
 import com.example.matchEngine.services.playerDecisions.DefenderDecisions;
 import com.example.matchEngine.services.playerDecisions.MidfielderDecisions;
@@ -7,6 +8,8 @@ import com.example.matchEngine.services.playerDecisions.PlayerDecisions;
 import com.example.matchEngine.services.inGameActionCalculations.shotService.ShotService;
 import com.example.matchEngine.services.UpdateStats.UpdateInGameMatchStats;
 import com.example.matchEngine.services.UpdateStats.UpdateInGamePlayerStats;
+import com.example.model.InGameMatchStats;
+import com.example.model.Match;
 import com.example.model.player.Goalkeeper;
 import com.example.model.playeraction.PlayerAction;
 import com.example.services.AbbrevService;
@@ -52,6 +55,7 @@ public class MatchEngineLogic {
     @Autowired
     FeedService feedService;
 
+
     Team homeTeam;
     Team awayTeam;
 
@@ -76,8 +80,8 @@ public class MatchEngineLogic {
         updateInGamePlayerStats.setAwayTeamPlayersStats(updateInGamePlayerStats.initializeInGamePlayerStats(awayTeam.getPlayers()));
         shotService.setHomeGoalkeeper((Goalkeeper) homeTeam.getGk());
         shotService.setAwayGoalkeeper((Goalkeeper) awayTeam.getGk());
+        updateInGameMatchStats.setInGameMatchStats(new InGameMatchStats());
         playGame("kickOff");
-
     }
 
     public String kickOff() {

@@ -9,7 +9,8 @@ import spock.lang.Specification
 class UpdateInGameMatchStatsTest extends Specification {
 
     def "Test Possession"(){
-        UpdateInGameMatchStats updateInGameMatchStats = new UpdateInGameMatchStats(new InGameMatchStats())
+        UpdateInGameMatchStats updateInGameMatchStats = new UpdateInGameMatchStats()
+        updateInGameMatchStats.setInGameMatchStats(new InGameMatchStats())
         Boolean homeTeamPoss = Boolean.TRUE
         HashMap<String, PlayerAction> playersStatsToBeUpdated = new HashMap<>()
 
@@ -22,7 +23,8 @@ class UpdateInGameMatchStatsTest extends Specification {
     }
 
     def "Test Shot"(){
-        UpdateInGameMatchStats updateInGameMatchStats = new UpdateInGameMatchStats(new InGameMatchStats())
+        UpdateInGameMatchStats updateInGameMatchStats = new UpdateInGameMatchStats()
+        updateInGameMatchStats.setInGameMatchStats(new InGameMatchStats())
         Boolean homeTeamPoss = Boolean.TRUE
         HashMap<String, PlayerAction> playersStatsToBeUpdated = new HashMap<>()
         Shot shot = new Shot(0.5, true, false, null)
@@ -41,7 +43,8 @@ class UpdateInGameMatchStatsTest extends Specification {
 
 
     def "Test Goal"(){
-        UpdateInGameMatchStats updateInGameMatchStats = new UpdateInGameMatchStats(new InGameMatchStats())
+        UpdateInGameMatchStats updateInGameMatchStats = new UpdateInGameMatchStats()
+        updateInGameMatchStats.setInGameMatchStats(new InGameMatchStats())
         Boolean homeTeamPoss = Boolean.TRUE
         HashMap<String, PlayerAction> playersStatsToBeUpdated = new HashMap<>()
         Goal goal = new Goal("temp", "temp", "1")

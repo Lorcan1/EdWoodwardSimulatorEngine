@@ -17,22 +17,22 @@ class ControllerTest extends Specification {
     private MockMvc mockMvc
 
     @SpringBean
-    private Simulate simulate = Mock()
+    private ControllerLogic controllerLogic = Mock()
 
 //    @MockBean
 //    private Simulate simulate;
 
-    def "when GET is performed then the response has status 200"() {
+    def "test 'hello' endpoint"() {
         given:
-        mockMvc = MockMvcBuilders.standaloneSetup(new Controller(simulate)).build()
+        mockMvc = MockMvcBuilders.standaloneSetup(new Controller(controllerLogic)).build()
         expect: "Status is 200"
         mockMvc.perform(get("/hello"))
                 .andExpect(status().isOk())
     }
 
-    def "blah blah blah"() {
+    def "test 'test' endpoint"() {
         given:
-        mockMvc = MockMvcBuilders.standaloneSetup(new Controller(simulate)).build()
+        mockMvc = MockMvcBuilders.standaloneSetup(new Controller(controllerLogic)).build()
         expect: "Status is 200"
         mockMvc.perform(post("/test")
                 .param("homeTeam", "Manchester City") // Add your first parameter

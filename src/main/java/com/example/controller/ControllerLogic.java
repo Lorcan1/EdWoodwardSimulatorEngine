@@ -15,6 +15,10 @@ public class ControllerLogic {
         this.simulate = simulate;
     }
 
+    public void initiateMatch(String homeTeamNameAbbrev, String awayTeamNameAbbrev){
+        simulate.initiateMatch(homeTeamNameAbbrev, awayTeamNameAbbrev);
+    }
+
     public void processMatch(String homeTeam, String awayTeam){
         simulate.simulateMatch(homeTeam, awayTeam);
 

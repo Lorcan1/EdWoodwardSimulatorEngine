@@ -14,6 +14,12 @@ public class Controller {
         this.controllerLogic = controllerLogic;
     }
 
+    @PostMapping("/initiate-match")
+    public String initiateMatch(@RequestParam("homeTeam") String homeTeam, @RequestParam("awayTeam") String awayTeam) {
+        controllerLogic.initiateMatch(homeTeam,awayTeam);
+        return "initiate";
+    }
+
     @PostMapping("/test")
     public String test(@RequestParam("homeTeam") String homeTeam, @RequestParam("awayTeam") String awayTeam) {
         controllerLogic.processMatch(homeTeam,awayTeam);

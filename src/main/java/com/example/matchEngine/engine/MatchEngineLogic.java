@@ -1,18 +1,14 @@
 package com.example.matchEngine.engine;
 
-import com.example.matchEngine.result.MatchResult;
 import com.example.matchEngine.services.playerDecisions.AttackerDecisions;
 import com.example.matchEngine.services.playerDecisions.DefenderDecisions;
 import com.example.matchEngine.services.playerDecisions.MidfielderDecisions;
-import com.example.matchEngine.services.playerDecisions.PlayerDecisions;
 import com.example.matchEngine.services.inGameActionCalculations.shotService.ShotService;
 import com.example.matchEngine.services.UpdateStats.UpdateInGameMatchStats;
 import com.example.matchEngine.services.UpdateStats.UpdateInGamePlayerStats;
 import com.example.model.InGameMatchStats;
-import com.example.model.Match;
 import com.example.model.player.Goalkeeper;
 import com.example.model.playeraction.PlayerAction;
-import com.example.services.AbbrevService;
 import com.example.services.FeedService;
 import com.example.team.Team;
 import com.example.model.player.Player;
@@ -20,12 +16,9 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 @Getter
@@ -73,14 +66,15 @@ public class MatchEngineLogic {
     int time = 0;
 
 
-    public void simulateMatch(String homeTeamName, String awayTeamName) {
-        this.homeTeamName = homeTeamName;
-        this.awayTeamName = awayTeamName;
+    public void setupMatch() {
         updateInGamePlayerStats.setHomeTeamPlayersStats(updateInGamePlayerStats.initializeInGamePlayerStats(homeTeam.getPlayers()));
         updateInGamePlayerStats.setAwayTeamPlayersStats(updateInGamePlayerStats.initializeInGamePlayerStats(awayTeam.getPlayers()));
         shotService.setHomeGoalkeeper((Goalkeeper) homeTeam.getGk());
         shotService.setAwayGoalkeeper((Goalkeeper) awayTeam.getGk());
         updateInGameMatchStats.setInGameMatchStats(new InGameMatchStats());
+    }
+
+    public void simulateMatch(){
         playGame("kickOff");
     }
 
@@ -176,7 +170,7 @@ public class MatchEngineLogic {
             gameState.setPlayerActions(new HashMap<>());
             //we need to clear a lot of things from gamestate now !!!
             time = time + 1;
-            if (time > 12000) {
+            if (time > 120) {
                 gameFinished = true;
             }
             gameState.setTime(time);

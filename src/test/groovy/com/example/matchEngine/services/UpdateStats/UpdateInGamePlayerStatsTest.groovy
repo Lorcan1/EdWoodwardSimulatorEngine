@@ -29,8 +29,8 @@ class UpdateInGamePlayerStatsTest extends Specification{
         homePlayers.add(testHomePlayer)
         testAwayPlayer.setLastName("testAwayPlayer")
         awayPlayers.add(testAwayPlayer)
-        updateInGamePlayerStats.setHomeTeamPlayersStats(updateInGamePlayerStats.initializeInGamePlayerStats(homePlayers))
-        updateInGamePlayerStats.setAwayTeamPlayersStats(updateInGamePlayerStats.initializeInGamePlayerStats(awayPlayers))
+        updateInGamePlayerStats.setHomeTeamPlayersStats(updateInGamePlayerStats.initializeInGamePlayerStats(homePlayers, true))
+        updateInGamePlayerStats.setAwayTeamPlayersStats(updateInGamePlayerStats.initializeInGamePlayerStats(awayPlayers, false))
     }
 
 

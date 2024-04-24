@@ -22,10 +22,14 @@ public class  UpdateInGamePlayerStats{
     HashMap<String,InGamePlayerStats> homeTeamPlayersStats;
     HashMap<String,InGamePlayerStats> awayTeamPlayersStats;
 
-    public HashMap<String, InGamePlayerStats> initializeInGamePlayerStats(List<Player> players){
+    public HashMap<String, InGamePlayerStats> initializeInGamePlayerStats(List<Player> players, Boolean home){
         HashMap<String,InGamePlayerStats> tempHashMap = new HashMap<>();
         for (Player player : players) {
-            tempHashMap.put(player.getLastName(), new InGamePlayerStats());
+            InGamePlayerStats inGamePlayerStats = new InGamePlayerStats();
+            inGamePlayerStats.setName(player.getLastName());
+            inGamePlayerStats.setPos(player.getStartingPosition());
+            inGamePlayerStats.setHome(home);
+            tempHashMap.put(player.getLastName(), inGamePlayerStats);
         }
         return tempHashMap;
     }

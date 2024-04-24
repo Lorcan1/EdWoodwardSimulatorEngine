@@ -72,6 +72,8 @@ public class MatchEngineLogic {
         shotService.setHomeGoalkeeper((Goalkeeper) homeTeam.getGk());
         shotService.setAwayGoalkeeper((Goalkeeper) awayTeam.getGk());
         updateInGameMatchStats.setInGameMatchStats(new InGameMatchStats());
+        updateInGameMatchStats.getInGameMatchStats().setHomeTeam(homeTeamName);
+        updateInGameMatchStats.getInGameMatchStats().setAwayTeam(awayTeamName);
     }
 
     public void simulateMatch(){

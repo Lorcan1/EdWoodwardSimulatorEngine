@@ -1,6 +1,7 @@
 package com.example.controller;
 
 import com.example.simulation.Simulate;
+import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,9 +16,8 @@ public class Controller {
     }
 
     @PostMapping("/initiate-match")
-    public String initiateMatch(@RequestParam("homeTeam") String homeTeam, @RequestParam("awayTeam") String awayTeam) {
-        controllerLogic.initiateMatch(homeTeam,awayTeam);
-        return "initiate";
+    public JSONObject initiateMatch(@RequestParam("homeTeam") String homeTeam, @RequestParam("awayTeam") String awayTeam) {
+        return controllerLogic.initiateMatch(homeTeam,awayTeam);
     }
 
     @PostMapping("/test")

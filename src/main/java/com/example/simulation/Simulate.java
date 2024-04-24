@@ -7,6 +7,7 @@ import com.example.services.AbbrevService;
 import com.example.team.ITeamSetup;
 import com.example.team.TeamSetupLogic;
 import lombok.extern.slf4j.Slf4j;
+import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -36,7 +37,7 @@ public class Simulate {
 
     // of course this is breaking SOLID Principles, why is match engine in charge of making that call
 
-    public void initiateMatch(String homeTeamNameAbbrev, String awayTeamNameAbbrev){
+    public JSONObject initiateMatch(String homeTeamNameAbbrev, String awayTeamNameAbbrev){
         String homeTeamName = abbrevService.returnFullName(homeTeamNameAbbrev);
         String awayTeamName = abbrevService.returnFullName(awayTeamNameAbbrev);
         createTeams(homeTeamName, awayTeamName);
@@ -45,9 +46,10 @@ public class Simulate {
         matchEngineLogic.setAwayTeamNameAbbrev(awayTeamNameAbbrev);
         matchEngineLogic.setHomeTeamName(homeTeamName);
         matchEngineLogic.setAwayTeamName(awayTeamName);
+
         matchEngineLogic.setupMatch();
-        matchJSONService.processInitialMatchResponse(matchEngineLogic.getUpdateInGamePlayerStats().getHomeTeamPlayersStats(),
-                matchEngineLogic.getUpdateInGamePlayerStats().getAwayTeamPlayersStats());
+        return matchJSONService.processInitialMatchResponse(matchEngineLogic.getUpdateInGamePlayerStats().getHomeTeamPlayersStats(),
+                matchEngineLogic.getUpdateInGamePlayerStats().getAwayTeamPlayersStats(), matchEngineLogic.getUpdateInGameMatchStats());
     }
 
 
@@ -64,8 +66,7 @@ public class Simulate {
     }
 
     public void processResult() {
-        Match match = new Match(matchEngineLogic.getUpdateInGameMatchStats().getInGameMatchStats());
-        matchJSONService.processScore(match);
+        matchJSONService.processScore(matchEngineLogic.getUpdateInGameMatchStats().getInGameMatchStats());
 
     }
 }

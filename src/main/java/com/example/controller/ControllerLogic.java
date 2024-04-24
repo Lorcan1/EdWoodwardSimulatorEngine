@@ -2,6 +2,7 @@ package com.example.controller;
 
 import com.example.model.Match;
 import com.example.simulation.Simulate;
+import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -15,8 +16,8 @@ public class ControllerLogic {
         this.simulate = simulate;
     }
 
-    public void initiateMatch(String homeTeamNameAbbrev, String awayTeamNameAbbrev){
-        simulate.initiateMatch(homeTeamNameAbbrev, awayTeamNameAbbrev);
+    public JSONObject initiateMatch(String homeTeamNameAbbrev, String awayTeamNameAbbrev){
+        return simulate.initiateMatch(homeTeamNameAbbrev, awayTeamNameAbbrev);
     }
 
     public void processMatch(String homeTeam, String awayTeam){

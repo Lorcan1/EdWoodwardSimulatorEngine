@@ -14,18 +14,4 @@ import java.util.List;
 @Setter
 public class Match extends InGameMatchStats {
     private static int nextId = 1;
-
-    private long matchId;
-    private Date matchdate;
-    private String homeTeam;
-    private String awayTeam;
-    private List<String> homeScorers;
-    private List<String> homeAssisters;
-    private List<String> awayScorers;
-    private List<String> awayAssisters;
-    private String playerOfTheMatch;
-
-    public Match(InGameMatchStats stats) {
-        super(stats);
-    }
 }

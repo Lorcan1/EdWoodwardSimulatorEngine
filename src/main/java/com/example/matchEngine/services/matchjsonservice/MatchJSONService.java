@@ -1,6 +1,7 @@
 package com.example.matchEngine.services.matchjsonservice;
 
 
+import com.example.matchEngine.services.UpdateStats.UpdateInGameMatchStats;
 import com.example.model.Match;
 import com.example.model.player.InGamePlayerStats;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -11,7 +12,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.json.simple.JSONObject;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 @Component
 @Getter
@@ -23,9 +26,17 @@ public class MatchJSONService {
     JSONObject jsonObject = new JSONObject();
     ObjectMapper objectMapper = new ObjectMapper();
 
-    public void processInitialMatchResponse(HashMap<String, InGamePlayerStats> homeTeamPlayersStats, HashMap<String,InGamePlayerStats> awayTeamPlayersStats){
-        processScore(homeTeamPlayersStats);
-        processScore(awayTeamPlayersStats);
+    public JSONObject processInitialMatchResponse(HashMap<String, InGamePlayerStats> homeTeamPlayersStats, HashMap<String,InGamePlayerStats> awayTeamPlayersStats,
+    UpdateInGameMatchStats updateInGameMatchStats){
+        List<InGamePlayerStats> homePlayerStats = new ArrayList<>(homeTeamPlayersStats.values());
+        List<InGamePlayerStats> awayPlayerStats = new ArrayList<>(awayTeamPlayersStats.values());
+        homePlayerStats.addAll(awayPlayerStats);
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("players", homePlayerStats);
+        jsonObject.put("match", updateInGameMatchStats);
+        return jsonObject;
+//        processScore(homeTeamPlayersStats);
+//        processScore(awayTeamPlayersStats);
 
     }
 

@@ -12,9 +12,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.json.simple.JSONObject;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Component
 @Getter
@@ -28,8 +27,8 @@ public class MatchJSONService {
 
     public JSONObject processInitialMatchResponse(HashMap<String, InGamePlayerStats> homeTeamPlayersStats, HashMap<String,InGamePlayerStats> awayTeamPlayersStats,
     UpdateInGameMatchStats updateInGameMatchStats){
-        List<InGamePlayerStats> homePlayerStats = new ArrayList<>(homeTeamPlayersStats.values());
-        List<InGamePlayerStats> awayPlayerStats = new ArrayList<>(awayTeamPlayersStats.values());
+        List<InGamePlayerStats> homePlayerStats = sortPlayers(new ArrayList<>(homeTeamPlayersStats.values()));
+        List<InGamePlayerStats> awayPlayerStats = sortPlayers(new ArrayList<>(awayTeamPlayersStats.values()));
         homePlayerStats.addAll(awayPlayerStats);
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("players", homePlayerStats);
@@ -38,6 +37,16 @@ public class MatchJSONService {
 //        processScore(homeTeamPlayersStats);
 //        processScore(awayTeamPlayersStats);
 
+    }
+
+    public List<InGamePlayerStats> sortPlayers(List<InGamePlayerStats> unsortedArray){
+        List<String> orderedList = Arrays.asList("GK", "DL", "DCL", "DCR","DR","DM","MR","MCR","MCL","ML","ST");
+
+        List<InGamePlayerStats> sortedPlayers = unsortedArray.stream()
+                .sorted(Comparator.comparingInt(o -> orderedList.indexOf(o.getPos())))
+                .collect(Collectors.toList());
+
+        return sortedPlayers;
     }
 
     public void processScore(Object object){

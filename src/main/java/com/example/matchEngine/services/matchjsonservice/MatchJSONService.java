@@ -32,7 +32,7 @@ public class MatchJSONService {
         homePlayerStats.addAll(awayPlayerStats);
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("players", homePlayerStats);
-        jsonObject.put("match", updateInGameMatchStats);
+        jsonObject.put("match", updateInGameMatchStats.getInGameMatchStats());
         return jsonObject;
 //        processScore(homeTeamPlayersStats);
 //        processScore(awayTeamPlayersStats);

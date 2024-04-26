@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
+@CrossOrigin(origins = "http://localhost:4200")
 public class Controller {
 
     @Autowired
@@ -15,7 +16,7 @@ public class Controller {
         this.controllerLogic = controllerLogic;
     }
 
-    @PostMapping("/initiate-match")
+    @GetMapping("/initiate-match")
     public JSONObject initiateMatch(@RequestParam("homeTeam") String homeTeam, @RequestParam("awayTeam") String awayTeam) {
         return controllerLogic.initiateMatch(homeTeam,awayTeam);
     }

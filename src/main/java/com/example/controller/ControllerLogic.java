@@ -20,8 +20,8 @@ public class ControllerLogic {
         return simulate.initiateMatch(homeTeamNameAbbrev, awayTeamNameAbbrev);
     }
 
-    public void processMatch(String homeTeam, String awayTeam){
-        simulate.simulateMatch(homeTeam, awayTeam);
+    public JSONObject processMatch(String homeTeam, String awayTeam){
+        return simulate.simulateMatch(homeTeam, awayTeam);
 
 
     }

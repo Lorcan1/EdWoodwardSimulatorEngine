@@ -49,6 +49,24 @@ public class MatchJSONService {
         return sortedPlayers;
     }
 
+    public JSONObject processFinalMatchResponse(HashMap<String, InGamePlayerStats> homeTeamPlayersStats, HashMap<String,InGamePlayerStats> awayTeamPlayersStats,
+                                                  UpdateInGameMatchStats updateInGameMatchStats){
+        List<InGamePlayerStats> homePlayerStats = sortPlayers(new ArrayList<>(homeTeamPlayersStats.values()));
+        List<InGamePlayerStats> awayPlayerStats = sortPlayers(new ArrayList<>(awayTeamPlayersStats.values()));
+        homePlayerStats.addAll(awayPlayerStats);
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("players", homePlayerStats);
+        jsonObject.put("match", updateInGameMatchStats.getInGameMatchStats());
+        updateInGameMatchStats.getInGameMatchStats().getHomeGoals().addAll(updateInGameMatchStats.getInGameMatchStats().getAwayGoals());
+        jsonObject.put("score", updateInGameMatchStats.getInGameMatchStats().getHomeGoals());
+        return jsonObject;
+//        processScore(homeTeamPlayersStats);
+//        processScore(awayTeamPlayersStats);
+
+    }
+
+
+
     public void processScore(Object object){
         String jsonString = null;
         try {

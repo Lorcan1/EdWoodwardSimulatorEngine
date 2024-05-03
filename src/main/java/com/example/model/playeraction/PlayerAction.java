@@ -1,13 +1,14 @@
 package com.example.model.playeraction;
 
-import com.example.model.player.InGamePlayerStats;
-import lombok.Getter;
-import lombok.Setter;
-
+import lombok.*;
+import lombok.experimental.SuperBuilder;
 import java.util.List;
 
 @Getter
 @Setter
+@SuperBuilder
+@NoArgsConstructor
+@AllArgsConstructor
 public abstract class PlayerAction {
     Boolean homeTeamPoss;
     String player1;

@@ -26,6 +26,7 @@ public class InGameMatchStats {
     List<Goal> awayGoals = new ArrayList<>();
     int homeScore;
     int awayScore;
+    int time = 0;
 
     private long matchId;
     private Date matchdate;

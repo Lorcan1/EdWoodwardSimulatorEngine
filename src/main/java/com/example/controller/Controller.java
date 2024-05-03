@@ -21,10 +21,9 @@ public class Controller {
         return controllerLogic.initiateMatch(homeTeam,awayTeam);
     }
 
-    @PostMapping("/test")
-    public String test(@RequestParam("homeTeam") String homeTeam, @RequestParam("awayTeam") String awayTeam) {
-        controllerLogic.processMatch(homeTeam,awayTeam);
-        return "hello";
+    @GetMapping("/process-match")
+    public JSONObject processMatch(@RequestParam("homeTeam") String homeTeam, @RequestParam("awayTeam") String awayTeam) {
+        return controllerLogic.processMatch(homeTeam,awayTeam);
     }
 
     @GetMapping("/hello")

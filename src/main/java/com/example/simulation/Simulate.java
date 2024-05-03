@@ -53,11 +53,11 @@ public class Simulate {
     }
 
 
-    public String simulateMatch(String homeTeamNameAbbrev, String awayTeamNameAbbrev){
+    public JSONObject simulateMatch(String homeTeamNameAbbrev, String awayTeamNameAbbrev){
         matchEngineLogic.simulateMatch();
         processResult();
-        return String.valueOf((matchEngineLogic.getUpdateInGameMatchStats().getInGameMatchStats().getHomeScore() + ":" +
-                matchEngineLogic.getUpdateInGameMatchStats().getInGameMatchStats().getAwayScore()));
+        return matchJSONService.processFinalMatchResponse(matchEngineLogic.getUpdateInGamePlayerStats().getHomeTeamPlayersStats(),
+                matchEngineLogic.getUpdateInGamePlayerStats().getAwayTeamPlayersStats(), matchEngineLogic.getUpdateInGameMatchStats());
     }
     public void createTeams(String homeTeamName, String awayTeamName){
         matchEngineLogic.setHomeTeam(teamSetup.createTeam(homeTeamName));

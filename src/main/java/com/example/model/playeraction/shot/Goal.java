@@ -1,17 +1,14 @@
 package com.example.model.playeraction.shot;
 
 import com.example.model.playeraction.PlayerAction;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
+import lombok.experimental.SuperBuilder;
 
 import java.util.List;
 
 @Setter
 @Getter
-@AllArgsConstructor
-@NoArgsConstructor
+@SuperBuilder
 public class Goal extends PlayerAction {
 
     String scorerName;

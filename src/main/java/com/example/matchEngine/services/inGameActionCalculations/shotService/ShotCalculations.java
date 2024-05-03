@@ -73,6 +73,12 @@ public class ShotCalculations { //add oneOnOne calcs to this class
         }
     }
     public Goal createGoal(GameState gameState, int time){
-        return new Goal(gameState.getPlayerInPosses().getLastName(), gameState.getLastPasserName(), Integer.toString(time));
+
+        return (Goal) Goal.builder()
+                .scorerName(gameState.getPlayerInPosses().getLastName())
+                .assisterName(gameState.getLastPasserName())
+                .time(Integer.toString(time))
+                .homeTeamPoss(gameState.getHomeTeamPoss())
+                .build();
     }
 }

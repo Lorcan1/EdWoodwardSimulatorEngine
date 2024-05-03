@@ -2,7 +2,6 @@ package com.example.matchEngine.services.matchjsonservice;
 
 
 import com.example.matchEngine.services.UpdateStats.UpdateInGameMatchStats;
-import com.example.model.Match;
 import com.example.model.player.InGamePlayerStats;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -21,7 +20,6 @@ import java.util.stream.Collectors;
 @Slf4j
 public class MatchJSONService {
 
-    Match match;
     JSONObject jsonObject = new JSONObject();
     ObjectMapper objectMapper = new ObjectMapper();
 
@@ -50,7 +48,7 @@ public class MatchJSONService {
     }
 
     public JSONObject processFinalMatchResponse(HashMap<String, InGamePlayerStats> homeTeamPlayersStats, HashMap<String,InGamePlayerStats> awayTeamPlayersStats,
-                                                  UpdateInGameMatchStats updateInGameMatchStats){
+                                                  UpdateInGameMatchStats updateInGameMatchStats, List feedList){
         List<InGamePlayerStats> homePlayerStats = sortPlayers(new ArrayList<>(homeTeamPlayersStats.values()));
         List<InGamePlayerStats> awayPlayerStats = sortPlayers(new ArrayList<>(awayTeamPlayersStats.values()));
         homePlayerStats.addAll(awayPlayerStats);
@@ -59,6 +57,8 @@ public class MatchJSONService {
         jsonObject.put("match", updateInGameMatchStats.getInGameMatchStats());
         updateInGameMatchStats.getInGameMatchStats().getHomeGoals().addAll(updateInGameMatchStats.getInGameMatchStats().getAwayGoals());
         jsonObject.put("score", updateInGameMatchStats.getInGameMatchStats().getHomeGoals());
+        jsonObject.put("feed", feedList);
+
         return jsonObject;
 //        processScore(homeTeamPlayersStats);
 //        processScore(awayTeamPlayersStats);

@@ -52,9 +52,8 @@ public class MatchEngineLogic {
     Team homeTeam;
     Team awayTeam;
 
-    GameState gameState = new GameState();
+    GameState gameState;
 
-    private boolean gameFinished = false;
     private boolean startOfGame = true;
 
     String homeTeamName;
@@ -63,7 +62,7 @@ public class MatchEngineLogic {
     String homeTeamNameAbbrev;
     String awayTeamNameAbbrev;
 
-    int time = 0;
+    int time;
 
 
     public void setupMatch() {
@@ -77,7 +76,10 @@ public class MatchEngineLogic {
     }
 
     public void simulateMatch(){
-        playGame("kickOff");
+        time = 0;
+        startOfGame = true;
+        gameState = new GameState();
+        playGame("kickOff", false);
     }
 
     public String kickOff() {
@@ -101,7 +103,7 @@ public class MatchEngineLogic {
         return gameState.getAttackingTeam().getDcr();
     }
 
-    public void playGame(String action) { //how do we deal with teamInPossesion/ attacking team? - keep it as an instance variable?
+    public void playGame(String action, Boolean gameFinished) { //how do we deal with teamInPossesion/ attacking team? - keep it as an instance variable?
         while (!gameFinished) {
             switch (action) {
                 case "goalKick":

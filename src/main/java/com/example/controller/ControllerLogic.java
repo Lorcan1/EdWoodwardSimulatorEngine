@@ -1,6 +1,5 @@
 package com.example.controller;
 
-import com.example.model.Match;
 import com.example.simulation.Simulate;
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -2,7 +2,6 @@ package com.example.simulation;
 
 import com.example.matchEngine.engine.MatchEngineLogic;
 import com.example.matchEngine.services.matchjsonservice.MatchJSONService;
-import com.example.model.Match;
 import com.example.services.AbbrevService;
 import com.example.team.ITeamSetup;
 import com.example.team.TeamSetupLogic;
@@ -57,7 +56,8 @@ public class Simulate {
         matchEngineLogic.simulateMatch();
         processResult();
         return matchJSONService.processFinalMatchResponse(matchEngineLogic.getUpdateInGamePlayerStats().getHomeTeamPlayersStats(),
-                matchEngineLogic.getUpdateInGamePlayerStats().getAwayTeamPlayersStats(), matchEngineLogic.getUpdateInGameMatchStats());
+                matchEngineLogic.getUpdateInGamePlayerStats().getAwayTeamPlayersStats(), matchEngineLogic.getUpdateInGameMatchStats(),
+        matchEngineLogic.getFeedService().getFeed());
     }
     public void createTeams(String homeTeamName, String awayTeamName){
         matchEngineLogic.setHomeTeam(teamSetup.createTeam(homeTeamName));

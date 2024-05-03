@@ -47,7 +47,12 @@ class UpdateInGameMatchStatsTest extends Specification {
         updateInGameMatchStats.setInGameMatchStats(new InGameMatchStats())
         Boolean homeTeamPoss = Boolean.TRUE
         HashMap<String, PlayerAction> playersStatsToBeUpdated = new HashMap<>()
-        Goal goal = new Goal("temp", "temp", "1")
+        Goal goal =  Goal.builder()
+        .scorerName("temp")
+        .assisterName("temp")
+        .time("1")
+        .build()
+
         Shot shot = new Shot(0.5, true, true, goal)
 
         playersStatsToBeUpdated.put("temp", shot)

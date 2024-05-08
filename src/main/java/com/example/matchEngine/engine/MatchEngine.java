@@ -12,7 +12,7 @@
 //import com.example.model.Match;
 //import com.example.model.player.OutfieldPlayer;
 //import com.example.model.player.InGamePlayerStats;
-//import com.example.services.FeedService;
+//import com.example.services.feedservice.FeedService;
 //import com.example.team.PlayersMatchStats;
 //import com.example.team.Team;
 //import com.example.team.TeamSetup;

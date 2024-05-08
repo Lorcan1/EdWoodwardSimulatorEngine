@@ -21,11 +21,9 @@ com\example\matchEngine\engine\MatchEngineLogic.class
 com\example\model\player\OutfieldPlayer.class
 com\example\matchEngine\services\inGameActionCalculations\passCalculations\PassCalculateSuccess.class
 com\example\model\player\InGamePlayerStats.class
-com\example\services\FeedService.class
 com\example\model\playeraction\touch\Touch.class
 com\example\pitch\Pitch.class
 com\example\matchEngine\services\inGameActionCalculations\tackleCalculations\TackleCalculateSuccess.class
-com\example\matchEngine\result\MatchResult.class
 com\example\model\player\Goalkeeper.class
 com\example\model\playeraction\pass\Pass.class
 com\example\team\TeamSetupLogic.class
@@ -35,7 +33,6 @@ com\example\repository\OutfieldPlayerRepository.class
 com\example\repository\GoalkeeperRepository.class
 com\example\matchEngine\services\playerDecisions\PlayerDecisions.class
 com\example\matchEngine\matchSetup\MatchSetup.class
-com\example\model\Match.class
 com\example\matchEngine\SaveCalculation.class
 com\example\team\ITeamSetup.class
 com\example\team\TeamSetup.class

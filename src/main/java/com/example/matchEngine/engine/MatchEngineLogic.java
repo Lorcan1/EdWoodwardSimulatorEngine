@@ -9,7 +9,7 @@ import com.example.matchEngine.services.UpdateStats.UpdateInGamePlayerStats;
 import com.example.model.InGameMatchStats;
 import com.example.model.player.Goalkeeper;
 import com.example.model.playeraction.PlayerAction;
-import com.example.services.FeedService;
+import com.example.services.feedservice.FeedService;
 import com.example.team.Team;
 import com.example.model.player.Player;
 import lombok.Getter;
@@ -73,12 +73,14 @@ public class MatchEngineLogic {
         updateInGameMatchStats.setInGameMatchStats(new InGameMatchStats());
         updateInGameMatchStats.getInGameMatchStats().setHomeTeam(homeTeamName);
         updateInGameMatchStats.getInGameMatchStats().setAwayTeam(awayTeamName);
+        feedService.initilizeFeedService();
     }
 
     public void simulateMatch(){
         time = 0;
         startOfGame = true;
         gameState = new GameState();
+
         playGame("kickOff", false);
     }
 

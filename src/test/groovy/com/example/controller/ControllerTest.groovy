@@ -30,11 +30,11 @@ class ControllerTest extends Specification {
                 .andExpect(status().isOk())
     }
 
-    def "test 'test' endpoint"() {
+    def "test 'process-match' endpoint"() {
         given:
         mockMvc = MockMvcBuilders.standaloneSetup(new Controller(controllerLogic)).build()
         expect: "Status is 200"
-        mockMvc.perform(post("/test")
+        mockMvc.perform(get("/process-match")
                 .param("homeTeam", "Manchester City") // Add your first parameter
                 .param("awayTeam", "Tottenham Hotspur"))
                 .andExpect(status().isOk())

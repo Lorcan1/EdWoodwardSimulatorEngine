@@ -51,7 +51,10 @@ public class  UpdateInGamePlayerStats{
             playerStats.setTouches(playerStats.getTouches() + 1);
         } else  if(playerAction.getType() == "shot"){
             //implement logic
-        } else {
+        } else  if(playerAction.getType() == "goal"){
+            //implement logic
+        }
+        else {
             throw new IllegalArgumentException(); // more of a checker currently to nake sure every action is recorded
         }
     }

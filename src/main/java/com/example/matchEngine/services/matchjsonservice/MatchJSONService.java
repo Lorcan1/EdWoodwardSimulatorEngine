@@ -58,6 +58,7 @@ public class MatchJSONService {
         updateInGameMatchStats.getInGameMatchStats().getHomeGoals().addAll(updateInGameMatchStats.getInGameMatchStats().getAwayGoals());
         jsonObject.put("score", updateInGameMatchStats.getInGameMatchStats().getHomeGoals());
 
+
         jsonObject.put("feed", feedList);
 
         return jsonObject;

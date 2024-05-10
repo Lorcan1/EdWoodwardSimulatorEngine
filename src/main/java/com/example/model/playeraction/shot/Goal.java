@@ -14,6 +14,7 @@ public class Goal extends PlayerAction {
     String scorerName;
     String assisterName;
     String time;
+    String player2;
     final String type = "goal";
 
 

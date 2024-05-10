@@ -1,6 +1,7 @@
 package com.example.matchEngine.services.inGameActionCalculations.shotService;
 
 import com.example.matchEngine.engine.GameState;
+import com.example.model.playeraction.shot.Goal;
 import com.example.model.playeraction.shot.Shot;
 import com.example.model.player.Goalkeeper;
 import com.example.model.player.OutfieldPlayer;
@@ -32,6 +33,7 @@ public class ShotService {
 
         Double xG = (double) (shotDifficulty / 100);
         shot.setXG(xG);
+        shot.setPlayer1(gameState.getPlayerInPosses().getLastName());
         String action;
         Goalkeeper goalkeeper = getGoalkeeper(gameState.getHomeTeamPoss());
         if(isLongShot)
@@ -42,11 +44,22 @@ public class ShotService {
             gameState.setPossLost("temp"); //how will this be recoreded in player stats? maybe we can create a blocked shot object?
         gameState.setAction(action);
         if(action.equals("kickOff")){
-            shot.setGoal(shotCalculations.createGoal(gameState, time));
+            Goal goal = shotCalculations.createGoal(gameState, time);
+            goal.setPlayer1(gameState.getPlayerInPosses().getLastName());
+            shot.setGoal(goal);
             shot.setIsGoal(true);
             gameState.setIsGoal(true);
+            if(gameState.getHomeTeamPoss())
+                goal.setPlayer2(awayGoalkeeper.getLastName());
+            else
+                goal.setPlayer2(homeGoalkeeper.getLastName());
+            gameState.getPlayerActions().put(gameState.getPlayerInPosses().getLastName(), shot);
+            gameState.getPlayerActions().put(gameState.getPlayerInPosses().getLastName(),goal);
+        } else{
+            gameState.getPlayerActions().put(gameState.getPlayerInPosses().getLastName(), shot);
+
         }
-        gameState.getPlayerActions().put(gameState.getPlayerInPosses().getLastName(), shot);
+
 
         return gameState;
 

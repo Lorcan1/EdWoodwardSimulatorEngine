@@ -6,6 +6,7 @@ import com.example.matchEngine.services.inGameActionCalculations.shotService.Sho
 import com.example.model.player.Goalkeeper
 import com.example.model.player.OutfieldPlayer
 import com.example.model.player.Player
+import com.example.model.playeraction.shot.Goal
 import com.example.model.playeraction.shot.Shot
 import spock.lang.Specification
 
@@ -21,18 +22,22 @@ class ShotServiceTest extends Specification {
         gameState.setHomeTeamPoss(true)
         def player = Mock(OutfieldPlayer)
         gameState.setPlayerInPosses(player)
+        Goal goal =(Goal) Goal.builder()
+                .scorerName("temp")
+                .assisterName("temp")
+                .time(Integer.toString(1))
+                .homeTeamPoss(true)
+                .build();
+
 
         when:
         shotCalculations.isShotSuccesful(*_)  >> "kickOff"
         shotCalculations.possLostValues = ["kickOff"]
+        shotCalculations.createGoal(*_) >> goal
         player.getLastName() >> "scorer"
         shotService.calculateShotChance(gameState, false, 1)
 
         then:
-        assert gameState.getPlayerActions().get("scorer").getType() == "shot"
-
-        Shot shot =  gameState.getPlayerActions().get("scorer")
-        assert shot.getIsGoal() == true
-
+        assert gameState.getPlayerActions().get("scorer").getType() == "goal"
     }
 }

@@ -35,12 +35,12 @@ class FeedServiceTest extends Specification{
         FeedService feedService = new FeedService(new Random())
         feedService.setFeedList(testList)
 
-        FeedServiceHelper feedServiceHelper1 = new FeedServiceHelper("pass", "its a pass from Dave")
-        FeedServiceHelper feedServiceHelper2 = new FeedServiceHelper("pass", "its a pass from Mike")
-        FeedServiceHelper feedServiceHelper3 = new FeedServiceHelper("shot", "its a shot")
-        FeedServiceHelper feedServiceHelper4 = new FeedServiceHelper("pass", "its a pass from John")
-        FeedServiceHelper feedServiceHelper5 = new FeedServiceHelper("pass", "its a pass from Mark")
-        FeedServiceHelper feedServiceHelper6 = new FeedServiceHelper("pass", "its a pass from Mick")
+        FeedServiceHelper feedServiceHelper1 = new FeedServiceHelper("pass", "its a pass from Dave","temp")
+        FeedServiceHelper feedServiceHelper2 = new FeedServiceHelper("pass", "its a pass from Mike","temp")
+        FeedServiceHelper feedServiceHelper3 = new FeedServiceHelper("shot", "its a shot","temp")
+        FeedServiceHelper feedServiceHelper4 = new FeedServiceHelper("pass", "its a pass from John","temp")
+        FeedServiceHelper feedServiceHelper5 = new FeedServiceHelper("pass", "its a pass from Mark","temp")
+        FeedServiceHelper feedServiceHelper6 = new FeedServiceHelper("pass", "its a pass from Mick","temp")
 
        List<FeedServiceHelper> feedServiceHelperList = new ArrayList()
 

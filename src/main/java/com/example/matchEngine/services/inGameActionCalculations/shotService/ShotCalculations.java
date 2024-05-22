@@ -75,7 +75,7 @@ public class ShotCalculations { //add oneOnOne calcs to this class
     public Goal createGoal(GameState gameState, int time){
 
         return (Goal) Goal.builder()
-                .scorerName(gameState.getPlayerInPosses().getLastName())
+                .player1(gameState.getPlayerInPosses().getLastName())
                 .assisterName(gameState.getLastPasserName())
                 .time(Integer.toString(time))
                 .homeTeamPoss(gameState.getHomeTeamPoss())

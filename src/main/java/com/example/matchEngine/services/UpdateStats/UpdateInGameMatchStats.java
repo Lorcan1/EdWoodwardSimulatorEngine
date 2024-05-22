@@ -86,7 +86,7 @@ public class UpdateInGameMatchStats {
     }
 
     private void updateGoals(String scorerName, Boolean homeTeamPoss, Goal goal){
-        if(!scorerName.equals(goal.getScorerName())){
+        if(!scorerName.equals(goal.getPlayer1())){
             throw new IllegalArgumentException("Scorer Names dont match");
         }
         if(homeTeamPoss) {

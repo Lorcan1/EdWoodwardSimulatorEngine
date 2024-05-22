@@ -11,7 +11,6 @@ import java.util.List;
 @SuperBuilder
 public class Goal extends PlayerAction {
 
-    String scorerName;
     String assisterName;
     String time;
     String player2;

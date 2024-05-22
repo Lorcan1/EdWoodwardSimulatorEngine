@@ -65,7 +65,7 @@ public class MidfielderDecisions implements PlayerDecisions {
         } else if(randomChance <= 90) { //attempts a carry
             gameState.setAction(carryCalculations.calcCarrySuccess(gameState.getPlayerInPosses(), gameState.getDefendingTeam().getSt()) ? "ballInDefence" : "counterAttack"); //only counter if looses the ball between certain strata?
         } else if (randomChance <= 95) //should be a bad touch check too/ incoporated
-            gameState.setAction(tackleCalculateSuccess.calcTackleResult(gameState.getPitchPoss(), gameState.getPlayerInPosses()));
+            gameState.setAction(tackleCalculateSuccess.calcTackleResult(gameState,gameState.getPitchPoss(), gameState.getPlayerInPosses()));
         else{
             //has a shot - the randomChance should have this at 0 if it isnt in the midfield
             gameState.setAction("shot");

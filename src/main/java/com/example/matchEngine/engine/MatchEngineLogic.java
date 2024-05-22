@@ -8,6 +8,7 @@ import com.example.matchEngine.services.UpdateStats.UpdateInGameMatchStats;
 import com.example.matchEngine.services.UpdateStats.UpdateInGamePlayerStats;
 import com.example.model.InGameMatchStats;
 import com.example.model.player.Goalkeeper;
+import com.example.model.playeraction.KickOff;
 import com.example.model.playeraction.PlayerAction;
 import com.example.services.feedservice.FeedService;
 import com.example.team.Team;
@@ -85,10 +86,13 @@ public class MatchEngineLogic {
     }
 
     public String kickOff() {
-        if (startOfGame) {
+        if (startOfGame)
             coinflip();
-        }
+
         gameState.setPlayerInPosses(choosePlayerInPosses());
+
+        if(startOfGame)
+            gameState.getPlayerActions().put(gameState.getPlayerInPosses().getLastName(), KickOff.builder().player1(gameState.getPlayerInPosses().getLastName()).build());
         //prob should turn posses over
         return "ballInDefence";
     }
@@ -194,6 +198,8 @@ public class MatchEngineLogic {
             } else {
                 gameState.setPlayerInPosses(homeTeam.getDcr());
             }
+        } else{
+            throw new IllegalArgumentException();
         }
         gameState.setHomeTeamPoss(!gameState.getHomeTeamPoss());
 

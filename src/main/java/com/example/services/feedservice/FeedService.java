@@ -57,6 +57,8 @@ public class FeedService {
                 responseGenerator(String.valueOf(gameState.getTime()), club, playerAction.getPlayer1(), "", initialResponse, playerAction.getType());
             }else if (playerAction.getType() == "goal") { //this will be exactly the same - can probably be split into a list of actions with/without "player2"
                 responseGenerator(String.valueOf(gameState.getTime()), club, playerAction.getPlayer1(), ((Goal) playerAction).getPlayer2(), initialResponse, playerAction.getType());
+            }else if (playerAction.getType() == "kickOff") { //this will be exactly the same - can probably be split into a list of actions with/without "player2"
+                responseGenerator(String.valueOf(gameState.getTime()), club, playerAction.getPlayer1(), "", initialResponse, playerAction.getType());
             }
             }
         }
@@ -69,7 +71,10 @@ public class FeedService {
     }
 
     public List postProcess(List<FeedServiceHelper> feedServiceHelperList ) {
-        return reducePassString(feedServiceHelperList);
+        List temp1  = reducePassString(feedServiceHelperList);
+        List temp2 = endGame(temp1);
+        return temp2;
+
     }
 
     public List reducePassString(List<FeedServiceHelper> feedServiceHelperList) {
@@ -92,5 +97,12 @@ public class FeedService {
         }
         return (List) feedList;
     }
+
+    private List endGame(List feedList){
+        feedList.add("End of Game");
+        return feedList;
+    }
+
+
 
 }

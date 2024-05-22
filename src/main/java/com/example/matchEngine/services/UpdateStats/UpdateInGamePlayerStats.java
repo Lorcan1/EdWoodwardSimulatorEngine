@@ -9,6 +9,7 @@ import com.example.model.playeraction.touch.Touch;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.Value;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
 import java.util.HashMap;
@@ -17,6 +18,7 @@ import java.util.List;
 @Getter
 @Setter
 @Component
+@Slf4j
 public class  UpdateInGamePlayerStats{
 
     HashMap<String,InGamePlayerStats> homeTeamPlayersStats;
@@ -53,9 +55,12 @@ public class  UpdateInGamePlayerStats{
             //implement logic
         } else  if(playerAction.getType() == "goal"){
             //implement logic
-        }
-        else {
-            throw new IllegalArgumentException(); // more of a checker currently to nake sure every action is recorded
+        } else if(playerAction.getType() == "kickOff"){
+            //implement logic
+        }else if(playerAction.getType() == "tackle"){
+            //implement logic
+        }else {
+            throw new IllegalArgumentException(playerAction.getType()); // more of a checker currently to nake sure every action is recorded
         }
     }
 }

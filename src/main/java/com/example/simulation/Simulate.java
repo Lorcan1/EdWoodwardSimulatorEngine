@@ -66,6 +66,7 @@ public class Simulate {
     }
 
     public void processResult() {
+        matchEngineLogic.getUpdateInGamePlayerStats().postProcessing();
         matchJSONService.processScore(matchEngineLogic.getUpdateInGameMatchStats().getInGameMatchStats());
         matchEngineLogic.getFeedService().setFeedList(matchEngineLogic.getFeedService().postProcess(matchEngineLogic.getFeedService().getFeedServiceHelperList()));
 

@@ -23,7 +23,7 @@ class ShotServiceTest extends Specification {
         def player = Mock(OutfieldPlayer)
         gameState.setPlayerInPosses(player)
         Goal goal =(Goal) Goal.builder()
-                .scorerName("temp")
+                .player1("temp")
                 .assisterName("temp")
                 .time(Integer.toString(1))
                 .homeTeamPoss(true)

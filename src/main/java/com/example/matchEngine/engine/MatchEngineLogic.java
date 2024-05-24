@@ -1,5 +1,6 @@
 package com.example.matchEngine.engine;
 
+import com.example.matchEngine.services.defensiveservice.MidfielderService;
 import com.example.matchEngine.services.playerDecisions.AttackerDecisions;
 import com.example.matchEngine.services.playerDecisions.DefenderDecisions;
 import com.example.matchEngine.services.playerDecisions.MidfielderDecisions;
@@ -49,6 +50,8 @@ public class MatchEngineLogic {
     @Autowired
     FeedService feedService;
 
+    @Autowired
+    MidfielderService midfielderService;
 
     Team homeTeam;
     Team awayTeam;
@@ -66,6 +69,8 @@ public class MatchEngineLogic {
     int time;
 
 
+
+
     public void setupMatch() {
         updateInGamePlayerStats.setHomeTeamPlayersStats(updateInGamePlayerStats.initializeInGamePlayerStats(homeTeam.getPlayers(), true));
         updateInGamePlayerStats.setAwayTeamPlayersStats(updateInGamePlayerStats.initializeInGamePlayerStats(awayTeam.getPlayers(), false));
@@ -75,6 +80,9 @@ public class MatchEngineLogic {
         updateInGameMatchStats.getInGameMatchStats().setHomeTeam(homeTeamName);
         updateInGameMatchStats.getInGameMatchStats().setAwayTeam(awayTeamName);
         feedService.initilizeFeedService();
+        midfielderService.setMidfielders(homeTeam,"home");
+        midfielderService.setMidfielders(awayTeam, "away");
+
     }
 
     public void simulateMatch(){
@@ -174,10 +182,14 @@ public class MatchEngineLogic {
 
                 changePossession(gameState.getPossLost());
                 gameState.setPossLost("");
+                gameState.setLastPasserName(null);
                 log.info("Possesion Lost, Player in Poss:" + gameState.getPlayerInPosses().getLastName());
             }
 
             gameState.setPlayerActions(new HashMap<>());
+
+            updateInGamePlayerStats.conditioning();
+
             //we need to clear a lot of things from gamestate now !!!
             time = time + 1;
             if (time > 120) {

@@ -31,7 +31,7 @@ public class ShotService {
         int shotDifficulty = random.nextInt(100) + 1; //certain players with good decision-making probably won't take really unlikely shots?
         int shotSuccessful = random.nextInt(100) + 1;
 
-        Double xG = (double) (shotDifficulty / 100);
+        Double xG = Double.parseDouble(String.format("%.2f", (double) shotDifficulty / 100.0));
         shot.setXG(xG);
         shot.setPlayer1(gameState.getPlayerInPosses().getLastName());
         String action;

@@ -13,7 +13,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Shot extends PlayerAction {
-    Double xG;
+    double xG;
     Boolean onTarget = false;
     Boolean isGoal = false;
     Goal goal;

@@ -3,6 +3,7 @@ package com.example.matchEngine.services.inGameActionCalculations.passCalculatio
 import com.example.matchEngine.engine.GameState;
 import com.example.model.player.Player;
 import com.example.model.playeraction.PlayerAction;
+import com.example.model.playeraction.pass.MissedPass;
 import com.example.model.playeraction.pass.Pass;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -43,9 +44,13 @@ public class PassCalculateSuccess {
             pass.setPlayer1(gameState.getPlayerInPosses().getLastName());
             pass.setPlayer2(passReceiver.getLastName());
             gameState.getPlayerActions().put(gameState.getPlayerInPosses().getLastName(), pass);
+            gameState.setLastPasserName(gameState.getPlayerInPosses().getLastName());
             gameState.setPlayerInPosses(passReceiver);
             return true;
         } else{
+            MissedPass missedPass = new MissedPass();
+            missedPass.setPlayer1(gameState.getPlayerInPosses().getLastName());
+            gameState.getPlayerActions().put(gameState.getPlayerInPosses().getLastName(), missedPass);
             gameState.setPossLost("pass"); //who gets the ball?
             return false;
         }

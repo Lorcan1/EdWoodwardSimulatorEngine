@@ -1,15 +1,19 @@
 package com.example.matchEngine.services.UpdateStats;
 
 import com.example.model.InGameMatchStats;
+import com.example.model.player.InGamePlayerStats;
 import com.example.model.playeraction.PlayerAction;
 import com.example.model.playeraction.shot.Shot;
 import com.example.model.playeraction.shot.Goal;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.text.DecimalFormat;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Getter
@@ -22,12 +26,12 @@ public class UpdateInGameMatchStats {
     int[] possession;
     int[] totalPossession;
 
+    DecimalFormat df = new DecimalFormat("#.##");
+
     public UpdateInGameMatchStats(){
         this.totalTime = 90;
         this.possession = new int[2]; // Array to store possession for each team
         this.totalPossession = new int[2]; // Array to store total possession for each team
-
-
     }
 
     public void updateMatchStats(Boolean homeTeamPoss, HashMap<String, PlayerAction> playersStatsToBeUpdated) {
@@ -72,15 +76,21 @@ public class UpdateInGameMatchStats {
     private void updateShots(String playerName, Boolean homeTeamPoss, Shot shot) {
         if (homeTeamPoss) {
             inGameMatchStats.setHomeShots(inGameMatchStats.getHomeShots() + 1);
-            inGameMatchStats.setHomexG(inGameMatchStats.getHomexG() + shot.getXG());
+//            inGameMatchStats.setHomexG(inGameMatchStats.getHomexG() + shot.getXG());
+            String formattedValue = df.format((inGameMatchStats.getHomexG() + shot.getXG()));
+            double newXG = Double.parseDouble(formattedValue);
+            inGameMatchStats.setHomexG(newXG);
             if (shot.getOnTarget()) {
                 inGameMatchStats.setHomeShotsOnT(inGameMatchStats.getHomeShotsOnT() + 1);
-            } else {
-                inGameMatchStats.setAwayShots(inGameMatchStats.getAwayShots() + 1);
-                inGameMatchStats.setAwayxG(inGameMatchStats.getAwayxG() + shot.getXG());
-                if (shot.getOnTarget()) {
-                    inGameMatchStats.setAwayShotsOnT(inGameMatchStats.getAwayShotsOnT() + 1);
-                }
+            }
+                } else {
+            inGameMatchStats.setAwayShots(inGameMatchStats.getAwayShots() + 1);
+//            inGameMatchStats.setAwayxG(inGameMatchStats.getAwayxG() + shot.getXG());
+            String formattedValue = df.format((inGameMatchStats.getAwayxG() + shot.getXG()));
+            double newXG = Double.parseDouble(formattedValue);
+            inGameMatchStats.setAwayxG(newXG);
+            if (shot.getOnTarget()) {
+                inGameMatchStats.setAwayShotsOnT(inGameMatchStats.getAwayShotsOnT() + 1);
             }
         }
     }
@@ -97,4 +107,7 @@ public class UpdateInGameMatchStats {
             inGameMatchStats.setAwayScore(inGameMatchStats.getAwayScore() + 1);
         }
     }
+
+
+
 }

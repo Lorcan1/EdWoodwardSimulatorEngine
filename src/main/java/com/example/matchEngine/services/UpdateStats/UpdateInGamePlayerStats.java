@@ -100,7 +100,7 @@ public class  UpdateInGamePlayerStats{
         conditioningService.conditioningService(awayTeamPlayerStats);
     }
 
-    public void postProcessing() {
+    public void calculatePassPercentage() {
         List<InGamePlayerStats> homeTeamPlayerStats = new ArrayList<>(homeTeamPlayersStats.values());
         List<InGamePlayerStats> awayTeamPlayerStats = new ArrayList<>(awayTeamPlayersStats.values());
         calculatePassPercentage(homeTeamPlayerStats);

@@ -57,7 +57,7 @@ public class Simulate {
         processResult();
         return matchJSONService.processFinalMatchResponse(matchEngineLogic.getUpdateInGamePlayerStats().getHomeTeamPlayersStats(),
                 matchEngineLogic.getUpdateInGamePlayerStats().getAwayTeamPlayersStats(), matchEngineLogic.getUpdateInGameMatchStats(),
-        matchEngineLogic.getFeedService().getFeedList());
+        matchEngineLogic.getFeedService().getFeedList(), matchEngineLogic.getTotalCalculation().getTotalInGamePlayerStats());
     }
     public void createTeams(String homeTeamName, String awayTeamName){
         matchEngineLogic.setHomeTeam(teamSetup.createTeam(homeTeamName));
@@ -66,7 +66,6 @@ public class Simulate {
     }
 
     public void processResult() {
-        matchEngineLogic.getUpdateInGamePlayerStats().postProcessing();
         matchJSONService.processScore(matchEngineLogic.getUpdateInGameMatchStats().getInGameMatchStats());
         matchEngineLogic.getFeedService().setFeedList(matchEngineLogic.getFeedService().postProcess(matchEngineLogic.getFeedService().getFeedServiceHelperList()));
 

@@ -7,8 +7,10 @@ import com.example.matchEngine.services.playerDecisions.MidfielderDecisions;
 import com.example.matchEngine.services.inGameActionCalculations.shotService.ShotService;
 import com.example.matchEngine.services.UpdateStats.UpdateInGameMatchStats;
 import com.example.matchEngine.services.UpdateStats.UpdateInGamePlayerStats;
+import com.example.matchEngine.services.totalcalculation.TotalCalculation;
 import com.example.model.InGameMatchStats;
 import com.example.model.player.Goalkeeper;
+import com.example.model.player.InGamePlayerStats;
 import com.example.model.playeraction.KickOff;
 import com.example.model.playeraction.PlayerAction;
 import com.example.services.feedservice.FeedService;
@@ -20,7 +22,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Getter
@@ -53,6 +57,9 @@ public class MatchEngineLogic {
     @Autowired
     MidfielderService midfielderService;
 
+    @Autowired
+    TotalCalculation totalCalculation;
+
     Team homeTeam;
     Team awayTeam;
 
@@ -67,10 +74,6 @@ public class MatchEngineLogic {
     String awayTeamNameAbbrev;
 
     int time;
-
-
-
-
     public void setupMatch() {
         updateInGamePlayerStats.setHomeTeamPlayersStats(updateInGamePlayerStats.initializeInGamePlayerStats(homeTeam.getPlayers(), true));
         updateInGamePlayerStats.setAwayTeamPlayersStats(updateInGamePlayerStats.initializeInGamePlayerStats(awayTeam.getPlayers(), false));
@@ -163,20 +166,29 @@ public class MatchEngineLogic {
             //if a player attempts a pass and fails then what happens currently and what should happen?
 
 
+
+
             if(gameState.getIsGoal()) {
-                updateInGameMatchStats.updateMatchStats(gameState.homeTeamPoss, gameState.getPlayerActions());
                 gameState.setIsGoal(false);
             }
 
             updateInGamePlayerStats.updateInGamePlayerStats(gameState.getPlayerActions()); //going to remove PlayerActions here
+            updateInGamePlayerStats.calculatePassPercentage();
+
+            ArrayList<InGamePlayerStats> tempHome = new ArrayList<>( updateInGamePlayerStats.getHomeTeamPlayersStats().values());
+            ArrayList<InGamePlayerStats> tempAway = new ArrayList<>( updateInGamePlayerStats.getAwayTeamPlayersStats().values());
+
+
+            totalCalculation.calculateTotal(tempHome ,tempAway);
+
+
+            updateInGameMatchStats.updateMatchStats(gameState.homeTeamPoss, gameState.getPlayerActions());
 
             if(gameState.getHomeTeamPoss()){
                 feedService.getRandomResponse(gameState, homeTeamNameAbbrev);
             } else{
                 feedService.getRandomResponse(gameState, awayTeamNameAbbrev);
             }
-
-
 
             if (!gameState.getPossLost().isEmpty()) {
 

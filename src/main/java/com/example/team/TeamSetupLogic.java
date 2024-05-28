@@ -1,8 +1,8 @@
 package com.example.team;
 
 import com.example.model.player.Player;
-import com.example.repository.GoalkeeperRepository;
-import com.example.repository.OutfieldPlayerRepository;
+import com.example.repository.playerrepository.GoalkeeperRepository;
+import com.example.repository.playerrepository.OutfieldPlayerRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.json.JSONArray;
 import org.springframework.beans.factory.annotation.Autowired;

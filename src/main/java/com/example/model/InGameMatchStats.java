@@ -29,9 +29,13 @@ public class InGameMatchStats {
     int time = 0;
 
     private long matchId;
-    private Date matchdate;
+    Date matchdate;
     private String homeTeam;
     private String awayTeam;
+
+    private String homeTeamNameAbbrev;
+    private String awayTeamNameAbbrev;
+
     private List<String> homeScorers;
     private List<String> homeAssisters;
     private List<String> awayScorers;

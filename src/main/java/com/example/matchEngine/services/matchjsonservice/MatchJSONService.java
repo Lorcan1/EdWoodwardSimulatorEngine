@@ -3,6 +3,7 @@ package com.example.matchEngine.services.matchjsonservice;
 
 import com.example.matchEngine.services.UpdateStats.UpdateInGameMatchStats;
 import com.example.model.InGameMatchStats;
+import com.example.model.matchmodel.Match;
 import com.example.model.player.InGamePlayerStats;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -90,5 +91,11 @@ public class MatchJSONService {
         inGamePlayerStatsList.add(initialHomeInGamePlayerStats);
         inGamePlayerStatsList.add(initialAwayInGamePlayerStats);
         return inGamePlayerStatsList;
+    }
+
+    public JSONObject processMatches(List<Match> listMatches){
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("matches", listMatches);
+        return jsonObject;
     }
 }

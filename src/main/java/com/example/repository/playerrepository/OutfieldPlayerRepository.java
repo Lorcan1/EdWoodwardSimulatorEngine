@@ -1,4 +1,4 @@
-package com.example.repository;
+package com.example.repository.playerrepository;
 
 import com.example.model.player.OutfieldPlayer;
 import com.example.model.player.Player;

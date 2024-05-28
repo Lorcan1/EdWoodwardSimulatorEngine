@@ -26,6 +26,11 @@ public class Controller {
         return controllerLogic.processMatch(homeTeam,awayTeam);
     }
 
+    @GetMapping("/fetch-matches")
+    public JSONObject fetchMatches() {
+        return controllerLogic.fetchMatches();
+    }
+
     @GetMapping("/hello")
     public String hello() {
         System.out.println("This is the controller");

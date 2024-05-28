@@ -5,8 +5,8 @@
 //import com.example.model.player.InGamePlayerStats;
 //import com.example.model.player.OutfieldPlayer;
 //import com.example.model.player.Player;
-//import com.example.repository.GoalkeeperRepository;
-//import com.example.repository.OutfieldPlayerRepository;
+//import com.example.repository.playerrepository.GoalkeeperRepository;
+//import com.example.repository.playerrepository.OutfieldPlayerRepository;
 //import com.example.team.TeamSetupLogic;
 //import com.fasterxml.jackson.core.JsonProcessingException;
 //import com.fasterxml.jackson.databind.ObjectMapper;

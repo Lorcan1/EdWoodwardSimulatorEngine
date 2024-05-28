@@ -251,3 +251,12 @@ COPY "goalkeepers_current" (
 FROM '/data/csv/goalkeeper.csv'
 DELIMITER ','
 CSV HEADER;
+
+CREATE TABLE "match" (
+    "match_id" serial PRIMARY KEY,
+    "home_team_name" TEXT,
+    "home_score" INTEGER,
+    "away_team_name" TEXT,
+    "away_score" INTEGER,
+    "match_date" DATE
+);

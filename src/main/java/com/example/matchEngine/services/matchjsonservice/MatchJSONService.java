@@ -2,8 +2,7 @@ package com.example.matchEngine.services.matchjsonservice;
 
 
 import com.example.matchEngine.services.UpdateStats.UpdateInGameMatchStats;
-import com.example.model.InGameMatchStats;
-import com.example.model.matchmodel.Match;
+import com.example.model.results.Results;
 import com.example.model.player.InGamePlayerStats;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -11,7 +10,6 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.json.simple.JSONObject;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.*;
@@ -93,9 +91,9 @@ public class MatchJSONService {
         return inGamePlayerStatsList;
     }
 
-    public JSONObject processMatches(List<Match> listMatches){
+    public JSONObject processMatches(List<Results> listResults){
         JSONObject jsonObject = new JSONObject();
-        jsonObject.put("matches", listMatches);
+        jsonObject.put("matches", listResults);
         return jsonObject;
     }
 }

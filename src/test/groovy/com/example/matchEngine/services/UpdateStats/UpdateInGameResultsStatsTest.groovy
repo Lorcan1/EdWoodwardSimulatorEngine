@@ -6,7 +6,7 @@ import com.example.model.InGameMatchStats
 import com.example.model.playeraction.shot.Shot
 import spock.lang.Specification
 
-class UpdateInGameMatchStatsTest extends Specification {
+class UpdateInGameResultsStatsTest extends Specification {
 
     def "Test Possession"(){
         UpdateInGameMatchStats updateInGameMatchStats = new UpdateInGameMatchStats()

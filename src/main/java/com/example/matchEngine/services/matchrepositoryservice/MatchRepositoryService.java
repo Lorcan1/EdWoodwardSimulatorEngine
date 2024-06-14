@@ -1,8 +1,9 @@
 package com.example.matchEngine.services.matchrepositoryservice;
 
 import com.example.model.InGameMatchStats;
-import com.example.model.matchmodel.Match;
-import com.example.repository.matchrepository.MatchRepository;
+import com.example.model.results.Results;
+import com.example.repository.fixturesrepository.FixturesRepository;
+import com.example.repository.resultsrepository.ResultsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -13,15 +14,15 @@ import java.util.List;
 public class MatchRepositoryService {
 
     @Autowired
-    MatchRepository matchRepository;
+    ResultsRepository resultsRepository;
 
     public void saveMatch(InGameMatchStats inGameMatchStats){
-        Match match = new Match(inGameMatchStats.getHomeTeam(),inGameMatchStats.getHomeScore(),inGameMatchStats.getAwayTeam(), inGameMatchStats.getAwayScore(),
+        Results results = new Results(inGameMatchStats.getHomeTeam(),inGameMatchStats.getHomeScore(),inGameMatchStats.getAwayTeam(), inGameMatchStats.getAwayScore(),
                 inGameMatchStats.getMatchdate());
-        matchRepository.save(match);
+        resultsRepository.save(results);
     }
 
-    public List<Match> fetchMatches(){
-        return matchRepository.findMatchesByDate(new Date(System.currentTimeMillis()));
+    public List<Results> fetchMatches(){
+        return resultsRepository.findMatchesByDate(new Date(System.currentTimeMillis()));
     }
 }

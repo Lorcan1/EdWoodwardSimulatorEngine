@@ -1,4 +1,4 @@
-package com.example.model.matchmodel;
+package com.example.model.results;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -13,8 +13,8 @@ import java.util.Date;
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name="match")
-public class Match {
+@Table(name="results")
+public class Results {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -32,15 +32,15 @@ public class Match {
     @Column(name="away_score")
     private int awayScore;
 
-    @Column(name="match_date")
-    private Date matchDate;
+    @Column(name="date")
+    private Date date;
 
-    public Match(String homeTeamName, int homeScore, String awayTeamName, int awayScore, Date matchDate){
+    public Results(String homeTeamName, int homeScore, String awayTeamName, int awayScore, Date date){
         this.homeTeamName = homeTeamName;
         this.homeScore = homeScore;
         this.awayTeamName = awayTeamName;
         this.awayScore = awayScore;
-        this.matchDate = matchDate;
+        this.date = date;
     }
 
 

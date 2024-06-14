@@ -252,11 +252,18 @@ FROM '/data/csv/goalkeeper.csv'
 DELIMITER ','
 CSV HEADER;
 
-CREATE TABLE "match" (
+CREATE TABLE "results" (
     "match_id" serial PRIMARY KEY,
     "home_team_name" TEXT,
     "home_score" INTEGER,
     "away_team_name" TEXT,
     "away_score" INTEGER,
-    "match_date" DATE
+    "date" DATE
+);
+
+CREATE TABLE "fixtures"(
+    "match_id" serial PRIMARY KEY,
+    "home_team_name" TEXT,
+    "away_team_name" TEXT,
+    "date" DATE
 );

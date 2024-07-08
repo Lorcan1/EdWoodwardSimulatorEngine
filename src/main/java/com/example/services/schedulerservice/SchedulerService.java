@@ -8,12 +8,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.text.SimpleDateFormat;
-import java.time.LocalDate;
 import java.util.*;
 
 @Component
 @Slf4j
 public class SchedulerService {
+
+    @Autowired
+    FixturesRepository fixturesRepository;
 
     HashMap<Date, ArrayList<String>> playersFixtures = new HashMap<>();
     HashMap<Date,ArrayList<ArrayList<String>>> fixtureListDate = new HashMap<>();
@@ -22,41 +24,16 @@ public class SchedulerService {
     List<String> teams1 = new ArrayList<>(Arrays.asList("MCFC", "TOT", "ARS", "MUFC"));
     String playerTeam = "MCFC";
 
-    TreeMap<Date, ArrayList<ArrayList<String>>> sortedFixtureListDate = new TreeMap<>(new Comparator<Date>() {
-        @Override
-        public int compare(Date d1, Date d2) {
-            return d1.compareTo(d2);
-        }
-    });
-    TreeMap<Date, ArrayList<String>> sortedPlayerFixtureListDate = new TreeMap<>(new Comparator<Date>() {
-        @Override
-        public int compare(Date d1, Date d2) {
-            return d1.compareTo(d2);
-        }
-    });
-
     @PostConstruct
     public void init(){
         this.createDateList();
         this.setFixtureListDate(createFixtureList1());
         this.saveData(createFixtureList1());
-//        this.setPlayersFixtures(fixtureListDate);
-//        this.sortDates(fixtureListDate);
-//        this.sortDatesPlayerFixture(playersFixtures);
     }
     public void createDateList(){
-//        dateList.add(new Date("7/8/2024"));
-//        dateList.add(new Date( "14/8/2024"));
-//        dateList.add(new Date("21/8/2024"));
-//        dateList.add(new Date("28/8/2024"));
-//        dateList.add(new Date("05/9/2024"));
-//        dateList.add(new Date("12/9/2024"));
-
         try {
-            // Create a SimpleDateFormat object for the desired date format
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 
-            // Add dates to the list by parsing the strings
             dateList.add(sdf.parse("2024-09-07"));
             dateList.add(sdf.parse("2024-09-14"));
             dateList.add(sdf.parse("2024-09-21"));
@@ -64,15 +41,11 @@ public class SchedulerService {
             dateList.add(sdf.parse("2024-10-05"));
             dateList.add(sdf.parse("2024-10-12"));
 
-            // Your logic here...
         } catch (Exception e) {
             e.printStackTrace();
-            // Handle the exception, perhaps log it or notify the user
         }
 
     }
-
-
 
     public ArrayList<ArrayList<ArrayList<String>>> createFixtureList1() {
         int teams = teams1.size();
@@ -136,9 +109,6 @@ public class SchedulerService {
         }
     }
 
-    @Autowired
-    private FixturesRepository fixturesRepository;
-
     public void saveData(ArrayList<ArrayList<ArrayList<String>>> createFixtureList1) {
         for (int i = 0; i < createFixtureList1.size(); i++) {
 
@@ -152,33 +122,8 @@ public class SchedulerService {
                 fixture.setDate(dateList.get(i));
                 fixturesRepository.save(fixture);
             }
-
-
         }
     }
-
-    public void sortDates(HashMap<Date,ArrayList<ArrayList<String>>> fixtureListDate) {
-        // Convert HashMap to TreeMap and sort by date
-
-
-        sortedFixtureListDate.putAll(fixtureListDate);
-
-        // Print the sorted TreeMap
-        for (Date date : sortedFixtureListDate.keySet()) {
-            System.out.println(date + ": " + sortedFixtureListDate.get(date));
-        }
-    }
-
-    public void sortDatesPlayerFixture(HashMap<Date, ArrayList<String>> playersFixtures) {
-        // Convert HashMap to TreeMap and sort by date
-        sortedPlayerFixtureListDate.putAll(playersFixtures);
-
-        // Print the sorted TreeMap
-        for (Date date : sortedPlayerFixtureListDate.keySet()) {
-            System.out.println(date + ": " + sortedPlayerFixtureListDate.get(date));
-        }
-    }
-
     public void getFixtures(Calendar calendar){
         int day = calendar.get(Calendar.DAY_OF_MONTH);
         int month = calendar.get(Calendar.MONTH);
@@ -196,10 +141,14 @@ public class SchedulerService {
                 e.printStackTrace();
                 // Handle the exception, perhaps log it or notify the user
             }
-        log.info(date.toString());
-        log.info(fixtureListDate.get(date).toString());
-        log.info("it worked");
+        if (fixtureListDate.get(date) != null) {
+            log.info(date.toString());
+            log.info(fixtureListDate.get(date).toString());
+            log.info("it worked");
+        }
+        else{
+            log.info("No fixtures on this date: " + date.toString());
+        }
 
         }
     }
-

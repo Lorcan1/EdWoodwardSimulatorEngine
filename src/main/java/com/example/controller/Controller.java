@@ -2,12 +2,9 @@ package com.example.controller;
 
 import com.example.services.dateservice.DateService;
 import com.example.services.schedulerservice.SchedulerService;
-import com.example.simulation.Simulate;
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.Calendar;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:4200")
